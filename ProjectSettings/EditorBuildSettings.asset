@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/MenuScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/QRCodeScene.unity
+    guid: deb9bc1ccb3e07b4ba87bcd120af14c9
+  - enabled: 1
+    path: Assets/Scenes/ARScene.unity
+    guid: 42f61c5e11ee8084491323c798b02d9e
+  m_configObjects: {}
