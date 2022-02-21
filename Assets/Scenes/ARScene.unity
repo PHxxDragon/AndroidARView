@@ -1420,7 +1420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DistanceToCamera: 0.5
-  MidAirIndicator: {fileID: 1527064403990174, guid: e5581564ca4d5f2479d5f1694371ef2f, type: 3}
+  MidAirIndicator: {fileID: 1527064403990174, guid: 97842f0268a3f5649bbb7692a8b3de64, type: 3}
   OnAnchorPositionConfirmed:
     m_PersistentCalls:
       m_Calls:
@@ -1915,6 +1915,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1484060590}
   m_CullTransparentMesh: 1
+--- !u!1 &1572106721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1572106723}
+  - component: {fileID: 1572106722}
+  m_Layer: 0
+  m_Name: HandleBackButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1572106722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572106721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7936ac399e0b04895f9039a9922fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1572106723
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572106721}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 377.2849, y: 1161.0425, z: -325.2282}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1583517206
 GameObject:
   m_ObjectHideFlags: 0
@@ -2086,6 +2129,7 @@ GameObject:
   - component: {fileID: 1705041553}
   - component: {fileID: 1705041552}
   - component: {fileID: 1705041551}
+  - component: {fileID: 1705041556}
   m_Layer: 0
   m_Name: ARCamera
   m_TagString: MainCamera
@@ -2185,6 +2229,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1705041556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705041550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b779d01885434f74397fcde2785d1e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1777935308
 GameObject:
   m_ObjectHideFlags: 0

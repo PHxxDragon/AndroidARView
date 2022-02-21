@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 namespace EAR.View
 {
@@ -74,6 +75,11 @@ namespace EAR.View
             string email = emailInputField.text;
             string password = passwordInputField.text;
             LoginEvent(email, password);
+        }
+
+        public void ScanQRCodeClick()
+        {
+            SceneManager.LoadScene("QRCodeScene");
         }
     }
 }
