@@ -34,7 +34,7 @@ namespace EAR.Editor.Presenter
         private void GetModuleInformationErrorCallback(string obj)
         {
             Modal modal = Instantiate(modelPrefab, canvas);
-            modal.SetModalContent("Error", "Invalid QR code");
+            modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText("InvalidQRCode"));
             modal.DisableCancelButton();
             modal.OnConfirmButtonClick += GoBackToMenuScene;
             codeReader.StopScan();
@@ -46,7 +46,7 @@ namespace EAR.Editor.Presenter
             if (obj.modelUrl == null)
             {
                 Modal modal = Instantiate(modelPrefab, canvas);
-                modal.SetModalContent("No Model", "This module has no model");
+                modal.SetModalContent(Utils.GetLocalizedText("NoModel"), Utils.GetLocalizedText("NoModelMessage"));
                 modal.DisableCancelButton();
                 modal.OnConfirmButtonClick += GoBackToMenuScene;
                 codeReader.StopScan();

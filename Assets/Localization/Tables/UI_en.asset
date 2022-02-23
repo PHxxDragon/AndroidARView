@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: f223615f299f2764a9d99beb8fe0bbb1, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 123854798848
+    m_Localized: Email
+    m_Metadata:
+      m_Items: []
+  - m_Id: 193174061056
+    m_Localized: Password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 288091160576
+    m_Localized: Log in
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363076927488
+    m_Localized: OR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 437534212096
+    m_Localized: Scan QR Code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 527699165184
+    m_Localized: Put the QR Code in the center of the square
+    m_Metadata:
+      m_Items: []
+  - m_Id: 780611502080
+    m_Localized: Air
+    m_Metadata:
+      m_Items: []
+  - m_Id: 897750024192
+    m_Localized: Ground
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1103958786048
+    m_Localized: Error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171399000064
+    m_Localized: Invalid QR Code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1300994605056
+    m_Localized: No Model
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1396842840064
+    m_Localized: Cannot load model
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1486697414656
+    m_Localized: Image not updated
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3841891385344
+    m_Localized: Image
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI_vi
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: vi
+  m_SharedData: {fileID: 11400000, guid: f223615f299f2764a9d99beb8fe0bbb1, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 123854798848
+    m_Localized: Email
+    m_Metadata:
+      m_Items: []
+  - m_Id: 193174061056
+    m_Localized: "M\u1EADt kh\u1EA9u"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 288091160576
+    m_Localized: "\u0110\u0103ng nh\u1EADp"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363076927488
+    m_Localized: "Ho\u1EB7c"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 437534212096
+    m_Localized: "Qu\xE9t m\xE3 QR"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 527699165184
+    m_Localized: "\u0110\u1EB7t m\xE3 QR v\xE0o gi\u1EEFa h\xECnh vu\xF4ng"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 780611502080
+    m_Localized: "Kh\xF4ng trung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 897750024192
+    m_Localized: "M\u1EB7t ph\u1EB3ng"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1103958786048
+    m_Localized: "Th\xF4ng b\xE1o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171399000064
+    m_Localized: "M\xE3 QR kh\xF4ng h\u1EE3p l\u1EC7"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1300994605056
+    m_Localized: "Kh\xF4ng c\xF3 m\xF4 h\xECnh"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1396842840064
+    m_Localized: "Kh\xF4ng th\u1EC3 t\u1EA3i m\xF4 h\xECnh"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1486697414656
+    m_Localized: "Kh\xF4ng c\xF3 h\xECnh \u1EA3nh"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3841891385344
+    m_Localized: "H\xECnh \u1EA3nh"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

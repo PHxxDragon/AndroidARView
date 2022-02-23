@@ -14,4 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ARScene.unity
     guid: 42f61c5e11ee8084491323c798b02d9e
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: d25089dce9b3b974f904061855e2b54b, type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: 65d0be2d22daf7a4aad037e357c181b6, type: 2}

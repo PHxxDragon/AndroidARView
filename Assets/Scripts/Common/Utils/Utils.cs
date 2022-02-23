@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Localization.Settings;
 using System.Collections;
 using System;
 
@@ -27,6 +28,11 @@ namespace EAR
                 new Rect(0, 0, texture2D.width, texture2D.height),
                 new Vector2(0.5f, 0.5f)
                 );
+        }
+
+        public static string GetLocalizedText(string key)
+        {
+            return LocalizationSettings.StringDatabase.GetLocalizedString("UI Text", key);
         }
 
         public void GetImageAsTexture2D(string imageUrl, Action<Texture2D, object> callback, Action<string, object> errorCallback = null, object param = null)

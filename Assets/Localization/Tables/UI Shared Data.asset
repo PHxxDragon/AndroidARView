@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: UI Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: UI
+  m_TableCollectionNameGuidString: f223615f299f2764a9d99beb8fe0bbb1
+  m_Entries:
+  - m_Id: 123854798848
+    m_Key: Email
+    m_Metadata:
+      m_Items: []
+  - m_Id: 193174061056
+    m_Key: Password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 288091160576
+    m_Key: LogIn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363076927488
+    m_Key: Or
+    m_Metadata:
+      m_Items: []
+  - m_Id: 437534212096
+    m_Key: ScanQR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 527699165184
+    m_Key: QRTutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 780611502080
+    m_Key: MidAir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 897750024192
+    m_Key: GroundPlane
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1103958786048
+    m_Key: Error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171399000064
+    m_Key: InvalidQRCode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1300994605056
+    m_Key: NoModel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1396842840064
+    m_Key: NoModelMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1486697414656
+    m_Key: NoImage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3841891385344
+    m_Key: Image
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1645641842986

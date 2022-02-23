@@ -65,7 +65,7 @@ namespace EAR.Editor.Presenter
             if (!SupportAnchor())
             {
                 Modal modal = Instantiate<Modal>(modalPrefab, canvas);
-                modal.SetModalContent("Error", "This module has no marker and this phone doesn't support ARCore");
+                modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText("NoImage"));
                 modal.DisableCancelButton();
                 modal.OnConfirmButtonClick += GoBackToMenu;
             }
@@ -93,10 +93,10 @@ namespace EAR.Editor.Presenter
 
         private void ActiveImageTarget()
         {
-            if (imageTarget == null)
+            if (imageTarget == null && SupportAnchor())
             {
                 Modal modal = Instantiate<Modal>(modalPrefab, canvas);
-                modal.SetModalContent("Error", "This module has no marker");
+                modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText("NoImage"));
                 modal.DisableCancelButton();
                 return;
             }
