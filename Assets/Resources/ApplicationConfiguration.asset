@@ -15,6 +15,5 @@ MonoBehaviour:
   serverName: http://192.168.1.4:3000/
   loginPath: api/v1/users/login
   profilePath: api/v1/users/get-user-by-token
-  armodulePath: api/v1/modules/ar
   modelPath: api/v1/models
-  armoduleQRPath: api/v1/modules/ar/get-qr
+  qrCodePath: api/v1/qrcodes

@@ -15,14 +15,17 @@ namespace EAR
         [SerializeField]
         private string profilePath;
 
-        [SerializeField]
-        private string armodulePath;
+/*        [SerializeField]
+        private string armodulePath;*/
 
         [SerializeField]
         private string modelPath;
 
         [SerializeField]
-        private string armoduleQRPath;
+        private string qrCodePath;
+
+/*        [SerializeField]
+        private string armoduleQRPath;*/
 
         public string GetServerName()
         {
@@ -44,20 +47,25 @@ namespace EAR
             return "";
         }
 
-        public string GetARModulePath(int moduleId)
+/*        public string GetARModulePath(int moduleId)
         {
             return serverName + armodulePath + "/" + moduleId;
-        }
+        }*/
 
         public string GetModelPath(int modelId)
         {
             return serverName + modelPath + "/" + modelId;
         }
 
-        public string GetARModuleQRPath(string qrToken)
+        public string GetQRCodePath(string qrCode)
+        {
+            return serverName + qrCodePath + "/" + qrCode;
+        }
+
+/*        public string GetARModuleQRPath(string qrToken)
         {
             return serverName + armoduleQRPath + "/" + qrToken;
-        }
+        }*/
     }
 }
 

@@ -40,7 +40,29 @@ namespace EAR.WebRequest
             StartCoroutine(GetModuleListCoroutine(token, courseId, callback, errorCallback));
         }
 
-        public void GetModuleInformation(string token, int moduleId, Action<ModuleARInformation> callback = null, Action<string> errorCallback = null)
+        public void GetInfoFromQRCode(string qrToken, Action<ModuleARInformation> callback = null, Action<string> errorCallback = null)
+        {
+            StartCoroutine(GetInfoFromQRCodeCoroutine(qrToken, callback, errorCallback));
+        }
+
+        private IEnumerator GetInfoFromQRCodeCoroutine(string qrToken, Action<ModuleARInformation> callback, Action<string> errorCallback)
+        {
+            using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(applicationConfiguration.GetQRCodePath(qrToken)))
+            {
+                yield return unityWebRequest.SendWebRequest();
+                if (unityWebRequest.result != UnityWebRequest.Result.Success)
+                {
+                    errorCallback?.Invoke(unityWebRequest.error);
+                }
+                else
+                {
+                    ModuleInfoResponse moduleInfoResponse = JsonUtility.FromJson<ModuleInfoResponse>(unityWebRequest.downloadHandler.text);
+                    callback?.Invoke(moduleInfoResponse.data);
+                }
+            }
+        }
+
+/*        public void GetModuleInformation(string token, int moduleId, Action<ModuleARInformation> callback = null, Action<string> errorCallback = null)
         {
             StartCoroutine(GetModuleInformationCoroutine(token, "", moduleId, callback, errorCallback));
         }
@@ -48,19 +70,19 @@ namespace EAR.WebRequest
         public void GetModuleInformation(string qrToken, Action<ModuleARInformation> callback = null, Action<string> errorCallback = null)
         {
             StartCoroutine(GetModuleInformationCoroutine("", qrToken, -1, callback, errorCallback));
-        }
+        }*/
 
-        public void SetModuleMetadata(string token, int moduleId, MetadataObject metadata, Action callback = null, Action<string> errorCallback = null)
+/*        public void SetModuleMetadata(string token, int moduleId, MetadataObject metadata, Action callback = null, Action<string> errorCallback = null)
         {
             StartCoroutine(SetModuleMetadataCoroutine(token, moduleId, metadata, callback, errorCallback));
-        }
+        }*/
 
         void Awake()
         {
             applicationConfiguration = ApplicationConfigurationHolder.Instance.GetApplicationConfiguration();
         }
 
-        private IEnumerator SetModuleMetadataCoroutine(string token, int moduleId, MetadataObject metadata, Action callback = null, Action<string> errorCallback = null)
+/*        private IEnumerator SetModuleMetadataCoroutine(string token, int moduleId, MetadataObject metadata, Action callback = null, Action<string> errorCallback = null)
         {
             List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
             formData.Add(new MultipartFormDataSection("metadata", JsonUtility.ToJson(metadata)));
@@ -78,9 +100,9 @@ namespace EAR.WebRequest
                     callback?.Invoke();
                 }
             }
-        }
+        }*/
 
-        private IEnumerator GetModuleInformationCoroutine(string token, string qrToken, int moduleId, Action<ModuleARInformation> callback, Action<string> errorCallback)
+       /* private IEnumerator GetModuleInformationCoroutine(string token, string qrToken, int moduleId, Action<ModuleARInformation> callback, Action<string> errorCallback)
         {
             string path;
             if (moduleId != -1)
@@ -122,7 +144,7 @@ namespace EAR.WebRequest
                     }
                 }
             }
-        }
+        }*/
 
         /* Todo
          * 

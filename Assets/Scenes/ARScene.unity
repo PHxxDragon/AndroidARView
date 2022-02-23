@@ -314,7 +314,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Image target
+  m_text: Ground Plane
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -903,11 +903,11 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Image target
-      m_Image: {fileID: 0}
     - m_Text: Ground Plane
       m_Image: {fileID: 0}
     - m_Text: Mid Air
+      m_Image: {fileID: 0}
+    - m_Text: Image target
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1054,6 +1054,9 @@ MonoBehaviour:
   groudPlaneStage: {fileID: 1777935308}
   midAirController: {fileID: 140811210}
   midAirStage: {fileID: 1467739792}
+  modalPrefab: {fileID: 8965011324185570549, guid: d0752afdb4d60a54c9ecb32d2a27a02d, type: 3}
+  canvas: {fileID: 6209858545726011310}
+  header: {fileID: 219813270}
 --- !u!1 &820548617
 GameObject:
   m_ObjectHideFlags: 0
@@ -2007,6 +2010,8 @@ MonoBehaviour:
   modelContainer: {fileID: 1668057568}
   scaleToSize: 0.5
   distanceToPlane: 0
+  modalPrefab: {fileID: 8965011324185570549, guid: d0752afdb4d60a54c9ecb32d2a27a02d, type: 3}
+  canvas: {fileID: 6209858545726011298}
 --- !u!1 &1668057568
 GameObject:
   m_ObjectHideFlags: 0
@@ -2303,7 +2308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1777935308}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 603533899}

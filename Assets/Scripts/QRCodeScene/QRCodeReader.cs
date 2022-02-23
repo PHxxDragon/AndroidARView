@@ -43,7 +43,7 @@ namespace EAR.QRCode
             barcodeReader = new BarcodeReader();
             barcodeReader.Options.PossibleFormats = new List<BarcodeFormat>();
             barcodeReader.Options.PossibleFormats.Add(BarcodeFormat.QR_CODE);
-            barcodeReader.Options.TryHarder = false;
+            //barcodeReader.Options.TryHarder = false;
             background.texture = webCamTexture;
             camAvailable = true;
             StartCoroutine(PlayWebCam());
@@ -92,11 +92,11 @@ namespace EAR.QRCode
                         if (result != null)
                         {
                             QRCodeRecognizedEvent?.Invoke(result.Text);
-                            yield return new WaitForSeconds(3);
+                            yield return new WaitForSeconds(1.5f);
                         }
                         else
                         {
-                            yield return new WaitForSeconds(3);
+                            yield return new WaitForSeconds(1.5f);
                         }
                     } else
                     {

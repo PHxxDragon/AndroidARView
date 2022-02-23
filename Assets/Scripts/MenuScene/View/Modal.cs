@@ -33,9 +33,11 @@ namespace EAR.View
         void Start()
         {
             confirmButton.onClick.AddListener(ConfirmButtonClick);
+            confirmButton.onClick.AddListener(CloseModal);
             if (cancelButton != null)
             {
                 cancelButton.onClick.AddListener(CancelButtonClick);
+                cancelButton.onClick.AddListener(CloseModal);
             }
         }
 
@@ -47,6 +49,11 @@ namespace EAR.View
         private void CancelButtonClick()
         {
             OnCancelButtonClick?.Invoke();
+        }
+
+        private void CloseModal()
+        {
+            Destroy(gameObject);
         }
     }
 }

@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using EAR.AR;
+using EAR.View;
 using TMPro;
-using System;
+using Vuforia;
 
 namespace EAR.Editor.Presenter
 {
@@ -26,9 +28,14 @@ namespace EAR.Editor.Presenter
         [SerializeField]
         private GameObject midAirStage;
 
-        
+        [SerializeField]
+        private Modal modalPrefab;
+        [SerializeField]
+        private Transform canvas;
+        [SerializeField]
+        private GameObject header;
 
-        void Start()
+        void Awake()
         {
             if (dropdown == null || imageTargetCreator == null || groundPlaneController == null || groudPlaneStage == null)
             {
@@ -36,10 +43,37 @@ namespace EAR.Editor.Presenter
                 return;
             }
 
-            imageTargetCreator.CreateTargetDoneEvent += CreateTargetDoneEventSubscriber;
             dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-            groundPlaneController.gameObject.SetActive(false);
+            ActiveGroundPlane();
 
+            imageTargetCreator.CreateTargetDoneEvent += CreateTargetDoneEventSubscriber;
+            imageTargetCreator.CreateTargetErrorEvent += CreateTargetErrorEventSubscriber;
+            
+        }
+        private void CreateTargetDoneEventSubscriber()
+        {
+            imageTarget = imageTargetCreator.GetImageTarget();
+            if (!SupportAnchor())
+            {
+                ActiveImageTarget();
+                header.gameObject.SetActive(false);
+            }
+        }
+
+        private void CreateTargetErrorEventSubscriber()
+        {
+            if (!SupportAnchor())
+            {
+                Modal modal = Instantiate<Modal>(modalPrefab, canvas);
+                modal.SetModalContent("Error", "This module has no marker and this phone doesn't support ARCore");
+                modal.DisableCancelButton();
+                modal.OnConfirmButtonClick += GoBackToMenu;
+            }
+        }
+
+        private void GoBackToMenu()
+        {
+            SceneManager.LoadScene("MenuScene");
         }
 
         private void ResetAll()
@@ -52,38 +86,59 @@ namespace EAR.Editor.Presenter
             midAirController.gameObject.SetActive(false);
         }
 
+        private bool SupportAnchor()
+        {
+            return VuforiaBehaviour.Instance.World.AnchorsSupported;
+        }
+
+        private void ActiveImageTarget()
+        {
+            if (imageTarget == null)
+            {
+                Modal modal = Instantiate<Modal>(modalPrefab, canvas);
+                modal.SetModalContent("Error", "This module has no marker");
+                modal.DisableCancelButton();
+                return;
+            }
+            ResetAll();
+            imageTarget.SetActive(true);
+            modelContainer.transform.parent = imageTarget.transform;
+            ResetTransform(modelContainer.transform);
+        }
+
+        private void ActiveMidAir()
+        {
+            ResetAll();
+            midAirController.gameObject.SetActive(true);
+            modelContainer.transform.parent = midAirStage.transform;
+            ResetTransform(modelContainer.transform);
+            midAirController.AdjustModelPosition();
+        }
+
+        private void ActiveGroundPlane()
+        {
+            ResetAll();
+            groundPlaneController.gameObject.SetActive(true);
+            modelContainer.transform.parent = groudPlaneStage.transform;
+            ResetTransform(modelContainer.transform);
+        }
+
         private void OnDropdownValueChanged(int mode)
         {
             switch (mode)
             {
                 case 0:
-                    ResetAll();
-                    imageTarget.SetActive(true);
-                    modelContainer.transform.parent = imageTarget.transform;
-                    ResetTransform(modelContainer.transform);
+                    ActiveGroundPlane();
                     break;
                 case 1:
-                    ResetAll();
-                    groundPlaneController.gameObject.SetActive(true);
-                    modelContainer.transform.parent = groudPlaneStage.transform;
-                    ResetTransform(modelContainer.transform);
+                    ActiveMidAir();
                     break;
                 case 2:
-                    ResetAll();
-                    midAirController.gameObject.SetActive(true);
-                    modelContainer.transform.parent = midAirStage.transform;
-                    ResetTransform(modelContainer.transform);
-                    midAirController.AdjustModelPosition();
+                    ActiveImageTarget();
                     break;
                 default:
                     break;
             }
-        }
-
-        private void CreateTargetDoneEventSubscriber()
-        {
-            imageTarget = imageTargetCreator.GetImageTarget();
-            modelContainer.transform.parent = imageTarget.transform;
         }
 
         private void ResetTransform(Transform transform)

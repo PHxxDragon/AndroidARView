@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using EAR.WebRequest;
 using EAR.AR;
 using EAR.SceneChange;
-using System;
+using EAR.View;
 
 namespace EAR.Editor.Presenter
 {
@@ -17,9 +18,13 @@ namespace EAR.Editor.Presenter
         [SerializeField]
         GameObject modelContainer;
         [SerializeField]
-        private float scaleToSize = 0.1f;
+        private float scaleToSize = 0.5f;
         [SerializeField]
         private float distanceToPlane = 0f;
+        [SerializeField]
+        Modal modalPrefab;
+        [SerializeField]
+        GameObject canvas;
 
         private MetadataObject metadata;
         void Start()
@@ -47,6 +52,7 @@ namespace EAR.Editor.Presenter
         {
             modelLoader.LoadModel(moduleAR.modelUrl, moduleAR.extension);
             modelLoader.OnLoadEnded += SetModelAsContainerChild;
+            modelLoader.OnLoadError += ShowError;
             MetadataObject metadataObject = JsonUtility.FromJson<MetadataObject>(moduleAR.metadataString);
             if (metadataObject == null)
             {
@@ -57,6 +63,19 @@ namespace EAR.Editor.Presenter
                 imageTargetCreator.CreateImageTarget(moduleAR.imageUrl, metadataObject.imageWidthInMeters);
                 LoadWidthMetadata(metadataObject);
             }
+        }
+
+        private void ShowError(string obj)
+        {
+            Modal modal = Instantiate(modalPrefab, canvas.transform);
+            modal.SetModalContent("Error", obj);
+            modal.DisableCancelButton();
+            modal.OnConfirmButtonClick += GoBackToMenu;
+        }
+
+        private void GoBackToMenu()
+        {
+            SceneManager.LoadScene("MenuScene");
         }
 
         private void SetModelAsContainerChild()

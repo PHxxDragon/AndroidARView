@@ -9,12 +9,11 @@ namespace EAR.AR
     {
         public event Action OnLoadStarted;
         public event Action OnLoadEnded;
+        public event Action<string> OnLoadError;
         public event Action<float, string> OnLoadProgressChanged;
 
         private GameObject loadedModel;
         private GltfImportTask task;
-        private string url;
-        private string extension;
 
         public GameObject GetModel()
         {
@@ -27,8 +26,6 @@ namespace EAR.AR
 
         public void LoadModel(string url, string extension)
         {
-            this.url = url;
-            this.extension = extension;
             if (extension == "gltf" || extension == "glb")
             {
                 LoadModelUsingPiglet(url);
@@ -86,7 +83,7 @@ namespace EAR.AR
 
         private void OnException(Exception e)
         {
-            Debug.LogError("Cannot load model using piglet: " + e.Message);
+            OnLoadError?.Invoke("Cannot load model");
         }
 
         //===========================================Trilib==========================================
@@ -100,7 +97,7 @@ namespace EAR.AR
 
         private void OnError(IContextualizedError obj)
         {
-            Debug.LogError($"An error occurred while loading your Model: {obj.GetInnerException()}");
+            OnLoadError?.Invoke("Cannot load model");
         }
 
         private void OnProgress(AssetLoaderContext arg1, float arg2)
