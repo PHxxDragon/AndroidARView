@@ -74,5 +74,9 @@ MonoBehaviour:
     m_Localized: Image
     m_Metadata:
       m_Items: []
+  - m_Id: 272666026811392
+    m_Localized: EAR
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

@@ -71,6 +71,10 @@ MonoBehaviour:
     m_Key: Image
     m_Metadata:
       m_Items: []
+  - m_Id: 272666026811392
+    m_Key: AppName
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

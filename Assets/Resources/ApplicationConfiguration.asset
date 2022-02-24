@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2135d2ec4780fc74fbe5d2e7de68d7ef, type: 3}
   m_Name: ApplicationConfiguration
   m_EditorClassIdentifier: 
-  serverName: http://192.168.1.4:3000/
+  serverName: http://ec2-13-214-133-11.ap-southeast-1.compute.amazonaws.com:3000/
   loginPath: api/v1/users/login
   profilePath: api/v1/users/get-user-by-token
   modelPath: api/v1/models

@@ -32,7 +32,7 @@ namespace EAR
 
         public static string GetLocalizedText(string key)
         {
-            return LocalizationSettings.StringDatabase.GetLocalizedString("UI Text", key);
+            return LocalizationSettings.StringDatabase.GetLocalizedString("UI", key);
         }
 
         public void GetImageAsTexture2D(string imageUrl, Action<Texture2D, object> callback, Action<string, object> errorCallback = null, object param = null)
