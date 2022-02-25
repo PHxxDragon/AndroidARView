@@ -34,6 +34,10 @@ namespace EAR.Editor.Presenter
         private void OnLoadEnded()
         {
             hasAnimation = animationPlayer.SetModel(modelLoader.GetModel());
+            if (hasAnimation)
+            {
+                animationPlayer.PlayAnimation(1);
+            }
         }
 
 /*        void Update()

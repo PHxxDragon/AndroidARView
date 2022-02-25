@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using ZXing;
@@ -9,14 +10,16 @@ namespace EAR.QRCode
 {
     public class QRCodeReader : MonoBehaviour
     {
-        private WebCamTexture webCamTexture;
-        private IBarcodeReader barcodeReader;
-        private bool camAvailable;
-
         public AspectRatioFitter fit;
         public RawImage background;
 
         public event Action<string> QRCodeRecognizedEvent;
+
+        private WebCamTexture webCamTexture;
+        private IBarcodeReader barcodeReader;
+        private bool camAvailable;
+        private Thread currentThread;
+        private string result = "";
         void Start()
         {
             WebCamDevice[] devices = WebCamTexture.devices;
@@ -73,6 +76,16 @@ namespace EAR.QRCode
                 int orient = -webCamTexture.videoRotationAngle;
                 background.rectTransform.localEulerAngles = new Vector3(0, 0, orient);
             }
+
+            lock(result)
+            {
+                if (result != "")
+                {
+                    Debug.Log(result);
+                    QRCodeRecognizedEvent?.Invoke(result);
+                    result = "";
+                }
+            }
         }
 
         public void StopScan()
@@ -88,16 +101,14 @@ namespace EAR.QRCode
                 {
                     if (webCamTexture.isPlaying)
                     {
-                        Result result = barcodeReader.Decode(webCamTexture.GetPixels32(), webCamTexture.width, webCamTexture.height);
-                        if (result != null)
+                        lock (result)
                         {
-                            QRCodeRecognizedEvent?.Invoke(result.Text);
-                            yield return new WaitForSeconds(1.5f);
+                            if ((currentThread == null || !currentThread.IsAlive) && result == "")
+                            {
+                                StartNewBarcodeReadThread(webCamTexture.GetPixels32(), webCamTexture.width, webCamTexture.height);
+                            }
                         }
-                        else
-                        {
-                            yield return new WaitForSeconds(1.5f);
-                        }
+                        yield return new WaitForSeconds(1.5f);
                     } else
                     {
                         yield return new WaitForSeconds(1);
@@ -107,6 +118,22 @@ namespace EAR.QRCode
                     break;
                 }
             }
+        }
+        private void StartNewBarcodeReadThread(Color32[] color32s, int width, int height)
+        {
+
+            currentThread = new Thread(() =>
+            {
+                Result barcodeResult = barcodeReader.Decode(color32s, width, height);
+                if (barcodeResult != null)
+                {
+                    lock(result)
+                    {
+                        result = barcodeResult.Text;
+                    }
+                }
+            });
+            currentThread.Start();
         }
     }
 }
