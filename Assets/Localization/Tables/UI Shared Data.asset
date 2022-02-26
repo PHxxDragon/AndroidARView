@@ -75,6 +75,10 @@ MonoBehaviour:
     m_Key: AppName
     m_Metadata:
       m_Items: []
+  - m_Id: 879790231212032
+    m_Key: Downloaded
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

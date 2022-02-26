@@ -78,5 +78,9 @@ MonoBehaviour:
     m_Localized: EAR
     m_Metadata:
       m_Items: []
+  - m_Id: 879790231212032
+    m_Localized: Downloaded
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
