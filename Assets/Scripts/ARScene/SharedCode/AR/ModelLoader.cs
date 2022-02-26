@@ -1,8 +1,9 @@
-
 using UnityEngine;
 using System;
 using TriLibCore;
 using Piglet;
+using EAR.Cacher;
+
 namespace EAR.AR
 {
     public class ModelLoader : MonoBehaviour
@@ -15,6 +16,9 @@ namespace EAR.AR
         private GameObject loadedModel;
         private GltfImportTask task;
 
+        [SerializeField]
+        private ModelFileCacher modelFileCacher;
+
         public GameObject GetModel()
         {
             return loadedModel;
@@ -24,17 +28,30 @@ namespace EAR.AR
                     LoadModel("D:\\Mon hoc\\Nam 4 ky 1\\luan van\\EAR_OLD\\backend\\public\\wolf_with_animations.zip");
                 }*/
 
-        public void LoadModel(string url, string extension)
+        public void LoadModel(string url, string extension, bool isZipFile)
         {
-            if (extension == "gltf" || extension == "glb")
+            OnLoadStarted?.Invoke();
+            modelFileCacher.DownloadAndGetFilePath(url, url, url, extension, isZipFile, (string filePath) =>
             {
-                LoadModelUsingPiglet(url);
-            }
-            else
+                Debug.Log(filePath);
+                if (extension == "gltf" || extension == "glb")
+                {
+                    LoadModelUsingPiglet(filePath);
+                }
+                else
+                {
+                    LoadModelUsingTrilib(filePath, extension, isZipFile);
+                }
+            }, 
+            (float progress) =>
             {
-                LoadModelUsingTrilib(url, extension);
-            }
-
+                OnLoadProgressChanged?.Invoke(progress, string.Format("Downloading... {0}%", progress * 100));
+            }, 
+            (string message) =>
+            {
+                OnLoadError?.Invoke(message);
+            });
+            
         }
 
         //======================================piglet================================================
@@ -45,7 +62,6 @@ namespace EAR.AR
             task.OnCompleted = OnComplete;
             task.OnException += OnException;
             task.OnProgress += OnProgress;
-            OnLoadStarted?.Invoke();
         }
 
         void Update()
@@ -88,11 +104,16 @@ namespace EAR.AR
 
         //===========================================Trilib==========================================
 
-        private void LoadModelUsingTrilib(string url, string extension)
+        private void LoadModelUsingTrilib(string path, string extension, bool isZipFile)
         {
             var assetLoaderOptions = AssetLoader.CreateDefaultLoaderOptions();
-            var webRequest = AssetDownloader.CreateWebRequest(url);
-            AssetDownloader.LoadModelFromUri(webRequest, OnLoad, OnMaterialsLoad, OnProgress, OnError, null, assetLoaderOptions, null, extension);
+            if (isZipFile)
+            {
+                AssetLoaderZip.LoadModelFromZipFile(path, OnLoad, OnMaterialsLoad, OnProgress, OnError, null, assetLoaderOptions);
+            } else
+            {
+                AssetLoader.LoadModelFromFile(path, OnLoad, OnMaterialsLoad, OnProgress, OnError, null, assetLoaderOptions);
+            }
         }
 
         private void OnError(IContextualizedError obj)

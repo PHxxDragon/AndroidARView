@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using EAR.AR;
 using EAR.View;
+using EAR.AnimationPlayer;
 using TMPro;
 using Vuforia;
 
@@ -15,6 +16,8 @@ namespace EAR.Editor.Presenter
 
         [SerializeField]
         private GameObject modelContainer;
+        [SerializeField]
+        private AnimPlayer animationPlayer;
         [SerializeField]
         private TMP_Dropdown dropdown;
 
@@ -103,6 +106,7 @@ namespace EAR.Editor.Presenter
             ResetAll();
             imageTarget.SetActive(true);
             modelContainer.transform.parent = imageTarget.transform;
+            animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);
         }
 
@@ -111,6 +115,7 @@ namespace EAR.Editor.Presenter
             ResetAll();
             midAirController.gameObject.SetActive(true);
             modelContainer.transform.parent = midAirStage.transform;
+            animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);
             midAirController.AdjustModelPosition();
         }
@@ -120,6 +125,7 @@ namespace EAR.Editor.Presenter
             ResetAll();
             groundPlaneController.gameObject.SetActive(true);
             modelContainer.transform.parent = groudPlaneStage.transform;
+            animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);
         }
 

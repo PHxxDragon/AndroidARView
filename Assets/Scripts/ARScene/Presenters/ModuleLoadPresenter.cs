@@ -50,7 +50,7 @@ namespace EAR.Editor.Presenter
 
         private void LoadModule(ModuleARInformation moduleAR)
         {
-            modelLoader.LoadModel(moduleAR.modelUrl, moduleAR.extension);
+            modelLoader.LoadModel(moduleAR.modelUrl, moduleAR.extension, moduleAR.isZipFile);
             modelLoader.OnLoadEnded += SetModelAsContainerChild;
             modelLoader.OnLoadError += ShowError;
             MetadataObject metadataObject = JsonUtility.FromJson<MetadataObject>(moduleAR.metadataString);

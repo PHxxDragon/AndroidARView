@@ -86,6 +86,14 @@ namespace EAR.AnimationPlayer
             return null;
         }
 
+        public void ResumeAnimation()
+        {
+            if (_animation != null)
+            {
+                _animation.Play();
+            }
+        }
+
         public void PlayAnimation(int index)
         {
             if (_animation != null && _animationList != null)

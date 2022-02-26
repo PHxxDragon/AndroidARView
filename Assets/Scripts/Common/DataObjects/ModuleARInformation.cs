@@ -7,4 +7,5 @@ public class ModuleARInformation
     public string modelUrl;
     public string metadataString;
     public string extension;
+    public bool isZipFile;
 }
