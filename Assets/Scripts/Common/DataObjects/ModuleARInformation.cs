@@ -8,4 +8,6 @@ public class ModuleARInformation
     public string metadataString;
     public string extension;
     public bool isZipFile;
+    public string name;
+    public int id;
 }

@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MenuScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/Scenes/DownloadedScene.unity
+    guid: 69970e893e1fe73439ade17ea6d7ec04
+  - enabled: 1
     path: Assets/Scenes/QRCodeScene.unity
     guid: deb9bc1ccb3e07b4ba87bcd120af14c9
   - enabled: 1

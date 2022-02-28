@@ -79,6 +79,10 @@ MonoBehaviour:
     m_Key: Downloaded
     m_Metadata:
       m_Items: []
+  - m_Id: 923580623048704
+    m_Key: DownloadedTitle
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
