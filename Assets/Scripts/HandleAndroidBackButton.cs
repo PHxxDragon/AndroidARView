@@ -9,6 +9,7 @@ public class HandleAndroidBackButton : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                Debug.Log("Go back to menu scene");
                 SceneManager.LoadScene("MenuScene");
             }
         }

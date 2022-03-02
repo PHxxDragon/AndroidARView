@@ -7,7 +7,7 @@ namespace EAR.AR
     public class ImageTargetCreator : MonoBehaviour
     {
         public event Action CreateTargetDoneEvent;
-        public event Action CreateTargetErrorEvent;
+        public event Action<string> CreateTargetErrorEvent;
 
         private GameObject target;
 
@@ -25,7 +25,7 @@ namespace EAR.AR
 
         private void CreateTargetError(string arg1, object arg2)
         {
-            CreateTargetErrorEvent?.Invoke();
+            CreateTargetErrorEvent?.Invoke(arg1);
         }
 
         private void CreateTarget(Texture2D image, object param)

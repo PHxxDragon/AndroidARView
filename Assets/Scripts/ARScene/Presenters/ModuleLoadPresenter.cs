@@ -31,9 +31,10 @@ namespace EAR.Editor.Presenter
         {
             if (SceneChangeParam.moduleARInformation != null)
             {
-                Debug.Log(SceneChangeParam.moduleARInformation.extension);
-                Debug.Log(SceneChangeParam.moduleARInformation.imageUrl);
-                Debug.Log(SceneChangeParam.moduleARInformation.modelUrl);
+                Debug.Log("extension: " + SceneChangeParam.moduleARInformation.extension);
+                Debug.Log("image url: " + SceneChangeParam.moduleARInformation.imageUrl);
+                Debug.Log("model url: " + SceneChangeParam.moduleARInformation.modelUrl);
+                Debug.Log("iszipfile: " + SceneChangeParam.moduleARInformation.isZipFile);
                 LoadModule(SceneChangeParam.moduleARInformation);
             }
             else
@@ -91,6 +92,7 @@ namespace EAR.Editor.Presenter
 
         private void LoadWithoutMetadata()
         {
+            Debug.Log("Load model without metadata");
             modelLoader.OnLoadEnded += ApplyDefaultToModel;
         }
 

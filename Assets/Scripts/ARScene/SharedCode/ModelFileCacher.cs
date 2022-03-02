@@ -38,6 +38,7 @@ namespace EAR.Cacher
 
         public void RemoveFile(string hashedFileName)
         {
+            Debug.Log("Remove file " + hashedFileName);
             Dictionary<string, (string, string)> dict = LoadDictionary();
             (string, string) t;
             dict.TryGetValue(hashedFileName, out t);
@@ -107,13 +108,12 @@ namespace EAR.Cacher
 
         private IEnumerator DownloadAndGetFilePathCoroutine(string resourceUrl, string resourceKey, string resourceName, string resourceExtension, bool isZipFile, Action<string> callback = null, Action<float> progressCallback = null, Action<string> errorCallback = null)
         {
+            Debug.Log("ResourceUrl: " + resourceUrl);
             string hashedFilename = GetHashString(resourceKey);
-            Debug.Log(hashedFilename);
             string physicalExtension = isZipFile ? "zip" : resourceExtension;
             string filePath = GetModelFilePath(hashedFilename, physicalExtension);
             if (File.Exists(filePath))
             {
-
                 Debug.Log("Detected file in system");
                 callback?.Invoke(filePath);
                 yield break;
@@ -128,12 +128,12 @@ namespace EAR.Cacher
             }
             if (uwr.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log("Connection Error");
+                Debug.Log("Connection Error: " + uwr.error);
                 errorCallback?.Invoke("Connection error");
             }
             else if (uwr.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.Log("Protocol Error");
+                Debug.Log("Protocol Error: " + uwr.error);
                 errorCallback?.Invoke(uwr.error);
             }
             else
@@ -147,7 +147,6 @@ namespace EAR.Cacher
                         dict.Add(hashedFilename, (resourceName, physicalExtension));
                     }
                     SaveDictionary(dict);
-                    Debug.Log("Invoked callback");
                     callback?.Invoke(filePath);
                 });
             }
@@ -159,7 +158,6 @@ namespace EAR.Cacher
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllBytes(path, data);
-                Debug.Log("write done");
                 actionsPool.Add(callback);
             });
             thread.Start();

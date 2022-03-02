@@ -58,15 +58,18 @@ namespace EAR.Editor.Presenter
             imageTarget = imageTargetCreator.GetImageTarget();
             if (!SupportAnchor())
             {
+                Debug.Log("The device doesn't support anchors");
                 ActiveImageTarget();
                 header.gameObject.SetActive(false);
             }
         }
 
-        private void CreateTargetErrorEventSubscriber()
+        private void CreateTargetErrorEventSubscriber(string error)
         {
+            Debug.Log("Error creating target image: " + error);
             if (!SupportAnchor())
             {
+                Debug.Log("The device doesn't support anchors");
                 Modal modal = Instantiate<Modal>(modalPrefab, canvas);
                 modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText("NoImage"));
                 modal.DisableCancelButton();
@@ -76,6 +79,7 @@ namespace EAR.Editor.Presenter
 
         private void GoBackToMenu()
         {
+            Debug.Log("Back to menu");
             SceneManager.LoadScene("MenuScene");
         }
 
@@ -96,6 +100,7 @@ namespace EAR.Editor.Presenter
 
         private void ActiveImageTarget()
         {
+            Debug.Log("Set image target");
             if (imageTarget == null && SupportAnchor())
             {
                 Modal modal = Instantiate<Modal>(modalPrefab, canvas);
@@ -112,6 +117,7 @@ namespace EAR.Editor.Presenter
 
         private void ActiveMidAir()
         {
+            Debug.Log("Set midair target");
             ResetAll();
             midAirController.gameObject.SetActive(true);
             modelContainer.transform.parent = midAirStage.transform;
@@ -122,6 +128,7 @@ namespace EAR.Editor.Presenter
 
         private void ActiveGroundPlane()
         {
+            Debug.Log("Set groundplane target");
             ResetAll();
             groundPlaneController.gameObject.SetActive(true);
             modelContainer.transform.parent = groudPlaneStage.transform;

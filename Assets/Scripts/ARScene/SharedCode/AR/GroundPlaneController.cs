@@ -1,5 +1,5 @@
-using Vuforia.UnityRuntimeCompiled;
 using UnityEngine;
+using Vuforia;
 
 namespace EAR.AR
 {
@@ -11,6 +11,8 @@ namespace EAR.AR
         private Camera mainCamera;
         [SerializeField]
         private GameObject raycastPlane;
+        [SerializeField]
+        private PlaneFinderBehaviour planeFinderBehaviour;
 
         void Start()
         {
@@ -20,26 +22,20 @@ namespace EAR.AR
             }
         }
 
-        void Update()
+        public void PerformHitTest(Vector2 position)
         {
-            SetModelContainerToTouchPosition();
+            planeFinderBehaviour.PerformHitTest(position);
         }
 
-        private void SetModelContainerToTouchPosition()
+        public void SetModelContainerToTouchPosition(Vector2 position)
         {
-            if (Input.GetMouseButton(0))
+            Ray cameraToPlaneRay = mainCamera.ScreenPointToRay(position);
+            RaycastHit[] hits = Physics.RaycastAll(cameraToPlaneRay);
+            foreach (RaycastHit hit in hits)
             {
-                if (!UnityRuntimeCompiledFacade.Instance.IsUnityUICurrentlySelected())
+                if (hit.collider.gameObject == raycastPlane)
                 {
-                    Ray cameraToPlaneRay = mainCamera.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit[] hits = Physics.RaycastAll(cameraToPlaneRay);
-                    foreach (RaycastHit hit in hits)
-                    {
-                        if (hit.collider.gameObject == raycastPlane)
-                        {
-                            modelContainer.transform.position = hit.point;
-                        }
-                    }
+                    modelContainer.transform.position = hit.point;
                 }
             }
         }
