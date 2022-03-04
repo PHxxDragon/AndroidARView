@@ -25,6 +25,8 @@ namespace EAR.Editor.Presenter
         Modal modalPrefab;
         [SerializeField]
         GameObject canvas;
+        [SerializeField]
+        Note notePrefab;
 
         private MetadataObject metadata;
         void Start()
@@ -41,12 +43,6 @@ namespace EAR.Editor.Presenter
             {
                 Debug.LogError("Unexpected error happened, cannot find module information");
             }
-            /*            ModuleARInformation moduleARInformation = new ModuleARInformation();
-                        moduleARInformation.modelUrl = "https://firebasestorage.googleapis.com/v0/b/education-ar-c395d.appspot.com/o/models%2F1%2Fmodels_1_Bodacious%20Maimu-Duup%20(2).zip?alt=media&token=6d0d07bd-75ba-4db8-b344-ed96be01ba63";
-                        moduleARInformation.extension = "zip";
-                        moduleARInformation.imageUrl = "https://firebasestorage.googleapis.com/v0/b/education-ar-c395d.appspot.com/o/ARModule%2F1200px-Florida_Box_Turtle_Digon3_re-edited.jpg?alt=media&token=f4ac3235-3be7-463f-9de3-aea674feaa94";
-                        moduleARInformation.metadataString = "{\"modelTransform\":{\"position\":{\"x\":-0.0003384668380022049,\"y\":0.09364131093025208,\"z\":0.48236414790153506},\"rotation\":{\"x\":-0.6999889612197876,\"y\":0.0,\"z\":0.0,\"w\":0.7141537666320801},\"scale\":{\"x\":0.02199966087937355,\"y\":0.02199966087937355,\"z\":0.02199966087937355}},\"imageWidthInMeters\":1.0}";
-                        LoadModule(moduleARInformation);*/
         }
 
         private void LoadModule(ModuleARInformation moduleAR)
@@ -88,6 +84,11 @@ namespace EAR.Editor.Presenter
         {
             metadata = metadataObject;
             modelLoader.OnLoadEnded += ApplyMetadataToModel;
+            foreach (NoteData noteData in metadata.noteDatas)
+            {
+                Note note = Instantiate(notePrefab, modelContainer.transform);
+                note.PopulateData(noteData);
+            }
         }
 
         private void LoadWithoutMetadata()

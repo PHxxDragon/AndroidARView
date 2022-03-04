@@ -2076,6 +2076,7 @@ MonoBehaviour:
   distanceToPlane: 0
   modalPrefab: {fileID: 8965011324185570549, guid: d0752afdb4d60a54c9ecb32d2a27a02d, type: 3}
   canvas: {fileID: 6209858545726011298}
+  notePrefab: {fileID: 4705591317235074749, guid: 6b844fff69d83ea449a12158ca073821, type: 3}
 --- !u!1 &1668057568
 GameObject:
   m_ObjectHideFlags: 0
