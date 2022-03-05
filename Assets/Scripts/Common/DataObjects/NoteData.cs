@@ -9,6 +9,9 @@ namespace EAR
         public string noteContent;
         public string buttonTitle;
         public TransformData noteTransformData;
+        public int fontSize;
+        public float boxWidth;
+        public float height;
     }
 }
 

@@ -1,6 +1,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 namespace EAR.View
 {
@@ -14,17 +15,31 @@ namespace EAR.View
         private TMP_Text button_text;
         [SerializeField]
         private RectTransform noteContainer;
+        [SerializeField]
+        private RectTransform imageBox;
 
         [SerializeField]
         private Canvas[] canvases;
         [SerializeField]
         private Camera eventCamera;
 
+        private Vector3 originalScale;
+        private bool isCompleted = true;
+
         void Start()
         {
             button.onClick.AddListener(() =>
             {
-                noteContainer.gameObject.SetActive(!noteContainer.gameObject.activeSelf);
+                if (!isCompleted) return;
+
+                if (noteContainer.transform.localScale != Vector3.zero)
+                {
+                    HideNote();
+                } else
+                {
+                    ShowNote();
+                }
+                
             });
             if (eventCamera == null)
             {
@@ -34,6 +49,26 @@ namespace EAR.View
                     canvas.worldCamera = eventCamera;
                 }
             }
+            HideNote();
+        }
+
+        private void HideNote()
+        {
+            isCompleted = false;
+            originalScale = noteContainer.transform.localScale;
+            noteContainer.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuart).OnComplete(() =>
+            {
+                isCompleted = true;
+            });
+        }
+
+        private void ShowNote()
+        {
+            isCompleted = false;
+            noteContainer.transform.DOScale(originalScale, 0.2f).SetEase(Ease.OutQuart).OnComplete(() =>
+            {
+                isCompleted = true;
+            });
         }
 
         public NoteData GetNoteData()
@@ -43,6 +78,9 @@ namespace EAR.View
             noteData.buttonTitle = button_text.text;
             noteData.noteTransformData = TransformData.TransformToTransformData(transform);
             noteData.noteContentRectTransformData = RectTransformData.RectTransformToRectTransformData(noteContainer);
+            noteData.boxWidth = GetBoxWidth();
+            noteData.height = GetHeight();
+            noteData.fontSize = GetFontSize();
             return noteData;
         }
 
@@ -52,6 +90,41 @@ namespace EAR.View
             RectTransformData.RectTransformDataToRectTransform(data.noteContentRectTransformData, noteContainer);
             text.text = data.noteContent;
             button_text.text = data.buttonTitle;
+            SetHeight(data.height);
+            SetBoxWidth(data.boxWidth);
+            SetFontSize(data.fontSize);
+        }
+
+        public void SetHeight(float height)
+        {
+            Vector3 localPosition = noteContainer.localPosition;
+            localPosition.y = height;
+            noteContainer.localPosition = localPosition;
+        }
+
+        public float GetHeight()
+        {
+            return noteContainer.localPosition.y;
+        }
+
+        public void SetBoxWidth(float boxWidth)
+        {
+            imageBox.sizeDelta = new Vector2(boxWidth, imageBox.sizeDelta.y);
+        }
+
+        public float GetBoxWidth()
+        {
+            return imageBox.sizeDelta.x;
+        }
+
+        public void SetFontSize(int fontSize)
+        {
+            text.fontSize = fontSize;
+        }
+
+        public int GetFontSize()
+        {
+            return (int) text.fontSize;
         }
 
         public void SetButtonText(string value)
