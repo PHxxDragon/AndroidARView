@@ -5,6 +5,8 @@ using EAR.View;
 using EAR.AnimationPlayer;
 using TMPro;
 using Vuforia;
+using UnityEngine.UI;
+using System;
 
 namespace EAR.Editor.Presenter
 {
@@ -12,7 +14,7 @@ namespace EAR.Editor.Presenter
     {
         [SerializeField]
         private ImageTargetCreator imageTargetCreator;
-        private GameObject imageTarget;
+        private ImageTargetBehaviour imageTarget;
 
         [SerializeField]
         private GameObject modelContainer;
@@ -38,6 +40,9 @@ namespace EAR.Editor.Presenter
         [SerializeField]
         private GameObject header;
 
+        [SerializeField]
+        private Button resetButton;
+
         void Awake()
         {
             if (dropdown == null || imageTargetCreator == null || groundPlaneController == null || groudPlaneStage == null)
@@ -51,11 +56,30 @@ namespace EAR.Editor.Presenter
 
             imageTargetCreator.CreateTargetDoneEvent += CreateTargetDoneEventSubscriber;
             imageTargetCreator.CreateTargetErrorEvent += CreateTargetErrorEventSubscriber;
-            
+            resetButton.onClick.AddListener(OnResetButtonClick);
         }
+
+        private void OnResetButtonClick()
+        {
+            Modal modal = Instantiate<Modal>(modalPrefab, canvas);
+            modal.SetModalContent(Utils.GetLocalizedText("ConfirmResetTitle"), Utils.GetLocalizedText("ConfirmResetMessage"));
+            modal.OnConfirmButtonClick += ResetTrackingStatus;
+            modal.OnCancelButtonClick += () =>
+            {
+                Destroy(modal.gameObject);
+            };
+        }
+
+        private void ResetTrackingStatus()
+        {
+            groundPlaneController.ResetTrackingStatus();
+            midAirController.ResetTrackingStatus();
+            VuforiaBehaviour.Instance.DevicePoseBehaviour.Reset();
+        }
+
         private void CreateTargetDoneEventSubscriber()
         {
-            imageTarget = imageTargetCreator.GetImageTarget();
+            imageTarget = imageTargetCreator.GetImageTarget().GetComponent<ImageTargetBehaviour>();
             if (!SupportAnchor())
             {
                 Debug.Log("The device doesn't support anchors");
@@ -87,7 +111,7 @@ namespace EAR.Editor.Presenter
         {
             if (imageTarget != null)
             {
-                imageTarget.SetActive(false);
+                imageTarget.gameObject.SetActive(false);
             }
             groundPlaneController.gameObject.SetActive(false);
             midAirController.gameObject.SetActive(false);
@@ -109,7 +133,7 @@ namespace EAR.Editor.Presenter
                 return;
             }
             ResetAll();
-            imageTarget.SetActive(true);
+            imageTarget.gameObject.SetActive(true);
             modelContainer.transform.parent = imageTarget.transform;
             animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);

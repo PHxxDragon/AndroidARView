@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 4078639606549544}
   - component: {fileID: 114408687042456420}
   m_Layer: 0
-  m_Name: DefaultMidAirIndicator
+  m_Name: MidAirIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

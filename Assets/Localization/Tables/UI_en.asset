@@ -86,5 +86,13 @@ MonoBehaviour:
     m_Localized: Downloaded Models
     m_Metadata:
       m_Items: []
+  - m_Id: 3862519637319680
+    m_Localized: Reset tracking status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3862831186026496
+    m_Localized: Do you want to reset tracking status and place the model again?
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

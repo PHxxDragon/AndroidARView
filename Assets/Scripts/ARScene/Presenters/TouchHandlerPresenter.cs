@@ -68,7 +68,6 @@ namespace EAR.Presenter
                 if (groundPlaneController != null && groundPlaneController.isActiveAndEnabled)
                 {
                     groundPlaneController.PerformHitTest(position);
-                    groundPlaneController.SetModelContainerToTouchPosition(position);
                 } else if (midAirController != null && midAirController.isActiveAndEnabled)
                 {
                     midAirController.PerformClick(position);

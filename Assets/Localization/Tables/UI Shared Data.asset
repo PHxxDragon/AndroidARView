@@ -83,6 +83,14 @@ MonoBehaviour:
     m_Key: DownloadedTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 3862519637319680
+    m_Key: ConfirmResetTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3862831186026496
+    m_Key: ConfirmResetMessage
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
