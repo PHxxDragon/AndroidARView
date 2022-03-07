@@ -77,6 +77,10 @@ namespace EAR.View
             noteData.noteContent = text.text;
             noteData.buttonTitle = button_text.text;
             noteData.noteTransformData = TransformData.TransformToTransformData(transform);
+            if (noteData.noteTransformData.scale == Vector3.zero)
+            {
+                noteData.noteTransformData.scale = originalScale;
+            }
             noteData.noteContentRectTransformData = RectTransformData.RectTransformToRectTransformData(noteContainer);
             noteData.boxWidth = GetBoxWidth();
             noteData.height = GetHeight();
