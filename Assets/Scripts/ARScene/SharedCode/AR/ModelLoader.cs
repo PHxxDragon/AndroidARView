@@ -3,6 +3,7 @@ using System;
 using TriLibCore;
 using Piglet;
 using EAR.Cacher;
+using System.IO;
 
 namespace EAR.AR
 {
@@ -15,6 +16,7 @@ namespace EAR.AR
 
         private GameObject loadedModel;
         private GltfImportTask task;
+        private string tempFilePath;
 
         [SerializeField]
         private ModelFileCacher modelFileCacher;
@@ -31,16 +33,15 @@ namespace EAR.AR
         public void LoadModel(string url, string name, int id, string extension, bool isZipFile)
         {
             OnLoadStarted?.Invoke();
-            modelFileCacher.DownloadAndGetFilePath(url, url, name, extension, isZipFile, (string filePath) =>
+            modelFileCacher.DownloadAndGetFileStream(url, url, name, extension, isZipFile, (byte[] data) =>
             {
-                Debug.Log(filePath);
                 if (extension == "gltf" || extension == "glb")
                 {
-                    LoadModelUsingPiglet(filePath);
+                    LoadModelUsingPiglet(data);
                 }
                 else
                 {
-                    LoadModelUsingTrilib(filePath, extension, isZipFile);
+                    LoadModelUsingTrilib(data, extension, isZipFile);
                 }
             }, 
             (float progress) =>
@@ -56,9 +57,9 @@ namespace EAR.AR
 
         //======================================piglet================================================
 
-        private void LoadModelUsingPiglet(string url)
+        private void LoadModelUsingPiglet(byte[] data)
         {
-            task = RuntimeGltfImporter.GetImportTask(url);
+            task = RuntimeGltfImporter.GetImportTask(data);
             task.OnCompleted = OnComplete;
             task.OnException += OnException;
             task.OnProgress += OnProgress;
@@ -95,30 +96,37 @@ namespace EAR.AR
         {
             loadedModel = importedModel;
             OnLoadEnded?.Invoke();
+            if (File.Exists(tempFilePath))
+                File.Delete(tempFilePath);
         }
 
         private void OnException(Exception e)
         {
             OnLoadError?.Invoke("Cannot load model");
+            if (File.Exists(tempFilePath))
+                File.Delete(tempFilePath);
         }
 
         //===========================================Trilib==========================================
 
-        private void LoadModelUsingTrilib(string path, string extension, bool isZipFile)
+        private void LoadModelUsingTrilib(byte[] data, string extension, bool isZipFile)
         {
+            using MemoryStream memoryStream = new MemoryStream(data);
             var assetLoaderOptions = AssetLoader.CreateDefaultLoaderOptions();
             if (isZipFile)
             {
-                AssetLoaderZip.LoadModelFromZipFile(path, OnLoad, OnMaterialsLoad, OnProgress, OnError, null, assetLoaderOptions);
+                AssetLoaderZip.LoadModelFromZipStream(memoryStream, OnLoad, OnMaterialsLoad, OnProgress, OnError, null, assetLoaderOptions);
             } else
             {
-                AssetLoader.LoadModelFromFile(path, OnLoad, OnMaterialsLoad, OnProgress, OnError, null, assetLoaderOptions);
+                AssetLoader.LoadModelFromStream(memoryStream, "model", extension, OnLoad, OnMaterialsLoad, OnProgress, OnError, null, assetLoaderOptions);
             }
         }
 
         private void OnError(IContextualizedError obj)
         {
             OnLoadError?.Invoke("Cannot load model");
+            if (File.Exists(tempFilePath))
+                File.Delete(tempFilePath);
         }
 
         private void OnProgress(AssetLoaderContext arg1, float arg2)
@@ -129,6 +137,8 @@ namespace EAR.AR
         private void OnMaterialsLoad(AssetLoaderContext obj)
         {
             OnLoadEnded?.Invoke();
+            if (File.Exists(tempFilePath))
+                File.Delete(tempFilePath);
         }
 
         private void OnLoad(AssetLoaderContext obj)
