@@ -9,5 +9,6 @@ public class ModuleARInformation
     public string extension;
     public bool isZipFile;
     public string name;
+    public float markerImageWidth;
     public int id;
 }

@@ -51,13 +51,12 @@ namespace EAR.Editor.Presenter
             modelLoader.OnLoadEnded += SetModelAsContainerChild;
             modelLoader.OnLoadError += ShowError;
             MetadataObject metadataObject = JsonUtility.FromJson<MetadataObject>(moduleAR.metadataString);
+            imageTargetCreator.CreateImageTarget(moduleAR.imageUrl, moduleAR.markerImageWidth);
             if (metadataObject == null)
             {
-                imageTargetCreator.CreateImageTarget(moduleAR.imageUrl);
                 LoadWithoutMetadata();
             } else
             {
-                imageTargetCreator.CreateImageTarget(moduleAR.imageUrl, metadataObject.imageWidthInMeters);
                 LoadWidthMetadata(metadataObject);
             }
         }

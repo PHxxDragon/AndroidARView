@@ -31,13 +31,13 @@ namespace EAR.AR
         private void CreateTarget(Texture2D image, object param)
         {
             Debug.Log(image);
-            var mTarget = VuforiaBehaviour.Instance.ObserverFactory.CreateImageTarget(image, this.widthInMeter, "ImageTarget");
+            var mTarget = VuforiaBehaviour.Instance.ObserverFactory.CreateImageTarget(image, widthInMeter, "ImageTarget");
             mTarget.gameObject.AddComponent<DefaultObserverEventHandler>();
 
             //modelContainerHandler.gameObject.transform.parent = mTarget.gameObject.transform;
 
             // Hide the object
-            //mTarget.gameObject.transform.position = new Vector3(0, -10, 0);
+            mTarget.gameObject.transform.position = new Vector3(0, -10, 0);
             target = mTarget.gameObject;
             CreateTargetDoneEvent?.Invoke();
         }

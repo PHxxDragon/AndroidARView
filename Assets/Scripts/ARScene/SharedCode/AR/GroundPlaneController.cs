@@ -1,10 +1,21 @@
+using System;
 using UnityEngine;
 using Vuforia;
+using System.Collections;
 
 namespace EAR.AR
 {
     public class GroundPlaneController : MonoBehaviour
     {
+        public enum GroundPlaneStateEnum
+        {
+            PlaneNotDetected, NotPlaced, Placed
+        }
+
+        public event Action<GroundPlaneStateEnum> OnStateChange;
+
+        private GroundPlaneStateEnum currentState;
+
         [SerializeField]
         private GameObject modelContainer;
         [SerializeField]
@@ -16,6 +27,20 @@ namespace EAR.AR
         [SerializeField]
         private AnchorBehaviour anchorBehaviour;
 
+        private float time = 2f;
+
+        private void SetState(GroundPlaneStateEnum state)
+        {
+            if (currentState != state)
+            {
+                currentState = state;
+                if (isActiveAndEnabled)
+                {
+                    OnStateChange?.Invoke(state);
+                }
+            }
+        }
+
         void Start()
         {
             if (mainCamera == null)
@@ -24,6 +49,36 @@ namespace EAR.AR
             }
             VuforiaBehaviour.Instance.DevicePoseBehaviour.OnTargetStatusChanged += OnTargetStatusChanged;
             anchorBehaviour.OnTargetStatusChanged += OnAnchorTargetStatusChanged;
+            planeFinderBehaviour.OnAutomaticHitTest.AddListener(OnAutomaticHitTest);
+            StartCoroutine(UpdateEvery1s());
+        }
+
+        private IEnumerator UpdateEvery1s()
+        {
+            while(true)
+            {
+                yield return new WaitForSecondsRealtime(1f);
+                if (isActiveAndEnabled)
+                {
+                    time--;
+                    if (time <= 0)
+                    {
+                        if (currentState != GroundPlaneStateEnum.Placed)
+                        {
+                            SetState(GroundPlaneStateEnum.PlaneNotDetected);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void OnAutomaticHitTest(HitTestResult arg0)
+        {
+            if (currentState != GroundPlaneStateEnum.Placed)
+            {
+                SetState(GroundPlaneStateEnum.NotPlaced);
+                time = 2f;
+            }
         }
 
         void OnDestroy()
@@ -38,6 +93,7 @@ namespace EAR.AR
         {
             anchorBehaviour.UnconfigureAnchor();
             planeFinderBehaviour.enabled = true;
+            SetState(GroundPlaneStateEnum.PlaneNotDetected);
         }
 
         private void OnAnchorTargetStatusChanged(ObserverBehaviour observerBehaviour, TargetStatus targetStatus)
@@ -45,15 +101,20 @@ namespace EAR.AR
             if (targetStatus.Status == Status.NO_POSE)
             {
                 planeFinderBehaviour.enabled = true;
+                SetState(GroundPlaneStateEnum.PlaneNotDetected);
             } else
             {
                 planeFinderBehaviour.enabled = false;
+                SetState(GroundPlaneStateEnum.Placed);
             }
         }
 
         private void OnTargetStatusChanged(ObserverBehaviour observerBehaviour, TargetStatus targetStatus)
         {
-            Debug.Log("werthg In ground plane controller, device pose status: " + targetStatus.Status + " device pose statusinfo: " + targetStatus.StatusInfo);
+            if (targetStatus.Status == Status.LIMITED || targetStatus.Status == Status.NO_POSE)
+            {
+                SetState(GroundPlaneStateEnum.PlaneNotDetected);
+            }
         }
 
         public void PerformHitTest(Vector2 position)

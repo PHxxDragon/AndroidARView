@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 897750024192
-    m_Localized: Ground
+    m_Localized: Ground (default)
     m_Metadata:
       m_Items: []
   - m_Id: 1103958786048
@@ -92,6 +92,38 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 3862831186026496
     m_Localized: Do you want to reset tracking status and place the model again?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737146591809536
+    m_Localized: Control Tutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737360459370496
+    m_Localized: Pinch your two fingers to scale the object.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737644904484864
+    m_Localized: Rotate your two fingers to rotate the object.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737807224049664
+    m_Localized: Hold and drag with one finger to move the object.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5738315171041280
+    m_Localized: Move your camera around the environment for tracking data.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5738546990223360
+    m_Localized: Move your camera around the environment for tracking data.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5738797499224064
+    m_Localized: Tap on the screen to place down the object.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5740553025163264
+    m_Localized: Move your camera over the marker image.
     m_Metadata:
       m_Items: []
   references:

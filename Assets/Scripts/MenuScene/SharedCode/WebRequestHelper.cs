@@ -57,6 +57,7 @@ namespace EAR.WebRequest
                 else
                 {
                     ModuleInfoResponse moduleInfoResponse = JsonUtility.FromJson<ModuleInfoResponse>(unityWebRequest.downloadHandler.text);
+                    Debug.Log(unityWebRequest.downloadHandler.text);
                     callback?.Invoke(moduleInfoResponse.data);
                 }
             }

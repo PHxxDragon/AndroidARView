@@ -95,5 +95,40 @@ MonoBehaviour:
       l\u1EA1i m\xF4 h\xECnh trong kh\xF4ng gian?"
     m_Metadata:
       m_Items: []
+  - m_Id: 5737146591809536
+    m_Localized: "H\u01B0\u1EDBng d\u1EABn \u0111i\u1EC1u khi\u1EC3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737360459370496
+    m_Localized: "K\u1EB9p hai ng\xF3n tay \u0111\u1EC3 thu ph\xF3ng m\xF4 h\xECnh."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737644904484864
+    m_Localized: "Xoay hai ng\xF3n tay \u0111\u1EC3 xoay m\xF4 h\xECnh."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737807224049664
+    m_Localized: "Gi\u1EEF v\xE0 k\xE9o m\u1ED9t ng\xF3n tay \u0111\u1EC3 di chuy\u1EC3n
+      v\u1EADt th\u1EC3."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5738315171041280
+    m_Localized: "Di chuy\u1EC3n camera xung quanh khu v\u1EF1c c\u1EE7a b\u1EA1n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5738546990223360
+    m_Localized: "Di chuy\u1EC3n camera xung quanh khu v\u1EF1c c\u1EE7a b\u1EA1n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5738797499224064
+    m_Localized: "Nh\u1EA5p v\xE0o m\xE0n h\xECnh \u0111\u1EC3 \u0111\u1EB7t v\u1EADt
+      th\u1EC3 xu\u1ED1ng."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5740553025163264
+    m_Localized: "Quay camera c\u1EE7a b\u1EA1n v\xE0o h\xECnh \u1EA3nh nh\u1EADn
+      di\u1EC7n."
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

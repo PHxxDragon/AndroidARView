@@ -6,12 +6,15 @@ using EAR.AnimationPlayer;
 using TMPro;
 using Vuforia;
 using UnityEngine.UI;
+using EAR.Tutorials;
 using System;
 
-namespace EAR.Editor.Presenter
+namespace EAR.Presenter
 {
     public class ModeSelectPresenter : MonoBehaviour
     {
+        public event Action<int> OnModeSelected;
+
         [SerializeField]
         private ImageTargetCreator imageTargetCreator;
         private ImageTargetBehaviour imageTarget;
@@ -43,6 +46,9 @@ namespace EAR.Editor.Presenter
         [SerializeField]
         private Button resetButton;
 
+        [SerializeField]
+        private ControlTutorial controlTutorial;
+
         void Awake()
         {
             if (dropdown == null || imageTargetCreator == null || groundPlaneController == null || groudPlaneStage == null)
@@ -52,11 +58,14 @@ namespace EAR.Editor.Presenter
             }
 
             dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-            ActiveGroundPlane();
-
             imageTargetCreator.CreateTargetDoneEvent += CreateTargetDoneEventSubscriber;
             imageTargetCreator.CreateTargetErrorEvent += CreateTargetErrorEventSubscriber;
             resetButton.onClick.AddListener(OnResetButtonClick);
+        }
+
+        void Start()
+        {
+            ActiveGroundPlane();
         }
 
         private void OnResetButtonClick()
@@ -130,6 +139,10 @@ namespace EAR.Editor.Presenter
                 Modal modal = Instantiate<Modal>(modalPrefab, canvas);
                 modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText("NoImage"));
                 modal.DisableCancelButton();
+                modal.OnConfirmButtonClick += () =>
+                {
+                    ActiveGroundPlane();
+                };
                 return;
             }
             ResetAll();
@@ -137,6 +150,8 @@ namespace EAR.Editor.Presenter
             modelContainer.transform.parent = imageTarget.transform;
             animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);
+            controlTutorial.ChangeTutorial(ControlTutorial.ControlTutorialEnum.Image);
+            OnModeSelected?.Invoke(2);
         }
 
         private void ActiveMidAir()
@@ -148,6 +163,8 @@ namespace EAR.Editor.Presenter
             animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);
             midAirController.AdjustModelPosition();
+            controlTutorial.ChangeTutorial(ControlTutorial.ControlTutorialEnum.MidAir);
+            OnModeSelected?.Invoke(1);
         }
 
         private void ActiveGroundPlane()
@@ -158,6 +175,8 @@ namespace EAR.Editor.Presenter
             modelContainer.transform.parent = groudPlaneStage.transform;
             animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);
+            controlTutorial.ChangeTutorial(ControlTutorial.ControlTutorialEnum.GroundPlane);
+            OnModeSelected?.Invoke(0);
         }
 
         private void OnDropdownValueChanged(int mode)

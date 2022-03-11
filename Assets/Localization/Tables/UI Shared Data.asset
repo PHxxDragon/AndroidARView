@@ -91,6 +91,38 @@ MonoBehaviour:
     m_Key: ConfirmResetMessage
     m_Metadata:
       m_Items: []
+  - m_Id: 5737146591809536
+    m_Key: ControlTutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737360459370496
+    m_Key: Pinch2Finger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737644904484864
+    m_Key: Rotate2Finger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737807224049664
+    m_Key: Drag1Finger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5738315171041280
+    m_Key: MoveAroundEnv
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5738546990223360
+    m_Key: MoveCameraAroundFloor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5738797499224064
+    m_Key: TapOnScreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5740553025163264
+    m_Key: MoveCameraImage
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
