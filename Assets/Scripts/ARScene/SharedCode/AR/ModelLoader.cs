@@ -131,7 +131,7 @@ namespace EAR.AR
 
         private void OnProgress(AssetLoaderContext arg1, float arg2)
         {
-            OnLoadProgressChanged?.Invoke(arg2, "Loading...");
+            OnLoadProgressChanged?.Invoke(arg2, Utils.GetLocalizedText("Loading..."));
         }
 
         private void OnMaterialsLoad(AssetLoaderContext obj)

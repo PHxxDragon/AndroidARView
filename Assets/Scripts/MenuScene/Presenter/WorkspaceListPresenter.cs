@@ -39,7 +39,7 @@ namespace EAR.MenuScene.Presenter
             workspaceListView.PopulateData(workspaceDatas);
             foreach (WorkspaceData data in workspaceDatas)
             {
-                Utils.Instance.GetImageAsTexture2D(data.imageUrl, RetrieveImageSuccessCallback, null, data.id);
+                Utils.Instance.GetImageAsTexture2D(data.imageUrl, RetrieveImageSuccessCallback, null, null, data.id);
             }
         }
 

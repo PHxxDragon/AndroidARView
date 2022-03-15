@@ -2,7 +2,6 @@ using EAR.Tutorials;
 using EAR.AR;
 using UnityEngine;
 using Vuforia;
-using System;
 
 namespace EAR.Presenter
 {

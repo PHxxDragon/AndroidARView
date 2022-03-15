@@ -4,6 +4,7 @@ using EAR.WebRequest;
 using EAR.AR;
 using EAR.SceneChange;
 using EAR.View;
+using Vuforia;
 
 namespace EAR.Editor.Presenter
 {
@@ -37,7 +38,7 @@ namespace EAR.Editor.Presenter
                 Debug.Log("image url: " + SceneChangeParam.moduleARInformation.imageUrl);
                 Debug.Log("model url: " + SceneChangeParam.moduleARInformation.modelUrl);
                 Debug.Log("iszipfile: " + SceneChangeParam.moduleARInformation.isZipFile);
-                LoadModule(SceneChangeParam.moduleARInformation);
+                LoadImageTarget(SceneChangeParam.moduleARInformation);
             }
             else
             {
@@ -45,17 +46,47 @@ namespace EAR.Editor.Presenter
             }
         }
 
-        private void LoadModule(ModuleARInformation moduleAR)
+        private void LoadImageTarget(ModuleARInformation moduleAR)
+        {
+            imageTargetCreator.CreateImageTarget(moduleAR.imageUrl, moduleAR.markerImageWidth);
+            imageTargetCreator.CreateTargetDoneEvent += () =>
+            {
+                LoadModelAndMetadata(moduleAR);
+            };
+            imageTargetCreator.CreateTargetErrorEvent += (string error) =>
+            {
+                if (VuforiaApplication.Instance.IsInitialized)
+                {
+                    TestForARCoreSupportBeforeLoadModel(moduleAR);
+                } else
+                {
+                    VuforiaApplication.Instance.OnVuforiaInitialized += (VuforiaInitError err) =>
+                    {
+                        TestForARCoreSupportBeforeLoadModel(moduleAR);
+                    };
+                }
+            };
+        }
+
+        private void TestForARCoreSupportBeforeLoadModel(ModuleARInformation moduleAR)
+        {
+            if (VuforiaBehaviour.Instance.World.AnchorsSupported)
+            {
+                LoadModelAndMetadata(moduleAR);
+            }
+        }
+
+        private void LoadModelAndMetadata(ModuleARInformation moduleAR)
         {
             modelLoader.LoadModel(moduleAR.modelUrl, moduleAR.name, moduleAR.id, moduleAR.extension, moduleAR.isZipFile);
             modelLoader.OnLoadEnded += SetModelAsContainerChild;
             modelLoader.OnLoadError += ShowError;
             MetadataObject metadataObject = JsonUtility.FromJson<MetadataObject>(moduleAR.metadataString);
-            imageTargetCreator.CreateImageTarget(moduleAR.imageUrl, moduleAR.markerImageWidth);
             if (metadataObject == null)
             {
                 LoadWithoutMetadata();
-            } else
+            }
+            else
             {
                 LoadWidthMetadata(metadataObject);
             }

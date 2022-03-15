@@ -16,6 +16,7 @@ MonoBehaviour:
     vuforiaLicenseKey: AUbAIiX/////AAABmekrIWRfT0R9pU1zVQYqmE9597xheYJ/hzauxeIJFW3RMfqndaY7BHhBjLb3ulzBkPVFmtfRxKyI0jg0K3VVxBt21YXF0rBKxCEoHryFtxp/fyBvhjYVZUr8IE0XGnuuQCL0BS0f3QwhnMlRPqf9+1qB3k1z1gvOdR91XtdpGd2YhSwuDsRLCqDwccXXZBdgpIzKRXZdyUNVTVJcfDHW9ZZogGNY+s1KF/sxM4RD3P0DsQn7fZOn8geKXuvGW5Ljb4EKlz21kMGSqcIVukhhef4KfRT1pIpHFHDvDIJXm3NcVdsKcyZ+vZ6C/3tSvaFsiH5GzGxtzQXjXh4j3XR6D2tXOIhq3Dl36aVDW/feeNvC
     ufoLicenseKey: QVNvRVYwSC8vLy8vQUFBQUtJZURoRllWMTBMR3NGa1Y0akxXK1dVVVdrMDV0Q1lYOWdXUkJSWjg2SmN1YXVLanBiZ1NjTWdVZWU1d3gxaEtac2Zzekp3WWRML1h0VG9sVWxKcERVMU0zS2lIeXZKTnVMdGVVems4MFBmb1NZS3FFcXpXTEJ4cWFwZStsTEVncEJjSmQ5Ui8vR0dzMFFJU205SDhkVWJ2MG1MbGZMR2NTcUp0U05YZ1JDL04xWDdBaUVCTUMxbDA3cjN5RXZuR3VwSHJhRUZWYnEzWjUrWEVpS29rbkV1aGVtSy9uRzEzR3hnWktQcmFycE1JbU1qT1RvaGNQTzNLNmM4WUlUOVF4MGJoZHB5WDB2NUhRME5kV2NSTERWbmc0YmhLTWhoMTR2NDJHcmw5L3hDUmdqOHZzem1CbWMzS1NVZjZOTzBGekt3N05RODA0L29WT1NFYk5GVHdTTzNySEJtWlJ0ZEhkYW0wVGwzQkk5bUk=
     delayedInitialization: 0
+    cameraFocusModeSetting: 2
     cameraDeviceModeSetting: -1
     maxSimultaneousImageTargets: 1
     maxSimultaneousObjectTargets: 1
@@ -23,8 +24,8 @@ MonoBehaviour:
     useDelayedLoadingObjectTargets: 0
     modelTargetRecoWhileExtendedTracked: 1
     shareRecordingsInITunes: 0
-    version: 10.3.2
-    eulaAcceptedVersions: '{"Values":["10.1","10.2","10.3","0.0","10.4"]}'
+    version: 10.5.5
+    eulaAcceptedVersions: '{"Values":["10.1","10.2","10.3","0.0","10.4","10.5"]}'
   database:
     disableModelExtraction: 0
   shaders:
@@ -38,6 +39,7 @@ MonoBehaviour:
     autoStartTracker: 1
     arcoreRequirement: 1
     autoImportArcore: 0
+    thirdPartyARCoreClientDetected: 0
   playmode:
     mSequencePath: 
     playModeType: 0

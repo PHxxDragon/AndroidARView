@@ -123,6 +123,18 @@ MonoBehaviour:
     m_Key: MoveCameraImage
     m_Metadata:
       m_Items: []
+  - m_Id: 7077206495567872
+    m_Key: ImageFormatError
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7111579664097280
+    m_Key: LoadingImage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7112812445540352
+    m_Key: Loading
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

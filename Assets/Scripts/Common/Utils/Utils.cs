@@ -68,9 +68,9 @@ namespace EAR
             return LocalizationSettings.StringDatabase.GetLocalizedString("UI", key);
         }
 
-        public void GetImageAsTexture2D(string imageUrl, Action<Texture2D, object> callback, Action<string, object> errorCallback = null, object param = null)
+        public void GetImageAsTexture2D(string imageUrl, Action<Texture2D, object> callback, Action<string, object> errorCallback = null, Action<float, string> progressCallback = null, object param = null)
         {
-            StartCoroutine(GetImageCoroutine(imageUrl, callback, errorCallback, param));
+            StartCoroutine(GetImageCoroutine(imageUrl, callback, errorCallback, progressCallback, param));
         }
 
         public static Bounds GetModelBounds(GameObject model)
@@ -100,11 +100,16 @@ namespace EAR
             return bounds;
         }
 
-        private IEnumerator GetImageCoroutine(string imageUrl, Action<Texture2D, object> callback, Action<string, object> errorCallback, object param)
+        private IEnumerator GetImageCoroutine(string imageUrl, Action<Texture2D, object> callback, Action<string, object> errorCallback, Action<float, string> progressCallback, object param)
         {
             using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(imageUrl))
             {
-                yield return uwr.SendWebRequest();
+                UnityWebRequestAsyncOperation unityWebRequestAsyncOperation = uwr.SendWebRequest();
+                while (unityWebRequestAsyncOperation.isDone == false)
+                {
+                    yield return null;
+                    progressCallback?.Invoke(unityWebRequestAsyncOperation.progress, GetLocalizedText("LoadingImage"));
+                }
 
                 if (uwr.result != UnityWebRequest.Result.Success)
                 {

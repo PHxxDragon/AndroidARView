@@ -46,7 +46,7 @@ namespace EAR.MenuScene.Presenter
             courseListView.PopulateData(courseDatas);
             foreach (CourseData courseData in courseDatas)
             {
-                Utils.Instance.GetImageAsTexture2D(courseData.imageUrl, GetCourseImageSuccessCallback, null, courseData.id);
+                Utils.Instance.GetImageAsTexture2D(courseData.imageUrl, GetCourseImageSuccessCallback, null, null, courseData.id);
             }
         }
 

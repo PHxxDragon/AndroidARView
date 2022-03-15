@@ -8,6 +8,10 @@ namespace EAR.AR
     {
         public event Action CreateTargetDoneEvent;
         public event Action<string> CreateTargetErrorEvent;
+        public event Action CreateTargetStartEvent;
+        public event Action<float, string> OnProgressChanged;
+
+        public static string IMAGE_FORMAT_ERROR = "ImageFormatError";
 
         private GameObject target;
 
@@ -19,7 +23,9 @@ namespace EAR.AR
         }
         public void CreateImageTarget(string url, float widthInMeter = 0.1f)
         {
-            Utils.Instance.GetImageAsTexture2D(url, CreateTarget, CreateTargetError);
+            CreateTargetStartEvent?.Invoke();
+            Utils.Instance.GetImageAsTexture2D(url, CreateTarget, CreateTargetError, 
+                (float arg1, string arg2) => { OnProgressChanged?.Invoke(arg1, arg2); });
             this.widthInMeter = widthInMeter;
         }
 
@@ -31,7 +37,17 @@ namespace EAR.AR
         private void CreateTarget(Texture2D image, object param)
         {
             Debug.Log(image);
-            var mTarget = VuforiaBehaviour.Instance.ObserverFactory.CreateImageTarget(image, widthInMeter, "ImageTarget");
+            ImageTargetBehaviour mTarget;
+            try
+            {
+                mTarget = VuforiaBehaviour.Instance.ObserverFactory.CreateImageTarget(image, widthInMeter, "ImageTarget");
+            } catch (ArgumentException)
+            {
+                Debug.LogError("Error creating image target with image format " + image.format);
+                CreateTargetErrorEvent?.Invoke(IMAGE_FORMAT_ERROR);
+                return;
+            }
+            
             mTarget.gameObject.AddComponent<DefaultObserverEventHandler>();
 
             //modelContainerHandler.gameObject.transform.parent = mTarget.gameObject.transform;

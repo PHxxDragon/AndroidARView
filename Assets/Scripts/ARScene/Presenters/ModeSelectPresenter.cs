@@ -18,6 +18,7 @@ namespace EAR.Presenter
         [SerializeField]
         private ImageTargetCreator imageTargetCreator;
         private ImageTargetBehaviour imageTarget;
+        private string imageTargetError;
 
         [SerializeField]
         private GameObject modelContainer;
@@ -58,8 +59,37 @@ namespace EAR.Presenter
             }
 
             dropdown.onValueChanged.AddListener(OnDropdownValueChanged);
-            imageTargetCreator.CreateTargetDoneEvent += CreateTargetDoneEventSubscriber;
-            imageTargetCreator.CreateTargetErrorEvent += CreateTargetErrorEventSubscriber;
+            imageTargetCreator.CreateTargetDoneEvent += () =>
+            {
+                imageTarget = imageTargetCreator.GetImageTarget().GetComponent<ImageTargetBehaviour>();
+                if (VuforiaApplication.Instance.IsInitialized)
+                {
+                    CheckForSupportAnchorAndActiveImageTarget();
+                }
+                else
+                {
+                    VuforiaApplication.Instance.OnVuforiaInitialized += (VuforiaInitError err) =>
+                    {
+                        CheckForSupportAnchorAndActiveImageTarget();
+                    };
+                }
+            };
+            imageTargetCreator.CreateTargetErrorEvent += (string error) =>
+            {
+                Debug.Log("Error creating target image: " + error);
+                imageTargetError = error;
+                if (VuforiaApplication.Instance.IsInitialized)
+                {
+                    CheckForSupportAnchorOrShowErrorModal();
+                }
+                else
+                {
+                    VuforiaApplication.Instance.OnVuforiaInitialized += (VuforiaInitError err) =>
+                    {
+                        CheckForSupportAnchorOrShowErrorModal();
+                    };
+                }
+            };
             resetButton.onClick.AddListener(OnResetButtonClick);
         }
 
@@ -86,9 +116,8 @@ namespace EAR.Presenter
             VuforiaBehaviour.Instance.DevicePoseBehaviour.Reset();
         }
 
-        private void CreateTargetDoneEventSubscriber()
+        private void CheckForSupportAnchorAndActiveImageTarget()
         {
-            imageTarget = imageTargetCreator.GetImageTarget().GetComponent<ImageTargetBehaviour>();
             if (!SupportAnchor())
             {
                 Debug.Log("The device doesn't support anchors");
@@ -97,14 +126,14 @@ namespace EAR.Presenter
             }
         }
 
-        private void CreateTargetErrorEventSubscriber(string error)
+        private void CheckForSupportAnchorOrShowErrorModal()
         {
-            Debug.Log("Error creating target image: " + error);
             if (!SupportAnchor())
             {
                 Debug.Log("The device doesn't support anchors");
                 Modal modal = Instantiate<Modal>(modalPrefab, canvas);
-                modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText("NoImage"));
+                string errorTextKey = imageTargetError == ImageTargetCreator.IMAGE_FORMAT_ERROR ? "ImageFormatError" : "NoImage";
+                modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText(errorTextKey));
                 modal.DisableCancelButton();
                 modal.OnConfirmButtonClick += GoBackToMenu;
             }
@@ -136,12 +165,13 @@ namespace EAR.Presenter
             Debug.Log("Set image target");
             if (imageTarget == null && SupportAnchor())
             {
-                Modal modal = Instantiate<Modal>(modalPrefab, canvas);
-                modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText("NoImage"));
+                Modal modal = Instantiate(modalPrefab, canvas);
+                string errorTextKey = imageTargetError == ImageTargetCreator.IMAGE_FORMAT_ERROR ? "ImageFormatError" : "NoImage";
+                modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText(errorTextKey));
                 modal.DisableCancelButton();
                 modal.OnConfirmButtonClick += () =>
                 {
-                    ActiveGroundPlane();
+                    dropdown.value = 0;
                 };
                 return;
             }
