@@ -5,6 +5,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using ZXing;
+using Vuforia;
 
 namespace EAR.QRCode
 {
