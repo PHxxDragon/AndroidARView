@@ -119,12 +119,14 @@ namespace EAR.Editor.Presenter
                 Note note = Instantiate(notePrefab, modelContainer.transform);
                 note.PopulateData(noteData);
             }
+            RenderSettings.ambientLight = metadata.ambientColor;
         }
 
         private void LoadWithoutMetadata()
         {
             Debug.Log("Load model without metadata");
             modelLoader.OnLoadEnded += ApplyDefaultToModel;
+            RenderSettings.ambientLight = Color.white;
         }
 
         private void ApplyMetadataToModel()

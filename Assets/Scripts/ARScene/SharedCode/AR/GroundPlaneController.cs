@@ -50,6 +50,10 @@ namespace EAR.AR
             VuforiaBehaviour.Instance.DevicePoseBehaviour.OnTargetStatusChanged += OnTargetStatusChanged;
             anchorBehaviour.OnTargetStatusChanged += OnAnchorTargetStatusChanged;
             planeFinderBehaviour.OnAutomaticHitTest.AddListener(OnAutomaticHitTest);
+        }
+
+        void OnEnable()
+        {
             StartCoroutine(UpdateEvery1s());
         }
 
