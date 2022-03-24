@@ -5,7 +5,6 @@ using System;
 
 namespace EAR.View
 {
-    [RequireComponent(typeof(Animator))]
     public class CourseListView : ViewInterface
     {
         public event Action<int> CourseListRefreshEvent;
@@ -15,10 +14,6 @@ namespace EAR.View
 
         [SerializeField]
         private GameObject container;
-
-        private Animator animator;
-        private string transparentClose = "TransparentClosing";
-        private string transparentOpen = "TransparentOpening";
 
         private int workspaceId;
         private Dictionary<int, CourseView> courseViews = new Dictionary<int, CourseView>();
@@ -43,22 +38,6 @@ namespace EAR.View
             courseViews[id].PopulateData(sprite);
         }
 
-        public override void CloseView()
-        {
-            animator.enabled = true;
-            animator.Play(transparentClose);
-        }
-
-        public override void OpenView(object args = null)
-        {
-            animator.enabled = true;
-            animator.Play(transparentOpen);
-            if (args != null)
-            {
-                workspaceId = (int)args;
-            }
-        }
-
         public override void Refresh(object args = null)
         {
             if (args != null)
@@ -67,16 +46,6 @@ namespace EAR.View
             }
 
             CourseListRefreshEvent?.Invoke(workspaceId);
-        }
-
-        public void DisableAnimator()
-        {
-            animator.enabled = false;
-        }
-
-        void Awake()
-        {
-            animator = GetComponent<Animator>();
         }
     }
 }

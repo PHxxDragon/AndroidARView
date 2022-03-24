@@ -29,12 +29,12 @@ namespace EAR.AR
             this.widthInMeter = widthInMeter;
         }
 
-        private void CreateTargetError(string arg1, object arg2)
+        private void CreateTargetError(string arg1)
         {
             CreateTargetErrorEvent?.Invoke(arg1);
         }
 
-        private void CreateTarget(Texture2D image, object param)
+        private void CreateTarget(Texture2D image)
         {
             Debug.Log(image);
             ImageTargetBehaviour mTarget;

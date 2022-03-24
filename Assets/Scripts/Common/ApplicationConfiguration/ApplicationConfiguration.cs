@@ -22,7 +22,16 @@ namespace EAR
         private string modelPath;
 
         [SerializeField]
+        private string boughtModelListPath;
+
+        [SerializeField]
+        private string uploadedModelListPath;
+
+        [SerializeField]
         private string qrCodePath;
+
+        [SerializeField]
+        private string categoriesPath;
 
 /*        [SerializeField]
         private string armoduleQRPath;*/
@@ -52,14 +61,34 @@ namespace EAR
             return serverName + armodulePath + "/" + moduleId;
         }*/
 
+        public string GetBoughtModelListPath(int page, int limit)
+        {
+            return serverName + boughtModelListPath + "?page=" + page + "&limit=" + limit;
+        }
+
+        public string GetUploadedModelListPath(int page, int limit)
+        {
+            return serverName + uploadedModelListPath + "?page=" + page + "&limit=" + limit;
+        }
+
         public string GetModelPath(int modelId)
         {
             return serverName + modelPath + "/" + modelId;
         }
 
+        public string GetModelARDataPath(int modelId)
+        {
+            return serverName + modelPath + "/" + modelId + "/get-model-ar-data";
+        }
+
         public string GetQRCodePath(string qrCode)
         {
             return serverName + qrCodePath + "/" + qrCode;
+        }
+
+        public string GetCategoryPath(string langCode)
+        {
+            return serverName + categoriesPath + "?langCode=" + langCode;
         }
 
 /*        public string GetARModuleQRPath(string qrToken)

@@ -37,6 +37,22 @@ namespace EAR
             return arr;
         }
 
+        public static string GetFileSizeString(long size)
+        {
+            if (size < 1000)
+            {
+                return size + " b";
+            }
+            else if (size < 1000000)
+            {
+                return ((float)size / 1000).ToString("#.#") + " kb";
+            }
+            else
+            {
+                return ((float)size / 1000000).ToString("#.#") + " mb";
+            }
+        }
+
         public static int GetHexVal(char hex)
         {
             int val = hex;
@@ -68,9 +84,9 @@ namespace EAR
             return LocalizationSettings.StringDatabase.GetLocalizedString("UI", key);
         }
 
-        public void GetImageAsTexture2D(string imageUrl, Action<Texture2D, object> callback, Action<string, object> errorCallback = null, Action<float, string> progressCallback = null, object param = null)
+        public void GetImageAsTexture2D(string imageUrl, Action<Texture2D> callback, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
         {
-            StartCoroutine(GetImageCoroutine(imageUrl, callback, errorCallback, progressCallback, param));
+            StartCoroutine(GetImageCoroutine(imageUrl, callback, errorCallback, progressCallback));
         }
 
         public static Bounds GetModelBounds(GameObject model)
@@ -100,7 +116,7 @@ namespace EAR
             return bounds;
         }
 
-        private IEnumerator GetImageCoroutine(string imageUrl, Action<Texture2D, object> callback, Action<string, object> errorCallback, Action<float, string> progressCallback, object param)
+        private IEnumerator GetImageCoroutine(string imageUrl, Action<Texture2D> callback, Action<string> errorCallback, Action<float, string> progressCallback)
         {
             using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(imageUrl))
             {
@@ -114,13 +130,13 @@ namespace EAR
                 if (uwr.result != UnityWebRequest.Result.Success)
                 {
                     Debug.Log(uwr.error);
-                    errorCallback?.Invoke(uwr.error, param);
+                    errorCallback?.Invoke(uwr.error);
                 }
                 else
                 {
                     // Get downloaded texture once the web request completes
                     Texture2D texture = DownloadHandlerTexture.GetContent(uwr);
-                    callback?.Invoke(texture, param);
+                    callback?.Invoke(texture);
                 }
             }
         }

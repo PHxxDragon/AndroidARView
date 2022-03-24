@@ -16,4 +16,7 @@ MonoBehaviour:
   loginPath: api/v1/users/login
   profilePath: api/v1/users/get-user-by-token
   modelPath: api/v1/models
+  boughtModelListPath: api/v1/models/get-my-bought-models
+  uploadedModelListPath: api/v1/models/get-my-uploaded-models
   qrCodePath: api/v1/qrcodes
+  categoriesPath: api/v1/models/get-model-categories

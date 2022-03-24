@@ -27,7 +27,7 @@ namespace EAR.AR
             }
         }
 
-    private void GenerateMesh(Texture2D texture2D, object param)
+    private void GenerateMesh(Texture2D texture2D)
         {
             mesh = new Mesh();
             MeshFilter meshFilter = GetComponent<MeshFilter>();

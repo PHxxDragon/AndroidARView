@@ -2,13 +2,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using DG.Tweening;
 
 namespace EAR.View
 {
-    [RequireComponent(typeof(Animator))]
     public class Sidebar : ViewInterface
     {
-        public event Action SidebarRefreshEvent;
+        public event Action OnLogoutButtonClick;
+        public event Action OnDownloadedButtonClick;
+        public event Action OnScanQRCodeButtonClick;
+
 
         [SerializeField]
         private Image userAvatar;
@@ -16,31 +19,44 @@ namespace EAR.View
         private TMP_Text nameText;
         [SerializeField]
         private TMP_Text usernameText;
+        [SerializeField]
+        private RectTransform sidebarRect;
+        [SerializeField]
+        private Button logoutButton;
+        [SerializeField]
+        private Button downloadedButton;
+        [SerializeField]
+        private Button scanQRCodeButton;
 
-        private Animator sideBarAnimator;
-        private string sideBarClose = "SideBarClose";
-        private string sideBarOpen = "SideBarOpen";
-
-        public void DisableAnimator()
+        void Awake()
         {
-            sideBarAnimator.enabled = false;
+            logoutButton.onClick.AddListener(() =>
+            {
+                OnLogoutButtonClick?.Invoke();
+            });
+            downloadedButton.onClick.AddListener(() =>
+            {
+                OnDownloadedButtonClick?.Invoke();
+            });
+            scanQRCodeButton.onClick.AddListener(() =>
+            {
+                OnScanQRCodeButtonClick?.Invoke();
+            });
         }
 
-        public void OpenSideBar()
+        public void OpenSidebar()
         {
-            OpenView(null);
+            gameObject.SetActive(true);
+            sidebarRect.DOAnchorPosX(0, 0.5f).SetEase(Ease.InQuad);
         }
 
-        public override void OpenView(object args = null)
+        public void CloseSidebar()
         {
-            sideBarAnimator.enabled = true;
-            sideBarAnimator.Play(sideBarOpen);
-        }
-
-        public override void CloseView()
-        {
-            sideBarAnimator.enabled = true;
-            sideBarAnimator.Play(sideBarClose);
+            sidebarRect.DOAnchorPosX(-620f, 0.5f).SetEase(Ease.OutQuad).onComplete += () =>
+            {
+                gameObject.SetActive(false);
+            };
+            
         }
 
         public void PopulateUserDetail(string name, string username)
@@ -56,12 +72,6 @@ namespace EAR.View
 
         public override void Refresh(object args = null)
         {
-            SidebarRefreshEvent?.Invoke();
-        }
-
-        private void Awake()
-        {
-            sideBarAnimator = GetComponent<Animator>();
         }
     }
 }

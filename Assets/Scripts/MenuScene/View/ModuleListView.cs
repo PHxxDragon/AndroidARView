@@ -5,7 +5,6 @@ using System;
 
 namespace EAR.View
 {
-    [RequireComponent(typeof(Animator))]
     public class ModuleListView : ViewInterface
     {
         public event Action<int> ModuleListRefreshEvent;
@@ -14,10 +13,6 @@ namespace EAR.View
         private GameObject modulePrefab;
         [SerializeField]
         private GameObject container;
-
-        private Animator animator;
-        private string transparentClose = "TransparentClosing";
-        private string transparentOpen = "TransparentOpening";
 
         private int courseId;
 
@@ -34,22 +29,6 @@ namespace EAR.View
             }
         }
 
-        public override void CloseView()
-        {
-            animator.enabled = true;
-            animator.Play(transparentClose);
-        }
-
-        public override void OpenView(object args = null)
-        {
-            animator.enabled = true;
-            animator.Play(transparentOpen);
-            if (args != null)
-            {
-                courseId = (int)args;
-            }
-        }
-
         public override void Refresh(object args = null)
         {
             if (args != null)
@@ -58,16 +37,6 @@ namespace EAR.View
             }
 
             ModuleListRefreshEvent?.Invoke(courseId);
-        }
-
-        public void DisableAnimator()
-        {
-            animator.enabled = false;
-        }
-
-        void Awake()
-        {
-            animator = GetComponent<Animator>();
         }
     }
 }

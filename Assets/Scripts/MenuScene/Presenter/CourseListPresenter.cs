@@ -46,19 +46,18 @@ namespace EAR.MenuScene.Presenter
             courseListView.PopulateData(courseDatas);
             foreach (CourseData courseData in courseDatas)
             {
-                Utils.Instance.GetImageAsTexture2D(courseData.imageUrl, GetCourseImageSuccessCallback, null, null, courseData.id);
+                int id = courseData.id;
+                Utils.Instance.GetImageAsTexture2D(courseData.imageUrl, (texture) => {
+                    Sprite sprite = Utils.Instance.Texture2DToSprite(texture);
+                    courseListView.PopulateData(sprite, id);
+                }
+                , null, null);
             }
-        }
-
-        private void GetCourseImageSuccessCallback(Texture2D texture, object param)
-        {
-            Sprite sprite = Utils.Instance.Texture2DToSprite(texture);
-            courseListView.PopulateData(sprite, (int)param);
         }
 
         private void CourseClickEventSubscriber(int id)
         {
-            screenNavigator.OpenView(NavigateCommandEnum.ToModuleList, id);
+            //screenNavigator.OpenView(NavigateCommandEnum.ToModuleList, id);
             moduleListView.Refresh();
         }
     }

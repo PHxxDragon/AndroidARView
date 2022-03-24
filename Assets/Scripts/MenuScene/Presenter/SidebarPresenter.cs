@@ -1,50 +1,50 @@
-using UnityEngine;
 using EAR.View;
 using EAR.WebRequest;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-namespace EAR.MenuScene.Presenter
+namespace EAR.Presenter
 {
     public class SidebarPresenter : MonoBehaviour
     {
         [SerializeField]
         private Sidebar sidebar;
-
         [SerializeField]
-        private WebRequestHelper webRequest;
+        private ScreenNavigator screenNavigator;
+        [SerializeField]
+        private LoginView loginView;
+        [SerializeField]
+        private WebRequestHelper webRequestHelper;
+        [SerializeField]
+        private SwipeDetector swipeDetector;
 
         void Start()
         {
-            if (sidebar != null && webRequest != null)
+            sidebar.OnLogoutButtonClick += () =>
             {
-                sidebar.SidebarRefreshEvent += SidebarRefreshEventSubscriber;
-            }
-            else
+                sidebar.CloseSidebar();
+                screenNavigator.OpenView(loginView);
+                webRequestHelper.Logout();
+            };
+            sidebar.OnDownloadedButtonClick += () =>
             {
-                Debug.LogWarning("Unassigned reference");
-            }
-        }
-
-        private void SidebarRefreshEventSubscriber()
-        {
-            string token = webRequest.GetAuthorizeToken();
-            OnLoadProfile(token);
-        }
-
-        private void OnLoadProfile(string token)
-        {
-            webRequest.GetProfile(token, GetProfileSuccessCallback, null);
-        }
-
-        private void GetProfileSuccessCallback(UserProfileData userProfileData)
-        {
-            sidebar.PopulateUserDetail(userProfileData.name, userProfileData.email);
-            Utils.Instance.GetImageAsTexture2D(userProfileData.avatar, LoadAvatarSucceedCallback);
-        }
-
-        private void LoadAvatarSucceedCallback(Texture2D texture2D, object param)
-        {
-            Sprite sprite = Utils.Instance.Texture2DToSprite(texture2D);
-            sidebar.PopulateUserAvatar(sprite);
+                SceneManager.LoadScene("DownloadedScene");
+            };
+            sidebar.OnScanQRCodeButtonClick += () =>
+            {
+                SceneManager.LoadScene("QRCodeScene");
+            };
+            swipeDetector.OnSwipeRight += () =>
+            {
+                if (!screenNavigator.CanGoBack() && screenNavigator.IsLoggedIn())
+                {
+                    sidebar.OpenSidebar();
+                }
+            };
+            swipeDetector.OnSwipeLeft += () =>
+            {
+                sidebar.CloseSidebar();
+            };
         }
     }
 }

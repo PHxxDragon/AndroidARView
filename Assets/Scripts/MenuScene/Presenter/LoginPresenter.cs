@@ -13,7 +13,7 @@ namespace EAR.MenuScene.Presenter
         private LoginView loginView;
 
         [SerializeField]
-        private WorkspaceListView workspaceListView;
+        private ModelListView modelListView;
 
         [SerializeField]
         private Sidebar sidebar;
@@ -23,14 +23,10 @@ namespace EAR.MenuScene.Presenter
 
         void Start()
         {
-            if (webRequest != null && loginView != null)
-            {
-                loginView.LoginEvent += LoginEventSubscriber;
-            }
-            else
-            {
-                Debug.LogWarning("Unassigned references");
-            }
+            loginView.LoginEvent += LoginEventSubscriber;
+            webRequest.Login(LoginSuccessCallback, (error) => {
+                screenNavigator.OpenView(loginView);
+            });
         }
 
         private void LoginEventSubscriber(string username, string password)
@@ -38,25 +34,23 @@ namespace EAR.MenuScene.Presenter
             webRequest.Login(username, password, LoginSuccessCallback, LoginErrorCallback);
         }
 
-        private void LoginSuccessCallback()
+        private void LoginSuccessCallback(UserProfileData userProfileData)
         {
-            screenNavigator.OpenView(NavigateCommandEnum.ToWorkspaceList);
-
-            if (workspaceListView != null && sidebar != null)
-            {
-                workspaceListView.Refresh();
-                sidebar.Refresh();
-            }
-            else
-            {
-                Debug.LogWarning("Unassigned reference sidebar or workspaceListView to Login Presenter");
-            }
-
-
+            screenNavigator.OpenView(modelListView);
+            modelListView.Refresh();
+            sidebar.PopulateUserDetail(userProfileData.name, userProfileData.email);
+            Utils.Instance.GetImageAsTexture2D(userProfileData.avatar, LoadAvatarSucceedCallback);
         }
+
         private void LoginErrorCallback(string errorMessage)
         {
             loginView.SetLoginErrorMessage(errorMessage);
+        }
+
+        private void LoadAvatarSucceedCallback(Texture2D texture2D)
+        {
+            Sprite sprite = Utils.Instance.Texture2DToSprite(texture2D);
+            sidebar.PopulateUserAvatar(sprite);
         }
     }
 }

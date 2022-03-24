@@ -52,7 +52,7 @@ namespace EAR.Editor.Presenter
                 codeReader.StopScan();
             } else {
                 codeReader.StopScan();
-                SceneChangeParam.moduleARInformation = obj;
+                ARSceneParam.moduleARInformation = obj;
                 SceneManager.LoadScene("ARScene");
             }
         }

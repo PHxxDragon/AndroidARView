@@ -1,11 +1,9 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 namespace EAR.View
 {
-    [RequireComponent(typeof(Animator))]
     public class WorkspaceListView : ViewInterface
     {
         public event Action WorkspaceRefreshEvent;
@@ -14,10 +12,6 @@ namespace EAR.View
         private GameObject Container;
         [SerializeField]
         private GameObject WorkspacePrefabs;
-
-        private Animator animator;
-        private string transparentClose = "TransparentClosing";
-        private string transparentOpen = "TransparentOpening";
 
         private Dictionary<int, WorkspaceView> workspaceViews = new Dictionary<int, WorkspaceView>();
 
@@ -41,31 +35,9 @@ namespace EAR.View
             workspaceViews[id].PopulateData(sprite);
         }
 
-        public override void OpenView(object args)
-        {
-            animator.enabled = true;
-            animator.Play(transparentOpen);
-        }
-
-        public override void CloseView()
-        {
-            animator.enabled = true;
-            animator.Play(transparentClose);
-        }
-
-        public void DisableAnimator()
-        {
-            animator.enabled = false;
-        }
-
         public override void Refresh(object args = null)
         {
             WorkspaceRefreshEvent?.Invoke();
-        }
-
-        void Awake()
-        {
-            animator = GetComponent<Animator>();
         }
     }
 }

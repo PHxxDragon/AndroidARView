@@ -4,25 +4,186 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Localization.Settings;
 
 namespace EAR.WebRequest
 {
     public class WebRequestHelper : MonoBehaviour
     {
         private const string TOKEN_KEY = "token";
-        private const string WRONG_CREDENTIALS = "Wrong username or password!";
-        private const string UNEXPECTED = "Unexpected error happened!";
+        private const string EMAIL_KEY = "email";
+        private const string PASSWORD_KEY = "password";
+        private const string WRONG_CREDENTIALS = "WrongCredentials";
+        private const string UNEXPECTED = "UnexpectedConnectionError";
+        private const string NO_CONNECTION = "NoConnection";
 
         private ApplicationConfiguration applicationConfiguration;
+        private Dictionary<string, Dictionary<int, string>> localizedCategory = new Dictionary<string, Dictionary<int, string>>();
+        private string[] locales = { "en", "vi" };
 
-        public void Login(string email, string password, Action callback = null, Action<string> errorCallback = null)
+        void Start()
         {
-            StartCoroutine(LoginCoroutine(email, password, callback, errorCallback));
+            StartCoroutine(FetchCategory());
         }
 
-        public void GetProfile(string token, Action<UserProfileData> callback, Action<string> errorCallback = null)
+        public string GetLocalizedCategory(int categoryId)
         {
-            StartCoroutine(GetProfileCoroutine(token, callback, errorCallback));
+            try
+            {
+                string locale = LocalizationSettings.Instance.GetSelectedLocale().Identifier.Code;
+                return localizedCategory[locale][categoryId];
+            } catch (Exception e)
+            {
+                Debug.Log(e);
+                return categoryId.ToString();
+            }
+        }
+
+        private IEnumerator FetchCategory()
+        {
+            while (true)
+            {
+                bool failed = false;
+                foreach (string langCode in locales)
+                {
+                    if (!localizedCategory.ContainsKey(langCode))
+                    {
+                        GetCategory(langCode, 
+                        (response) =>
+                        {
+                            Dictionary<int, string> categoryDict = new Dictionary<int, string>();
+                            foreach (CategoryDataObject categoryData in response)
+                            {
+                                categoryDict.Add(categoryData.id, categoryData.name);
+                            }
+                            localizedCategory.Add(langCode, categoryDict);
+                        }, 
+                        (error) =>
+                        {
+                            failed = true;
+                        });
+                    }
+                }
+                yield return new WaitForSecondsRealtime(3f);
+                if (!failed)
+                {
+                    break;
+                }
+            }
+        }
+ 
+        public void GetCategory(string langCode, Action<List<CategoryDataObject>> callback = null, Action<string> errorCallback = null)
+        {
+            string url = applicationConfiguration.GetCategoryPath(langCode);
+            StartCoroutine(GetRequestCoroutine<CategoryDataResponse>(url,
+                (response) =>
+                {
+                    callback?.Invoke(response.data);
+                }, (error, errorCode) => {
+                    errorCallback?.Invoke(error);
+                }));
+        }
+
+        public void Logout()
+        {
+            LocalStorage.Save(TOKEN_KEY, "");
+            LocalStorage.Save(EMAIL_KEY, "");
+            LocalStorage.Save(PASSWORD_KEY, "");
+        }
+
+        public void Login(Action<UserProfileData> callback = null, Action<string> errorCallback = null)
+        {
+            Login(LocalStorage.Load(EMAIL_KEY), LocalStorage.Load(PASSWORD_KEY), callback, errorCallback);
+        }
+
+        public void Login(string email, string password, Action<UserProfileData> callback = null, Action<string> errorCallback = null)
+        {
+            LoginRequest loginData = new LoginRequest();
+            loginData.email = email;
+            loginData.password = password;
+
+            StartCoroutine(PostRequestCoroutine<LoginRequest, LoginResponse>(applicationConfiguration.GetLoginPath(), loginData,
+                (response) =>
+                {
+                    LocalStorage.Save(TOKEN_KEY, response.token);
+                    LocalStorage.Save(EMAIL_KEY, email);
+                    LocalStorage.Save(PASSWORD_KEY, password);
+                    callback?.Invoke(response.data.user);
+                }, 
+                (error, errorCode) =>
+                {
+                    if (errorCode == 400)
+                    {
+                        errorCallback?.Invoke(Utils.GetLocalizedText(WRONG_CREDENTIALS));
+                    } else if (errorCode == -1)
+                    {
+                        errorCallback?.Invoke(error);
+                    } else
+                    {
+                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                    }
+                }));
+        }
+
+        public void GetModelARData(int id, Action<ModelARDataObject> callback = null, Action<string> errorCallback = null)
+        {
+            string url = applicationConfiguration.GetModelARDataPath(id);
+            StartCoroutine(GetRequestCoroutine<ModelARDataResponse>(url,
+                (response) =>
+                {
+                    callback?.Invoke(response.data);
+                },
+                (error, errorCode) =>
+                {
+                    if (errorCode == -1)
+                    {
+                        errorCallback?.Invoke(error);
+                    }
+                    else
+                    {
+                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                    }
+                }));
+        }
+
+        public void GetModelDetail(int id, Action<ModelDataObject> callback = null, Action<string> errorCallback = null)
+        {
+            string url = applicationConfiguration.GetModelPath(id);
+            StartCoroutine(GetRequestCoroutine<ModelDetailResponse>(url,
+                (response) =>
+                {
+                    callback?.Invoke(response.data);
+                }, (error, errorCode) =>
+                {
+                    if (errorCode == -1)
+                    {
+                        errorCallback?.Invoke(error);
+                    }
+                    else
+                    {
+                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                    }
+                }));
+        }
+
+        public void GetModelList(int page, int limit, bool isBoughtModel, Action<ModelListResponseData> callback = null, Action<string> errorCallback = null)
+        {
+            string url = isBoughtModel ? applicationConfiguration.GetBoughtModelListPath(page, limit) : applicationConfiguration.GetUploadedModelListPath(page, limit);
+            StartCoroutine(GetRequestCoroutine<ModelListResponse>(url,
+                (response) =>
+                {
+                    callback?.Invoke(response.data);
+                },
+                (error, errorCode) =>
+                {
+                    if (errorCode == -1)
+                    {
+                        errorCallback?.Invoke(error);
+                    } else
+                    {
+                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                    }
+                }));
         }
 
         public void GetWorkspaceList(string token, Action<List<WorkspaceData>> callback, Action<string> errorCallback = null)
@@ -233,76 +394,63 @@ namespace EAR.WebRequest
             callback?.Invoke(moduleDatas);
         }
 
-        private IEnumerator GetProfileCoroutine(string token, Action<UserProfileData> callback, Action<string> errorCallback)
+        public IEnumerator GetRequestCoroutine<T>(string url, Action<T> callback, Action<string, long> errorCallback, bool retried = false)
         {
-            UserProfileRequest userProfileRequest = new UserProfileRequest();
-            userProfileRequest.token = token;
-
-            string serializedUserProfileRequest = JsonUtility.ToJson(userProfileRequest);
-
-            using (UnityWebRequest unityWebRequest = new UnityWebRequest(applicationConfiguration.GetProfilePath(), "POST"))
+            string token = LocalStorage.Load(TOKEN_KEY);
+            using UnityWebRequest unityWebRequest = UnityWebRequest.Get(url);
+            unityWebRequest.SetRequestHeader("Authorization", "Bearer " + token);
+            yield return unityWebRequest.SendWebRequest();
+            if (unityWebRequest.result != UnityWebRequest.Result.Success)
             {
-                unityWebRequest.SetRequestHeader("Content-Type", "application/json");
-                unityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(serializedUserProfileRequest));
-                unityWebRequest.downloadHandler = new DownloadHandlerBuffer();
-                yield return unityWebRequest.SendWebRequest();
-                if (unityWebRequest.result != UnityWebRequest.Result.Success)
+                if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    Debug.Log(unityWebRequest.error);
-                    errorCallback?.Invoke(UNEXPECTED);
+                    errorCallback?.Invoke(Utils.GetLocalizedText(NO_CONNECTION), -1);
                 } else
                 {
-                    string requestResult = unityWebRequest.downloadHandler.text;
-                    UserProfileResponse response = JsonUtility.FromJson<UserProfileResponse>(requestResult);
-                    callback?.Invoke(response.data.user);
+                    if (unityWebRequest.responseCode == 401 && !retried)
+                    {
+                        Login((response) =>
+                        {
+                            StartCoroutine(GetRequestCoroutine<T>(url, callback, errorCallback, true));
+                        }, (error) => {
+                            errorCallback?.Invoke(unityWebRequest.error, unityWebRequest.responseCode);
+                        });
+                    } else
+                    {
+                        errorCallback?.Invoke(unityWebRequest.error, unityWebRequest.responseCode);
+                    }
                 }
+            } else
+            {
+                string requestResult = unityWebRequest.downloadHandler.text;
+                T response = JsonUtility.FromJson<T>(requestResult);
+                callback?.Invoke(response);
             }
         }
 
-        private IEnumerator LoginCoroutine(string email, string password, Action callback, Action<string> errorCallback)
+        public IEnumerator PostRequestCoroutine<T1, T2>(string url, T1 requestData, Action<T2> callback, Action<string, long> errorCallback)
         {
-            LoginRequest loginData = new LoginRequest();
-            loginData.email = email;
-            loginData.password = password;
-
-            string serializedLoginData = JsonUtility.ToJson(loginData);
-
-            using (UnityWebRequest unityWebRequest = new UnityWebRequest(applicationConfiguration.GetLoginPath(), "POST"))
+            string requestBody = JsonUtility.ToJson(requestData);
+            using UnityWebRequest unityWebRequest = new UnityWebRequest(url, "POST");
+            unityWebRequest.SetRequestHeader("Content-Type", "application/json");
+            unityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(requestBody));
+            unityWebRequest.downloadHandler = new DownloadHandlerBuffer();
+            yield return unityWebRequest.SendWebRequest();
+            if (unityWebRequest.result != UnityWebRequest.Result.Success)
             {
-                unityWebRequest.SetRequestHeader("Content-Type", "application/json");
-                unityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(serializedLoginData));
-                unityWebRequest.downloadHandler = new DownloadHandlerBuffer();
-                yield return unityWebRequest.SendWebRequest();
-                if (unityWebRequest.result != UnityWebRequest.Result.Success)
+                if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
-                    {
-                        Debug.Log(unityWebRequest.error);
-                        errorCallback?.Invoke(UNEXPECTED);
-                    } else if (unityWebRequest.result == UnityWebRequest.Result.ProtocolError)
-                    {
-                        if (unityWebRequest.responseCode == 401)
-                        {
-                            errorCallback?.Invoke(WRONG_CREDENTIALS);
-                        } else
-                        {
-                            Debug.Log(unityWebRequest.error);
-                            errorCallback?.Invoke(UNEXPECTED);
-                        }
-                    } else
-                    {
-                        Debug.Log(unityWebRequest.error);
-                        errorCallback?.Invoke(UNEXPECTED);
-                    }
-                  
-                }
-                else
+                    errorCallback?.Invoke(Utils.GetLocalizedText(NO_CONNECTION), -1);
+                } else
                 {
-                    string requestResult = unityWebRequest.downloadHandler.text;
-                    LoginResponse response = JsonUtility.FromJson<LoginResponse>(requestResult);
-                    LocalStorage.Save(TOKEN_KEY, response.token);
-                    callback?.Invoke();
+                    errorCallback?.Invoke(unityWebRequest.error, unityWebRequest.responseCode);
                 }
+            }
+            else
+            {
+                string requestResult = unityWebRequest.downloadHandler.text;
+                T2 response = JsonUtility.FromJson<T2>(requestResult);
+                callback?.Invoke(response);
             }
         }
 

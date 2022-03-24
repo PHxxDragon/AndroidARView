@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 namespace EAR.View
 {
-    [RequireComponent(typeof(Animator))]
     public class LoginView : ViewInterface
     {
         public event Action<string, string> LoginEvent;
@@ -21,19 +20,7 @@ namespace EAR.View
         private Button loginButton;
 
         [SerializeField]
-        private ViewInterface homeScreen;
-
-        [SerializeField]
         private TMP_Text errorText;
-
-        private Animator animator;
-        private string transparentClose = "TransparentClosing";
-        private string transparentOpen = "TransparentOpening";
-
-        void Awake()
-        {
-            animator = GetComponent<Animator>();
-        }
 
         void Start()
         {
@@ -44,23 +31,6 @@ namespace EAR.View
         {
             errorText.gameObject.SetActive(true);
             errorText.text = message;
-        }
-
-        public override void OpenView(object args)
-        {
-            animator.enabled = true;
-            animator.Play(transparentOpen);
-        }
-
-        public override void CloseView()
-        {
-            animator.enabled = true;
-            animator.Play(transparentClose);
-        }
-
-        public void DisableAnimator()
-        {
-            animator.enabled = false;
         }
 
         public override void Refresh(object args)

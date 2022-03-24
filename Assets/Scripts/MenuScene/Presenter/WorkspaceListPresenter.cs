@@ -39,19 +39,19 @@ namespace EAR.MenuScene.Presenter
             workspaceListView.PopulateData(workspaceDatas);
             foreach (WorkspaceData data in workspaceDatas)
             {
-                Utils.Instance.GetImageAsTexture2D(data.imageUrl, RetrieveImageSuccessCallback, null, null, data.id);
+                int id = data.id;
+                Utils.Instance.GetImageAsTexture2D(data.imageUrl, (image) =>
+                {
+                    Sprite sprite = Utils.Instance.Texture2DToSprite(image);
+                    workspaceListView.PopulateData(sprite, id);
+                }
+                , null, null);
             }
-        }
-
-        private void RetrieveImageSuccessCallback(Texture2D image, object param)
-        {
-            Sprite sprite = Utils.Instance.Texture2DToSprite(image);
-            workspaceListView.PopulateData(sprite, (int)param);
         }
 
         private void WorkspaceClickEventSubscriber(int id)
         {
-            screenNavigator.OpenView(NavigateCommandEnum.ToCourseList, id);
+            //screenNavigator.OpenView(NavigateCommandEnum.ToCourseList, id);
             if (courseListView != null)
             {
                 courseListView.Refresh();

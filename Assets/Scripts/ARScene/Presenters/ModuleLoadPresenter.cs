@@ -32,13 +32,13 @@ namespace EAR.Editor.Presenter
         private MetadataObject metadata;
         void Start()
         {
-            if (SceneChangeParam.moduleARInformation != null)
+            if (ARSceneParam.moduleARInformation != null)
             {
-                Debug.Log("extension: " + SceneChangeParam.moduleARInformation.extension);
-                Debug.Log("image url: " + SceneChangeParam.moduleARInformation.imageUrl);
-                Debug.Log("model url: " + SceneChangeParam.moduleARInformation.modelUrl);
-                Debug.Log("iszipfile: " + SceneChangeParam.moduleARInformation.isZipFile);
-                LoadImageTarget(SceneChangeParam.moduleARInformation);
+                Debug.Log("extension: " + ARSceneParam.moduleARInformation.extension);
+                Debug.Log("image url: " + ARSceneParam.moduleARInformation.imageUrl);
+                Debug.Log("model url: " + ARSceneParam.moduleARInformation.modelUrl);
+                Debug.Log("iszipfile: " + ARSceneParam.moduleARInformation.isZipFile);
+                LoadImageTarget(ARSceneParam.moduleARInformation);
             }
             else
             {

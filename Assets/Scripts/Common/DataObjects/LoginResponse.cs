@@ -6,6 +6,7 @@ namespace EAR
     public class LoginResponse
     {
         public string token;
+        public UserProfileResponseData data;
     }
 }
 
