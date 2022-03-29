@@ -41,7 +41,7 @@ namespace EAR.Editor.Presenter
             
         }
 
-        private void GetModuleInformationCallback(ModuleARInformation obj)
+        private void GetModuleInformationCallback(ARInformation obj)
         {
             if (obj.modelUrl == null)
             {

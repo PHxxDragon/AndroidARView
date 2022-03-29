@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace EAR.View
 {
-    public class ModelView : MonoBehaviour
+    public class ModelView : ListItemView<ModelDataObject>
     {
         [SerializeField]
         private TMP_Text modelTitle;
@@ -18,7 +18,7 @@ namespace EAR.View
 
         private UnityAction listener;
 
-        public void PopulateData(ModelDataObject modelDataObject)
+        public override void PopulateData(ModelDataObject modelDataObject)
         {
             modelTitle.text = modelDataObject.name;
             modelDescription.text = modelDataObject.description;

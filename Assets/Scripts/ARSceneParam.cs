@@ -2,7 +2,7 @@ namespace EAR.SceneChange
 {
     public class ARSceneParam
     {
-        public static ModuleARInformation moduleARInformation = new ModuleARInformation();
+        public static ARInformation moduleARInformation = new ARInformation();
     }
 }
 

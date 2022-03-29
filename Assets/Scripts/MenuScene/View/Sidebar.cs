@@ -8,10 +8,12 @@ namespace EAR.View
 {
     public class Sidebar : ViewInterface
     {
+        public enum SidebarToggle { Home, Courses, Settings }
+
         public event Action OnLogoutButtonClick;
         public event Action OnDownloadedButtonClick;
         public event Action OnScanQRCodeButtonClick;
-
+        public event Action<SidebarToggle> OnSidebarToggleChange;
 
         [SerializeField]
         private Image userAvatar;
@@ -27,6 +29,12 @@ namespace EAR.View
         private Button downloadedButton;
         [SerializeField]
         private Button scanQRCodeButton;
+        [SerializeField]
+        private Toggle homeToggle;
+        [SerializeField]
+        private Toggle courseToggle;
+        [SerializeField]
+        private Toggle settingToggle;
 
         void Awake()
         {
@@ -42,6 +50,23 @@ namespace EAR.View
             {
                 OnScanQRCodeButtonClick?.Invoke();
             });
+            homeToggle.onValueChanged.AddListener((isOn) =>
+            {
+                if (isOn) OnSidebarToggleChange?.Invoke(SidebarToggle.Home);
+            });
+            courseToggle.onValueChanged.AddListener((isOn) =>
+            {
+                if (isOn) OnSidebarToggleChange?.Invoke(SidebarToggle.Courses);
+            });
+            settingToggle.onValueChanged.AddListener((isOn) =>
+            {
+                if (isOn) OnSidebarToggleChange?.Invoke(SidebarToggle.Settings);
+            });
+        }
+
+        void Start()
+        {
+            homeToggle.isOn = true;
         }
 
         public void OpenSidebar()

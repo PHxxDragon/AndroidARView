@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 namespace EAR.View
@@ -8,24 +8,36 @@ namespace EAR.View
     public class ModuleListView : ViewInterface
     {
         public event Action<int> ModuleListRefreshEvent;
+        public event Action BackButtonClickEvent;
 
         [SerializeField]
-        private GameObject modulePrefab;
+        private GameObject compositePrefab;
         [SerializeField]
         private GameObject container;
 
+        [SerializeField]
+        private Button backButton;
+
         private int courseId;
 
-        public void PopulateData(List<ModuleData> moduleDatas)
+        void Awake()
+        {
+            backButton.onClick.AddListener(() =>
+            {
+                BackButtonClickEvent?.Invoke();
+            });
+        }
+
+        public void PopulateData(List<object> moduleDatas)
         {
             foreach (Transform child in container.transform)
             {
                 Destroy(child.gameObject);
             }
-            foreach(ModuleData data in moduleDatas)
+            foreach(object data in moduleDatas)
             {
-                ModuleView moduleView = Instantiate(modulePrefab, container.transform).GetComponent<ModuleView>();
-                moduleView.PopulateData(data);
+                CompositeView compositeView = Instantiate(compositePrefab, container.transform).GetComponent<CompositeView>();
+                compositeView.PopulateData(data);
             }
         }
 

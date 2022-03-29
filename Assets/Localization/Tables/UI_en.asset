@@ -167,7 +167,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10281876261150720
-    m_Localized: ModelInformation
+    m_Localized: Model information
     m_Metadata:
       m_Items: []
   - m_Id: 10283125698174976
@@ -200,6 +200,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10308362208780288
     m_Localized: 'Category: '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11830451402539008
+    m_Localized: Courses
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11887087525658624
+    m_Localized: Course content
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12188226758410240
+    m_Localized: No model configured for this AR module
     m_Metadata:
       m_Items: []
   references:

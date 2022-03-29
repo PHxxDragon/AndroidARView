@@ -5,47 +5,14 @@ using System;
 
 namespace EAR.View
 {
-    public class CourseListView : ViewInterface
+    public class CourseListView : ListView<CourseView, CourseData>
     {
-        public event Action<int> CourseListRefreshEvent;
 
-        [SerializeField]
-        private GameObject coursePrefab;
-
-        [SerializeField]
-        private GameObject container;
-
-        private int workspaceId;
-        private Dictionary<int, CourseView> courseViews = new Dictionary<int, CourseView>();
-
-        public void PopulateData(List<CourseData> courseDatas)
-        {
-            foreach(Transform transform in container.transform)
-            {
-                Destroy(transform.gameObject);
-            }
-            courseViews.Clear();
-            foreach (CourseData data in courseDatas)
-            {
-                CourseView courseView = Instantiate(coursePrefab, container.transform).GetComponent<CourseView>();
-                courseView.PopulateData(data);
-                courseViews.Add(data.id, courseView);
-            }
-        }
-
-        public void PopulateData(Sprite sprite, int id)
-        {
-            courseViews[id].PopulateData(sprite);
-        }
+        public event Action<int, int> CourseListRefreshEvent;
 
         public override void Refresh(object args = null)
         {
-            if (args != null)
-            {
-                workspaceId = (int)args;
-            }
-
-            CourseListRefreshEvent?.Invoke(workspaceId);
+            CourseListRefreshEvent?.Invoke(pageDropdown.value + 1, LIMIT);
         }
     }
 }

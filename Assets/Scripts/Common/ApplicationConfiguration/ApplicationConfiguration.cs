@@ -15,8 +15,8 @@ namespace EAR
         [SerializeField]
         private string profilePath;
 
-/*        [SerializeField]
-        private string armodulePath;*/
+        [SerializeField]
+        private string armodulePath;
 
         [SerializeField]
         private string modelPath;
@@ -33,8 +33,14 @@ namespace EAR
         [SerializeField]
         private string categoriesPath;
 
-/*        [SerializeField]
-        private string armoduleQRPath;*/
+        [SerializeField]
+        private string CourseListPath;
+
+        [SerializeField]
+        private string coursesPath;
+
+        [SerializeField]
+        private string moduleListPath;
 
         public string GetServerName()
         {
@@ -51,15 +57,10 @@ namespace EAR
             return serverName + profilePath;
         }
 
-        public string GetWorkspacePath()
-        {
-            return "";
-        }
-
-/*        public string GetARModulePath(int moduleId)
+        public string GetARModulePath(int moduleId)
         {
             return serverName + armodulePath + "/" + moduleId;
-        }*/
+        }
 
         public string GetBoughtModelListPath(int page, int limit)
         {
@@ -91,10 +92,15 @@ namespace EAR
             return serverName + categoriesPath + "?langCode=" + langCode;
         }
 
-/*        public string GetARModuleQRPath(string qrToken)
+        public string GetCourseListPath(int page, int limit)
         {
-            return serverName + armoduleQRPath + "/" + qrToken;
-        }*/
+            return serverName + CourseListPath + "?page=" + page + "&limit=" + limit;
+        }
+
+        public string GetModuleListPath(int arModule)
+        {
+            return serverName + coursesPath + "/" + arModule + "/" + moduleListPath;
+        }
     }
 }
 

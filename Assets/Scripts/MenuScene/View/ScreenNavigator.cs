@@ -23,6 +23,8 @@ namespace EAR.View
             //TODO: add animation
             if (currentView)
             {
+                if (newView == currentView)
+                    return;
                 currentView.gameObject.SetActive(false);
             }
             newView.gameObject.SetActive(true);

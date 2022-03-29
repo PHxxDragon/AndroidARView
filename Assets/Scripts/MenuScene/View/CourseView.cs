@@ -1,17 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
 using System;
 
 namespace EAR.View
 {
-    public class CourseView : MonoBehaviour
+    public class CourseView : ListItemView<CourseData>
     {
         [SerializeField]
-        private TMP_Text title;
+        private TMP_Text courseName;
 
         [SerializeField]
-        private TMP_Text course_id;
+        private TMP_Text courseId;
 
         [SerializeField]
         private TMP_Text ratings;
@@ -29,32 +30,25 @@ namespace EAR.View
         private Button button;
 
         private int id;
-        private Action<int> courseClickEvent;
+        private UnityAction listener;
 
-        public void PopulateData(CourseData data)
+        public override void PopulateData(CourseData data)
         {
             id = data.id;
-            title.text = data.title;
-            course_id.text = "Course ID: " + data.id;
+            courseName.text = data.name;
+            courseId.text = "Course ID: " + data.id;
             ratings.text = data.rating + "";
             courseType.text = data.courseType;
             teachers.text = data.teachers;
-            courseClickEvent = data.courseClickEvent;
-        }
-
-        public void PopulateData(Sprite sprite)
-        {
-            courseImage.sprite = sprite;
-        }
-
-        void Start()
-        {
-            button.onClick.AddListener(ButtonClickEventSubscriber);
-        }
-
-        private void ButtonClickEventSubscriber()
-        {
-            courseClickEvent?.Invoke(id);
+            if (listener != null)
+            {
+                button.onClick.RemoveListener(listener);
+            }
+            listener = () =>
+            {
+                data.courseClickEvent?.Invoke(id);
+            };
+            button.onClick.AddListener(listener);
         }
     }
 }

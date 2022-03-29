@@ -46,7 +46,7 @@ namespace EAR.Editor.Presenter
             }
         }
 
-        private void LoadImageTarget(ModuleARInformation moduleAR)
+        private void LoadImageTarget(ARInformation moduleAR)
         {
             imageTargetCreator.CreateImageTarget(moduleAR.imageUrl, moduleAR.markerImageWidth);
             imageTargetCreator.CreateTargetDoneEvent += () =>
@@ -68,7 +68,7 @@ namespace EAR.Editor.Presenter
             };
         }
 
-        private void TestForARCoreSupportBeforeLoadModel(ModuleARInformation moduleAR)
+        private void TestForARCoreSupportBeforeLoadModel(ARInformation moduleAR)
         {
             if (VuforiaBehaviour.Instance.World.AnchorsSupported)
             {
@@ -76,9 +76,9 @@ namespace EAR.Editor.Presenter
             }
         }
 
-        private void LoadModelAndMetadata(ModuleARInformation moduleAR)
+        private void LoadModelAndMetadata(ARInformation moduleAR)
         {
-            modelLoader.LoadModel(moduleAR.modelUrl, moduleAR.name, moduleAR.id, moduleAR.extension, moduleAR.isZipFile);
+            modelLoader.LoadModel(moduleAR.modelUrl, moduleAR.name, moduleAR.extension, moduleAR.isZipFile);
             modelLoader.OnLoadEnded += SetModelAsContainerChild;
             modelLoader.OnLoadError += ShowError;
             MetadataObject metadataObject = JsonUtility.FromJson<MetadataObject>(moduleAR.metadataString);

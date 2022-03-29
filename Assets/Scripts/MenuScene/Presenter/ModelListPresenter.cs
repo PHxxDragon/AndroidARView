@@ -6,8 +6,6 @@ namespace EAR.Presenter
 {
     public class ModelListPresenter : MonoBehaviour
     {
-        private const string ERROR = "Error";
-
         [SerializeField]
         private ModelListView modelListView;
         [SerializeField]
@@ -16,11 +14,8 @@ namespace EAR.Presenter
         private ModelDetailView modelDetailView;
         [SerializeField]
         private ScreenNavigator screenNavigator;
-
         [SerializeField]
-        private Modal modalPrefab;
-        [SerializeField]
-        private Transform canvas;
+        private ModalShower modalShower;
 
         void Awake()
         {
@@ -47,18 +42,8 @@ namespace EAR.Presenter
                         modelListView.PopulateData(result.models, result.pageCount);
                     },
                     (error) => {
-                        ShowError(error);
+                        modalShower.ShowErrorModal(error);
                     });
-            };
-        }
-        private void ShowError(string error)
-        {
-            Modal modal = Instantiate<Modal>(modalPrefab, canvas);
-            modal.SetModalContent(Utils.GetLocalizedText(ERROR), error);
-            modal.DisableCancelButton();
-            modal.OnConfirmButtonClick += () =>
-            {
-                Destroy(modal.gameObject);
             };
         }
     }

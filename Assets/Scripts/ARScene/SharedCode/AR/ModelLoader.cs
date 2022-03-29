@@ -30,7 +30,7 @@ namespace EAR.AR
                     LoadModel("D:\\Mon hoc\\Nam 4 ky 1\\luan van\\EAR_OLD\\backend\\public\\wolf_with_animations.zip");
                 }*/
 
-        public void LoadModel(string url, string name, int id, string extension, bool isZipFile)
+        public void LoadModel(string url, string name, string extension, bool isZipFile)
         {
             OnLoadStarted?.Invoke();
             modelFileCacher.DownloadAndGetFileStream(url, url, name, extension, isZipFile, (byte[] data) =>

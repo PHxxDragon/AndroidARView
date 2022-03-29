@@ -19,46 +19,37 @@ namespace EAR.MenuScene.Presenter
         [SerializeField]
         private ModuleListView moduleListView;
 
+        [SerializeField]
+        private ModalShower modelShower;
+
         void Start()
         {
             if (courseListView != null && webRequest != null)
             {
-                courseListView.CourseListRefreshEvent += CourseListRefreshEventSubscriber;
+                courseListView.CourseListRefreshEvent += (page, limit) =>
+                {
+                    webRequest.GetCourseList(page, limit,
+                    (response) =>
+                    {
+                        courseListView.PopulateData(response.courses, response.pageCount);
+                        foreach (CourseData courseData in response.courses)
+                        {
+                            courseData.courseClickEvent += (id) =>
+                            {
+                                screenNavigator.PushView(moduleListView);
+                                moduleListView.Refresh(id);
+                            };
+                        }
+                    }, (error) =>
+                    {
+                        modelShower.ShowErrorModal(error);
+                    });
+                };
             }
             else
             {
                 Debug.LogWarning("Unassigned references");
             }
-        }
-
-        private void CourseListRefreshEventSubscriber(int courseID)
-        {
-            string token = webRequest.GetAuthorizeToken();
-            webRequest.GetCourseList(token, courseID, GetCourseListSuccessCallback, null);
-        }
-
-        private void GetCourseListSuccessCallback(List<CourseData> courseDatas)
-        {
-            foreach (CourseData courseData in courseDatas)
-            {
-                courseData.courseClickEvent += CourseClickEventSubscriber;
-            }
-            courseListView.PopulateData(courseDatas);
-            foreach (CourseData courseData in courseDatas)
-            {
-                int id = courseData.id;
-                Utils.Instance.GetImageAsTexture2D(courseData.imageUrl, (texture) => {
-                    Sprite sprite = Utils.Instance.Texture2DToSprite(texture);
-                    courseListView.PopulateData(sprite, id);
-                }
-                , null, null);
-            }
-        }
-
-        private void CourseClickEventSubscriber(int id)
-        {
-            //screenNavigator.OpenView(NavigateCommandEnum.ToModuleList, id);
-            moduleListView.Refresh();
         }
     }
 }

@@ -7,17 +7,12 @@ namespace EAR.View
 {
     public class ModelDetailPresenter : MonoBehaviour
     {
-        private const string ERROR = "Error";
-
         [SerializeField]
         private ModelDetailView modelDetailView;
         [SerializeField]
         private WebRequestHelper webRequestHelper;
-
         [SerializeField]
-        private Modal modalPrefab;
-        [SerializeField]
-        private Transform canvas;
+        private ModalShower modalShower;
 
         void Awake()
         {
@@ -47,8 +42,7 @@ namespace EAR.View
                             webRequestHelper.GetModelARData(id,
                             (arData) =>
                             {
-                                ModuleARInformation moduleARInformation = new ModuleARInformation();
-                                moduleARInformation.id = id;
+                                ARInformation moduleARInformation = new ARInformation();
                                 moduleARInformation.imageUrl = arData.markerImage;
                                 moduleARInformation.markerImageWidth = arData.markerImageWidth;
                                 moduleARInformation.isZipFile = response.isZipFile;
@@ -60,25 +54,14 @@ namespace EAR.View
                                 SceneManager.LoadScene("ARScene");
                             }, (error) =>
                             {
-                                ShowError(error);
+                                modalShower.ShowErrorModal(error);
                             });
                         };
                     }, 
                     (error) =>
                     {
-                        ShowError(error);
+                        modalShower.ShowErrorModal(error);
                     });
-            };
-        }
-
-        private void ShowError(string error)
-        {
-            Modal modal = Instantiate<Modal>(modalPrefab, canvas);
-            modal.SetModalContent(Utils.GetLocalizedText(ERROR), error);
-            modal.DisableCancelButton();
-            modal.OnConfirmButtonClick += () =>
-            {
-                Destroy(modal.gameObject);
             };
         }
     }

@@ -10,40 +10,121 @@ namespace EAR.MenuScene.Presenter
 {
     public class ModuleListPresenter : MonoBehaviour
     {
+        private const string NO_MODEL_CONFIGURED = "NoModelConfigured";
+
         [SerializeField]
         private ModuleListView moduleListView;
 
         [SerializeField]
+        private ScreenNavigator screenNavigator;
+
+        [SerializeField]
         private WebRequestHelper webRequest;
+
+        [SerializeField]
+        private ModalShower modalShower;
+
+        private List<SectionData> sectionStack = new List<SectionData>();
+        private List<SectionData> sections = new List<SectionData>();
 
         void Start()
         {
-            moduleListView.ModuleListRefreshEvent += ModuleListRefreshEventSubscriber;
-        }
-
-        private void ModuleListRefreshEventSubscriber(int courseId)
-        {
-            string token = webRequest.GetAuthorizeToken();
-            webRequest.GetModuleList(token, courseId, GetModuleListSuccessCallback, null);
-        }
-
-        private void GetModuleListSuccessCallback(List<ModuleData> moduleDatas)
-        {
-            foreach (ModuleData data in moduleDatas)
+            moduleListView.ModuleListRefreshEvent += (courseId) => {
+                sectionStack.Clear();
+                webRequest.GetModuleList(courseId, 
+                (response) => {
+                    sections = response;
+                    SectionData dummySection = new SectionData();
+                    dummySection.childrenSection = GetChildrenSection(0);
+                    PushSection(dummySection);
+                }, 
+                (error) => {
+                    Debug.Log(error);
+                });
+            };
+            moduleListView.BackButtonClickEvent += () =>
             {
-                data.moduleClickEvent += ModuleClickEventSubscriber;
-            }
-            moduleListView.PopulateData(moduleDatas);
+                sectionStack.RemoveAt(sectionStack.Count - 1);
+                if (sectionStack.Count > 0)
+                {
+                    PopulateSection(sectionStack[sectionStack.Count - 1]);
+                } else
+                {
+                    screenNavigator.GoBack();
+                }
+            };
         }
 
-        private void ModuleClickEventSubscriber(int moduleId)
+        private void PushSection(SectionData sectionData)
         {
-/*            Param param = new Param();
-            param.moduleId = moduleId;
-            param.token = webRequest.GetAuthorizeToken();
-            SceneChangeParam.param = param;
-            SceneChangeParam.isQr = false;
-            SceneManager.LoadScene("ARScene");*/
+            sectionStack.Add(sectionData);
+            PopulateSection(sectionData);
+        }
+
+        private List<SectionData> GetChildrenSection(int id)
+        {
+            List<SectionData> result = new List<SectionData>();
+            foreach (SectionData data in sections)
+            {
+                if (data.parentSectionId == id)
+                {
+                    result.Add(data);
+                }
+            }
+            return result;
+        }
+
+        private void PopulateSection(SectionData sectionData)
+        {
+            List<object> data = new List<object>();
+            data.AddRange(sectionData.childrenSection);
+            foreach(SectionData sectionData1 in sectionData.childrenSection)
+            {
+                sectionData1.sectionClickEvent = () =>
+                {
+                    sectionData1.childrenSection = GetChildrenSection(sectionData1.id);
+                    PushSection(sectionData1);
+                };
+            }
+            foreach (ModuleData moduleData in sectionData.modules)
+            {
+                moduleData.moduleClickEvent = OpenARModule;
+            }
+            data.AddRange(sectionData.modules);
+            moduleListView.PopulateData(data);
+        }
+
+        private void OpenARModule(int id)
+        {
+            webRequest.GetARModuleData(id,
+            (arModule) =>
+            {
+                if (arModule.modelId  == 0)
+                {
+                    modalShower.ShowErrorModal(Utils.GetLocalizedText(NO_MODEL_CONFIGURED));
+                    return;
+                }
+                webRequest.GetModelDetail(arModule.modelId,
+                (model) =>
+                {
+                    ARInformation arInfo = new ARInformation();
+                    arInfo.extension = model.extension;
+                    arInfo.imageUrl = arModule.image;
+                    arInfo.isZipFile = model.isZipFile;
+                    arInfo.markerImageWidth = arModule.markerImageWidth;
+                    arInfo.metadataString = arModule.metadata;
+                    arInfo.modelUrl = model.url;
+                    arInfo.name = model.name;
+                    ARSceneParam.moduleARInformation = arInfo;
+                    SceneManager.LoadScene("ARScene");
+                }, (error) =>
+                {
+                    modalShower.ShowErrorModal(error);
+                });
+            }, (error) =>
+            {
+                modalShower.ShowErrorModal(error);
+            });
         }
     }
 }

@@ -18,6 +18,11 @@ namespace EAR.Presenter
         [SerializeField]
         private SwipeDetector swipeDetector;
 
+        [SerializeField]
+        private ModelListView home;
+        [SerializeField]
+        private CourseListView courseList;
+
         void Start()
         {
             sidebar.OnLogoutButtonClick += () =>
@@ -44,6 +49,26 @@ namespace EAR.Presenter
             swipeDetector.OnSwipeLeft += () =>
             {
                 sidebar.CloseSidebar();
+            };
+            sidebar.OnSidebarToggleChange += (value) =>
+            {
+                if (!screenNavigator.IsLoggedIn() || screenNavigator.CanGoBack())
+                    return;
+                switch(value)
+                {
+                    case Sidebar.SidebarToggle.Home:
+                        screenNavigator.OpenView(home);
+                        home.Refresh();
+                        break;
+                    case Sidebar.SidebarToggle.Courses:
+                        screenNavigator.OpenView(courseList);
+                        courseList.Refresh();
+                        break;
+                    case Sidebar.SidebarToggle.Settings:
+                        //TODO
+                        Debug.Log("Unhandled");
+                        break;
+                }
             };
         }
     }
