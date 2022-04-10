@@ -247,25 +247,24 @@ namespace EAR.WebRequest
 
         public void GetInfoFromQRCode(string qrToken, Action<AssetInformation> callback = null, Action<string> errorCallback = null)
         {
-            StartCoroutine(GetInfoFromQRCodeCoroutine(qrToken, callback, errorCallback));
-        }
-
-        private IEnumerator GetInfoFromQRCodeCoroutine(string qrToken, Action<AssetInformation> callback, Action<string> errorCallback)
-        {
-            using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(applicationConfiguration.GetQRCodePath(qrToken)))
-            {
-                yield return unityWebRequest.SendWebRequest();
-                if (unityWebRequest.result != UnityWebRequest.Result.Success)
+            string url = applicationConfiguration.GetQRCodePath(qrToken);
+            StartCoroutine(GetRequestCoroutine<AssetInformationResponse>(url,
+                (response) =>
                 {
-                    errorCallback?.Invoke(unityWebRequest.error);
-                }
-                else
+                    callback?.Invoke(response.data);
+                },
+                (error, errorCode) =>
                 {
-                    AssetInformationResponse assetInformationResponse = JsonUtility.FromJson<AssetInformationResponse>(unityWebRequest.downloadHandler.text);
-                    Debug.Log(unityWebRequest.downloadHandler.text);
-                    callback?.Invoke(assetInformationResponse.data);
+                    if (errorCode == -1)
+                    {
+                        errorCallback?.Invoke(error);
+                    }
+                    else
+                    {
+                        errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(UNEXPECTED));
+                    }
                 }
-            }
+                ));
         }
 
         void Awake()
@@ -296,6 +295,7 @@ namespace EAR.WebRequest
                         });
                     } else
                     {
+                        Debug.Log("error: " + unityWebRequest.downloadHandler.text);
                         errorCallback?.Invoke(unityWebRequest.error, unityWebRequest.responseCode);
                     }
                 }

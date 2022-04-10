@@ -27,12 +27,12 @@ namespace EAR.Editor.Presenter
         private void QRCodeRecognizedEventSubscriber(string token)
         {
             Debug.Log(token);
-            //webRequestHelper.GetModuleInformation(token, GetModuleInformationCallback, GetModuleInformationErrorCallback);
             webRequestHelper.GetInfoFromQRCode(token, GetModuleInformationCallback, GetModuleInformationErrorCallback);
         }
 
         private void GetModuleInformationErrorCallback(string obj)
         {
+            Debug.Log("obj: " + obj);
             Modal modal = Instantiate(modelPrefab, canvas);
             modal.SetModalContent(LocalizationUtils.GetLocalizedText("Error"), LocalizationUtils.GetLocalizedText("InvalidQRCode"));
             modal.DisableCancelButton();

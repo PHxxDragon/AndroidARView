@@ -40,7 +40,6 @@ namespace EAR.Presenter
             midAirController.OnStateChanged += OnMidAirStateChange;
             modeSelectPresenter.OnModeSelected += OnModeChange;
             imageTargetCreator.CreateTargetDoneEvent += CreateTargetDoneEventSubscriber;
-            //TODO
             initializePresenter.LoadDone += OnEntityLoadDone;
             tutorial.gameObject.SetActive(false);
         }
