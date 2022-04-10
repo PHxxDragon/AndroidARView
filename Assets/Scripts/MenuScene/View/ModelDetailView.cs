@@ -72,10 +72,10 @@ namespace EAR.View
                 coverImage.sprite = image;
             };
             title.text = modelDataObject.name;
-            downloadSize.text = Utils.GetLocalizedText(DOWNLOAD_SIZE) + Utils.GetFileSizeString(modelDataObject.totalSize);
-            likes.text = modelDataObject.numOfFav + Utils.GetLocalizedText(LIKES);
+            downloadSize.text = LocalizationUtils.GetLocalizedText(DOWNLOAD_SIZE) + Utils.GetFileSizeString(modelDataObject.totalSize);
+            likes.text = modelDataObject.numOfFav + LocalizationUtils.GetLocalizedText(LIKES);
             description.text = modelDataObject.description;
-            categories.text = modelDataObject.categories.Count == 0 ? Utils.GetLocalizedText(NO_CATEGORY) : Utils.GetLocalizedText(CATEGORY) + string.Join(", ", modelDataObject.categories);
+            categories.text = modelDataObject.categories.Count == 0 ? LocalizationUtils.GetLocalizedText(NO_CATEGORY) : LocalizationUtils.GetLocalizedText(CATEGORY) + string.Join(", ", modelDataObject.categories);
             if (listener != null)
             {
                 viewInARButton.onClick.RemoveListener(listener);

@@ -25,5 +25,12 @@ namespace EAR
             transform.localRotation = transformData.rotation;
             transform.localScale = transformData.scale;
         }
+
+        public static void ResetTransform(Transform transform)
+        {
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.Euler(Vector3.zero);
+            transform.localScale = Vector3.one;
+        }
     }
 }

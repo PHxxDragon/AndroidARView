@@ -31,10 +31,6 @@ namespace EAR.Presenter
                 screenNavigator.OpenView(loginView);
                 webRequestHelper.Logout();
             };
-            sidebar.OnDownloadedButtonClick += () =>
-            {
-                SceneManager.LoadScene("DownloadedScene");
-            };
             sidebar.OnScanQRCodeButtonClick += () =>
             {
                 SceneManager.LoadScene("QRCodeScene");

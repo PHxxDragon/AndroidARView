@@ -16,7 +16,7 @@ namespace EAR
         public void ShowErrorModal(string error)
         {
             Modal modal = Instantiate(modalPrefab, canvas);
-            modal.SetModalContent(Utils.GetLocalizedText(ERROR), error);
+            modal.SetModalContent(LocalizationUtils.GetLocalizedText(ERROR), error);
             modal.DisableCancelButton();
             modal.OnConfirmButtonClick += () =>
             {

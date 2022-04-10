@@ -11,7 +11,6 @@ namespace EAR.View
         public enum SidebarToggle { Home, Courses, Settings }
 
         public event Action OnLogoutButtonClick;
-        public event Action OnDownloadedButtonClick;
         public event Action OnScanQRCodeButtonClick;
         public event Action<SidebarToggle> OnSidebarToggleChange;
 
@@ -26,8 +25,6 @@ namespace EAR.View
         [SerializeField]
         private Button logoutButton;
         [SerializeField]
-        private Button downloadedButton;
-        [SerializeField]
         private Button scanQRCodeButton;
         [SerializeField]
         private Toggle homeToggle;
@@ -41,10 +38,6 @@ namespace EAR.View
             logoutButton.onClick.AddListener(() =>
             {
                 OnLogoutButtonClick?.Invoke();
-            });
-            downloadedButton.onClick.AddListener(() =>
-            {
-                OnDownloadedButtonClick?.Invoke();
             });
             scanQRCodeButton.onClick.AddListener(() =>
             {

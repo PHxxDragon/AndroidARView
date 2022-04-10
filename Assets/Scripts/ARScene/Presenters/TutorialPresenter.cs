@@ -20,7 +20,7 @@ namespace EAR.Presenter
         [SerializeField]
         private ModeSelectPresenter modeSelectPresenter;
         [SerializeField]
-        private ModelLoader modelLoader;
+        private InitializePresenter initializePresenter;
 
         private Tutorial.TutorialEnum currentMidAirTut;
         private Tutorial.TutorialEnum currentGroundPlaneTut;
@@ -40,7 +40,8 @@ namespace EAR.Presenter
             midAirController.OnStateChanged += OnMidAirStateChange;
             modeSelectPresenter.OnModeSelected += OnModeChange;
             imageTargetCreator.CreateTargetDoneEvent += CreateTargetDoneEventSubscriber;
-            modelLoader.OnLoadEnded += OnModelLoadDone;
+            //TODO
+            initializePresenter.LoadDone += OnEntityLoadDone;
             tutorial.gameObject.SetActive(false);
         }
 
@@ -63,7 +64,7 @@ namespace EAR.Presenter
             }
         }
 
-        private void OnModelLoadDone()
+        private void OnEntityLoadDone()
         {
             tutorial.gameObject.SetActive(true);
         }

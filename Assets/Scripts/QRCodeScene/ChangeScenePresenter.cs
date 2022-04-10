@@ -34,27 +34,18 @@ namespace EAR.Editor.Presenter
         private void GetModuleInformationErrorCallback(string obj)
         {
             Modal modal = Instantiate(modelPrefab, canvas);
-            modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText("InvalidQRCode"));
+            modal.SetModalContent(LocalizationUtils.GetLocalizedText("Error"), LocalizationUtils.GetLocalizedText("InvalidQRCode"));
             modal.DisableCancelButton();
             modal.OnConfirmButtonClick += GoBackToMenuScene;
             codeReader.StopScan();
             
         }
 
-        private void GetModuleInformationCallback(ARInformation obj)
+        private void GetModuleInformationCallback(AssetInformation assetInformation)
         {
-            if (obj.modelUrl == null)
-            {
-                Modal modal = Instantiate(modelPrefab, canvas);
-                modal.SetModalContent(Utils.GetLocalizedText("NoModel"), Utils.GetLocalizedText("NoModelMessage"));
-                modal.DisableCancelButton();
-                modal.OnConfirmButtonClick += GoBackToMenuScene;
-                codeReader.StopScan();
-            } else {
-                codeReader.StopScan();
-                ARSceneParam.moduleARInformation = obj;
-                SceneManager.LoadScene("ARScene");
-            }
+            codeReader.StopScan();
+            ARSceneParam.assetInformation = assetInformation;
+            SceneManager.LoadScene("ARScene");
         }
 
         private void GoBackToMenuScene()

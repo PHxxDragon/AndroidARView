@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 using System.Collections;
 using System;
 
-namespace EAR 
+namespace EAR
 {
     public class Utils : MonoBehaviour
     {
@@ -20,21 +20,6 @@ namespace EAR
                 }
                 return instance;
             }
-        }
-
-        public static byte[] StringToByteArrayFastest(string hex)
-        {
-            if (hex.Length % 2 == 1)
-                throw new Exception("The binary key cannot have an odd number of digits");
-
-            byte[] arr = new byte[hex.Length >> 1];
-
-            for (int i = 0; i < hex.Length >> 1; ++i)
-            {
-                arr[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + (GetHexVal(hex[(i << 1) + 1])));
-            }
-
-            return arr;
         }
 
         public static string GetFileSizeString(long size)
@@ -53,10 +38,18 @@ namespace EAR
             }
         }
 
-        public static int GetHexVal(char hex)
+        public static int Clamp(int value, int min, int max)
         {
-            int val = hex;
-            return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
+            if (value < min) return min;
+            if (value > max) return max;
+            return value;
+        }
+
+        public static float Clamp(float value, float min, float max)
+        {
+            if (value < min) return min;
+            if (value > max) return max;
+            return value;
         }
 
         public static bool ByteArrayCompare(byte[] a1, byte[] a2)
@@ -71,6 +64,27 @@ namespace EAR
             return true;
         }
 
+        public static byte[] StringToByteArrayFastest(string hex)
+        {
+            if (hex.Length % 2 == 1)
+                throw new Exception("The binary key cannot have an odd number of digits");
+
+            byte[] arr = new byte[hex.Length >> 1];
+
+            for (int i = 0; i < hex.Length >> 1; ++i)
+            {
+                arr[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + (GetHexVal(hex[(i << 1) + 1])));
+            }
+
+            return arr;
+        }
+
+        public static int GetHexVal(char hex)
+        {
+            int val = hex;
+            return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
+        }
+
         public Sprite Texture2DToSprite(Texture2D texture2D)
         {
             return Sprite.Create(texture2D,
@@ -79,14 +93,46 @@ namespace EAR
                 );
         }
 
-        public static string GetLocalizedText(string key)
+        public void GetSound(string soundUrl, string extension, Action<AudioClip> callback, Action<string> errorCallback = null, Action<float> progressCallback = null)
         {
-            return LocalizationSettings.StringDatabase.GetLocalizedString("UI", key);
+            StartCoroutine(GetSoundCoroutine(soundUrl, extension, callback, errorCallback, progressCallback));
         }
 
-        public void GetImageAsTexture2D(string imageUrl, Action<Texture2D> callback, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
+        public void GetImageAsTexture2D(string imageUrl, Action<Texture2D> callback, Action<string> errorCallback = null, Action<float> progressCallback = null)
         {
             StartCoroutine(GetImageCoroutine(imageUrl, callback, errorCallback, progressCallback));
+        }
+
+        public static Bounds GetUIBounds(GameObject UIObject)
+        {
+            Image[] images = UIObject.GetComponentsInChildren<Image>();
+            if (images.Length == 0)
+            {
+                return new Bounds();
+            }
+            var min = Vector3.positiveInfinity;
+            var max = Vector3.negativeInfinity;
+
+            foreach (var image in images)
+            {
+                if (!image) continue;
+
+                // Get the 4 corners in world coordinates
+                var v = new Vector3[4];
+                image.rectTransform.GetWorldCorners(v);
+
+                // update min and max
+                foreach (var vector3 in v)
+                {
+                    min = Vector3.Min(min, vector3);
+                    max = Vector3.Max(max, vector3);
+                }
+            }
+
+            // create the bounds
+            var bounds = new Bounds();
+            bounds.SetMinMax(min, max);
+            return bounds;
         }
 
         public static Bounds GetModelBounds(GameObject model)
@@ -116,26 +162,64 @@ namespace EAR
             return bounds;
         }
 
-        private IEnumerator GetImageCoroutine(string imageUrl, Action<Texture2D> callback, Action<string> errorCallback, Action<float, string> progressCallback)
+        private IEnumerator GetSoundCoroutine(string soundUrl, string extension, Action<AudioClip> callback, Action<string> errorCallback, Action<float> progressCallback)
+        {
+            using (UnityWebRequest uwr = UnityWebRequestMultimedia.GetAudioClip(soundUrl, GetAudioTypeFromExtension(extension)))
+            {
+                UnityWebRequestAsyncOperation operation = uwr.SendWebRequest();
+                while (!operation.isDone)
+                {
+                    progressCallback?.Invoke(operation.progress);
+                    yield return null;
+                }
+                if (uwr.result != UnityWebRequest.Result.Success)
+                {
+                    errorCallback?.Invoke(uwr.error);
+                }
+                else
+                {
+                    AudioClip audioClip = DownloadHandlerAudioClip.GetContent(uwr);
+                    callback?.Invoke(audioClip);
+                }
+            }
+        }
+
+        private AudioType GetAudioTypeFromExtension(string extension)
+        {
+            switch (extension)
+            {
+                case "wav":
+                    return AudioType.WAV;
+                default:
+                    return AudioType.MPEG;
+            }
+        }
+
+        private IEnumerator GetImageCoroutine(string imageUrl, Action<Texture2D> callback, Action<string> errorCallback, Action<float> progressCallback)
         {
             using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(imageUrl))
             {
-                UnityWebRequestAsyncOperation unityWebRequestAsyncOperation = uwr.SendWebRequest();
-                while (unityWebRequestAsyncOperation.isDone == false)
+                UnityWebRequestAsyncOperation operation = uwr.SendWebRequest();
+                while (!operation.isDone)
                 {
+                    progressCallback?.Invoke(operation.progress);
                     yield return null;
-                    progressCallback?.Invoke(unityWebRequestAsyncOperation.progress, GetLocalizedText("LoadingImage"));
                 }
 
                 if (uwr.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.Log(uwr.error);
                     errorCallback?.Invoke(uwr.error);
                 }
                 else
                 {
                     // Get downloaded texture once the web request completes
                     Texture2D texture = DownloadHandlerTexture.GetContent(uwr);
+                    // https://answers.unity.com/questions/391612/any-way-to-validate-wwwtexture.html
+                    if (texture.width < 10 && texture.height < 10)
+                    {
+                        errorCallback?.Invoke("Error loading texture");
+                        yield break;
+                    }
                     callback?.Invoke(texture);
                 }
             }

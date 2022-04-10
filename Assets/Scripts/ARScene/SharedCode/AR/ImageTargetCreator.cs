@@ -25,7 +25,7 @@ namespace EAR.AR
         {
             CreateTargetStartEvent?.Invoke();
             Utils.Instance.GetImageAsTexture2D(url, CreateTarget, CreateTargetError, 
-                (float arg1, string arg2) => { OnProgressChanged?.Invoke(arg1, arg2); });
+                (float arg1) => { OnProgressChanged?.Invoke(arg1, LocalizationUtils.GetLocalizedText("Loading image")); });
             this.widthInMeter = widthInMeter;
         }
 

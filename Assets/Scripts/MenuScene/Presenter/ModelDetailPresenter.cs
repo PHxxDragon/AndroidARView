@@ -36,21 +36,12 @@ namespace EAR.View
                                 Debug.Log(error);
                             });
                         }
-                        
                         response.onClick += () =>
                         {
                             webRequestHelper.GetModelARData(id,
                             (arData) =>
                             {
-                                ARInformation moduleARInformation = new ARInformation();
-                                moduleARInformation.imageUrl = arData.markerImage;
-                                moduleARInformation.markerImageWidth = arData.markerImageWidth;
-                                moduleARInformation.isZipFile = response.isZipFile;
-                                moduleARInformation.extension = response.extension;
-                                moduleARInformation.name = response.name;
-                                moduleARInformation.modelUrl = response.url;
-                                moduleARInformation.metadataString = arData.metadata;
-                                ARSceneParam.moduleARInformation = moduleARInformation;
+                                ARSceneParam.assetInformation = arData;
                                 SceneManager.LoadScene("ARScene");
                             }, (error) =>
                             {

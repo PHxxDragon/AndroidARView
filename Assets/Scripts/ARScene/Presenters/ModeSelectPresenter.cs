@@ -23,8 +23,6 @@ namespace EAR.Presenter
         [SerializeField]
         private GameObject modelContainer;
         [SerializeField]
-        private AnimPlayer animationPlayer;
-        [SerializeField]
         private TMP_Dropdown dropdown;
 
         [SerializeField]
@@ -101,7 +99,7 @@ namespace EAR.Presenter
         private void OnResetButtonClick()
         {
             Modal modal = Instantiate<Modal>(modalPrefab, canvas);
-            modal.SetModalContent(Utils.GetLocalizedText("ConfirmResetTitle"), Utils.GetLocalizedText("ConfirmResetMessage"));
+            modal.SetModalContent(LocalizationUtils.GetLocalizedText("ConfirmResetTitle"), LocalizationUtils.GetLocalizedText("ConfirmResetMessage"));
             modal.OnConfirmButtonClick += ResetTrackingStatus;
             modal.OnCancelButtonClick += () =>
             {
@@ -133,7 +131,7 @@ namespace EAR.Presenter
                 Debug.Log("The device doesn't support anchors");
                 Modal modal = Instantiate<Modal>(modalPrefab, canvas);
                 string errorTextKey = imageTargetError == ImageTargetCreator.IMAGE_FORMAT_ERROR ? "ImageFormatError" : "NoImage";
-                modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText(errorTextKey));
+                modal.SetModalContent(LocalizationUtils.GetLocalizedText("Error"), LocalizationUtils.GetLocalizedText(errorTextKey));
                 modal.DisableCancelButton();
                 modal.OnConfirmButtonClick += GoBackToMenu;
             }
@@ -167,7 +165,7 @@ namespace EAR.Presenter
             {
                 Modal modal = Instantiate(modalPrefab, canvas);
                 string errorTextKey = imageTargetError == ImageTargetCreator.IMAGE_FORMAT_ERROR ? "ImageFormatError" : "NoImage";
-                modal.SetModalContent(Utils.GetLocalizedText("Error"), Utils.GetLocalizedText(errorTextKey));
+                modal.SetModalContent(LocalizationUtils.GetLocalizedText("Error"), LocalizationUtils.GetLocalizedText(errorTextKey));
                 modal.DisableCancelButton();
                 modal.OnConfirmButtonClick += () =>
                 {
@@ -178,7 +176,6 @@ namespace EAR.Presenter
             ResetAll();
             imageTarget.gameObject.SetActive(true);
             modelContainer.transform.parent = imageTarget.transform;
-            animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);
             controlTutorial.ChangeTutorial(ControlTutorial.ControlTutorialEnum.Image);
             OnModeSelected?.Invoke(2);
@@ -190,7 +187,6 @@ namespace EAR.Presenter
             ResetAll();
             midAirController.gameObject.SetActive(true);
             modelContainer.transform.parent = midAirStage.transform;
-            animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);
             midAirController.AdjustModelPosition();
             controlTutorial.ChangeTutorial(ControlTutorial.ControlTutorialEnum.MidAir);
@@ -203,7 +199,6 @@ namespace EAR.Presenter
             ResetAll();
             groundPlaneController.gameObject.SetActive(true);
             modelContainer.transform.parent = groudPlaneStage.transform;
-            animationPlayer.ResumeAnimation();
             ResetTransform(modelContainer.transform);
             controlTutorial.ChangeTutorial(ControlTutorial.ControlTutorialEnum.GroundPlane);
             OnModeSelected?.Invoke(0);

@@ -51,10 +51,5 @@ namespace EAR.View
         {
             SceneManager.LoadScene("QRCodeScene");
         }
-
-        public void DownloadedClick()
-        {
-            SceneManager.LoadScene("DownloadedScene");
-        }
     }
 }

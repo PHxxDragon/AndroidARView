@@ -114,21 +114,21 @@ namespace EAR.WebRequest
                 {
                     if (errorCode == 400)
                     {
-                        errorCallback?.Invoke(Utils.GetLocalizedText(WRONG_CREDENTIALS));
+                        errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(WRONG_CREDENTIALS));
                     } else if (errorCode == -1)
                     {
                         errorCallback?.Invoke(error);
                     } else
                     {
-                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                        errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(UNEXPECTED));
                     }
                 }));
         }
 
-        public void GetARModuleData(int id, Action<ARModuleDataObject> callback = null, Action<string> errorCallback = null)
+        public void GetARModuleData(int id, Action<AssetInformation> callback = null, Action<string> errorCallback = null)
         {
             string url = applicationConfiguration.GetARModulePath(id);
-            StartCoroutine(GetRequestCoroutine<ARModuleDataResponse>(url,
+            StartCoroutine(GetRequestCoroutine<AssetInformationResponse>(url,
                 (response) =>
                 {
                     callback?.Invoke(response.data);
@@ -140,15 +140,15 @@ namespace EAR.WebRequest
                     }
                     else
                     {
-                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                        errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(UNEXPECTED));
                     }
                 }));
         }
 
-        public void GetModelARData(int id, Action<ModelARDataObject> callback = null, Action<string> errorCallback = null)
+        public void GetModelARData(int id, Action<AssetInformation> callback = null, Action<string> errorCallback = null)
         {
             string url = applicationConfiguration.GetModelARDataPath(id);
-            StartCoroutine(GetRequestCoroutine<ModelARDataResponse>(url,
+            StartCoroutine(GetRequestCoroutine<AssetInformationResponse>(url,
                 (response) =>
                 {
                     callback?.Invoke(response.data);
@@ -161,7 +161,7 @@ namespace EAR.WebRequest
                     }
                     else
                     {
-                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                        errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(UNEXPECTED));
                     }
                 }));
         }
@@ -181,7 +181,7 @@ namespace EAR.WebRequest
                 }
                 else
                 {
-                    errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                    errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(UNEXPECTED));
                 }
             }));
         }
@@ -200,7 +200,7 @@ namespace EAR.WebRequest
                         errorCallback?.Invoke(error);
                     } else
                     {
-                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                        errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(UNEXPECTED));
                     }
                 }));
         }
@@ -220,7 +220,7 @@ namespace EAR.WebRequest
                     }
                     else
                     {
-                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                        errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(UNEXPECTED));
                     }
                 }));
         }
@@ -240,17 +240,17 @@ namespace EAR.WebRequest
                         errorCallback?.Invoke(error);
                     } else
                     {
-                        errorCallback?.Invoke(Utils.GetLocalizedText(UNEXPECTED));
+                        errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(UNEXPECTED));
                     }
                 }));
         }
 
-        public void GetInfoFromQRCode(string qrToken, Action<ARInformation> callback = null, Action<string> errorCallback = null)
+        public void GetInfoFromQRCode(string qrToken, Action<AssetInformation> callback = null, Action<string> errorCallback = null)
         {
             StartCoroutine(GetInfoFromQRCodeCoroutine(qrToken, callback, errorCallback));
         }
 
-        private IEnumerator GetInfoFromQRCodeCoroutine(string qrToken, Action<ARInformation> callback, Action<string> errorCallback)
+        private IEnumerator GetInfoFromQRCodeCoroutine(string qrToken, Action<AssetInformation> callback, Action<string> errorCallback)
         {
             using (UnityWebRequest unityWebRequest = UnityWebRequest.Get(applicationConfiguration.GetQRCodePath(qrToken)))
             {
@@ -261,9 +261,9 @@ namespace EAR.WebRequest
                 }
                 else
                 {
-                    ARInformationResponse moduleInfoResponse = JsonUtility.FromJson<ARInformationResponse>(unityWebRequest.downloadHandler.text);
+                    AssetInformationResponse assetInformationResponse = JsonUtility.FromJson<AssetInformationResponse>(unityWebRequest.downloadHandler.text);
                     Debug.Log(unityWebRequest.downloadHandler.text);
-                    callback?.Invoke(moduleInfoResponse.data);
+                    callback?.Invoke(assetInformationResponse.data);
                 }
             }
         }
@@ -283,7 +283,7 @@ namespace EAR.WebRequest
             {
                 if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    errorCallback?.Invoke(Utils.GetLocalizedText(NO_CONNECTION), -1);
+                    errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(NO_CONNECTION), -1);
                 } else
                 {
                     if (unityWebRequest.responseCode == 401 && !retried)
@@ -319,7 +319,7 @@ namespace EAR.WebRequest
             {
                 if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    errorCallback?.Invoke(Utils.GetLocalizedText(NO_CONNECTION), -1);
+                    errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(NO_CONNECTION), -1);
                 } else
                 {
                     errorCallback?.Invoke(unityWebRequest.error, unityWebRequest.responseCode);

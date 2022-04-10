@@ -10,8 +10,6 @@ namespace EAR.MenuScene.Presenter
 {
     public class ModuleListPresenter : MonoBehaviour
     {
-        private const string NO_MODEL_CONFIGURED = "NoModelConfigured";
-
         [SerializeField]
         private ModuleListView moduleListView;
 
@@ -99,28 +97,8 @@ namespace EAR.MenuScene.Presenter
             webRequest.GetARModuleData(id,
             (arModule) =>
             {
-                if (arModule.modelId  == 0)
-                {
-                    modalShower.ShowErrorModal(Utils.GetLocalizedText(NO_MODEL_CONFIGURED));
-                    return;
-                }
-                webRequest.GetModelDetail(arModule.modelId,
-                (model) =>
-                {
-                    ARInformation arInfo = new ARInformation();
-                    arInfo.extension = model.extension;
-                    arInfo.imageUrl = arModule.image;
-                    arInfo.isZipFile = model.isZipFile;
-                    arInfo.markerImageWidth = arModule.markerImageWidth;
-                    arInfo.metadataString = arModule.metadata;
-                    arInfo.modelUrl = model.url;
-                    arInfo.name = model.name;
-                    ARSceneParam.moduleARInformation = arInfo;
-                    SceneManager.LoadScene("ARScene");
-                }, (error) =>
-                {
-                    modalShower.ShowErrorModal(error);
-                });
+                ARSceneParam.assetInformation = arModule;
+                SceneManager.LoadScene("ARScene");
             }, (error) =>
             {
                 modalShower.ShowErrorModal(error);
