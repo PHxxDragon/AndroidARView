@@ -182,7 +182,8 @@ namespace EAR.Container
         {
             OnAssetObjectAdded?.Invoke(assetObject);
             models.Add(assetObject.assetId, (assetObject, model));
-            model.transform.parent = disabledContainer.transform;
+            TransformData.ResetTransform(model.transform);
+            TransformData.SetParent(model.transform, disabledContainer.transform);
         }
 
         public GameObject GetModel(string assetId)

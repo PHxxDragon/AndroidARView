@@ -36,9 +36,16 @@ namespace EAR
         public int id;
         public string name;
         public string moduleType;
+        public ARModuleData arModule;
 
         [NonSerialized]
         public Action<int> moduleClickEvent;
+    }
+
+    [Serializable]
+    public class ARModuleData
+    {
+        public int id;
     }
 }
 

@@ -2,7 +2,6 @@ using UnityEngine;
 using EAR.View;
 using EAR.WebRequest;
 using System.Collections.Generic;
-using EAR.Editor.Presenter;
 using EAR.SceneChange;
 using UnityEngine.SceneManagement;
 
@@ -86,9 +85,12 @@ namespace EAR.MenuScene.Presenter
             }
             foreach (ModuleData moduleData in sectionData.modules)
             {
-                moduleData.moduleClickEvent = OpenARModule;
+                if (moduleData.moduleType == "ar")
+                {
+                    moduleData.moduleClickEvent = OpenARModule;
+                    data.Add(moduleData);
+                }
             }
-            data.AddRange(sectionData.modules);
             moduleListView.PopulateData(data);
         }
 

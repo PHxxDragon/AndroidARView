@@ -85,7 +85,9 @@ namespace EAR.Entity
             }
 
             GameObject newChild = Instantiate(model);
-            newChild.transform.parent = transform;
+            TransformData.ResetTransform(newChild.transform);
+            TransformData.SetParent(newChild.transform, transform);
+
             if (prev != null)
             {
                 TransformData.TransformDataToTransfrom(prev, newChild.transform);
@@ -101,12 +103,14 @@ namespace EAR.Entity
             {
                 GameObject child = Instantiate(model);
                 modelEntity.assetId = modelData.assetId;
-                child.transform.parent = modelEntity.transform;
+                TransformData.ResetTransform(child.transform);
+                TransformData.SetParent(child.transform, modelEntity.transform);
             } else
             {
                 model = AssetContainer.Instance.GetModelPrefab();
                 GameObject child = Instantiate(model);
-                child.transform.parent = modelEntity.transform;
+                TransformData.ResetTransform(child.transform);
+                TransformData.SetParent(child.transform, modelEntity.transform);
             }
 
             if (!string.IsNullOrEmpty(modelData.name))

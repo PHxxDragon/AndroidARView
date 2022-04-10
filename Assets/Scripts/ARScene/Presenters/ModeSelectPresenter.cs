@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using EAR.AR;
 using EAR.View;
-using EAR.AnimationPlayer;
 using TMPro;
 using Vuforia;
 using UnityEngine.UI;
@@ -175,8 +174,8 @@ namespace EAR.Presenter
             }
             ResetAll();
             imageTarget.gameObject.SetActive(true);
-            modelContainer.transform.parent = imageTarget.transform;
-            ResetTransform(modelContainer.transform);
+            TransformData.ResetTransform(modelContainer.transform);
+            TransformData.SetParent(modelContainer.transform, imageTarget.transform);
             controlTutorial.ChangeTutorial(ControlTutorial.ControlTutorialEnum.Image);
             OnModeSelected?.Invoke(2);
         }
@@ -186,8 +185,8 @@ namespace EAR.Presenter
             Debug.Log("Set midair target");
             ResetAll();
             midAirController.gameObject.SetActive(true);
-            modelContainer.transform.parent = midAirStage.transform;
-            ResetTransform(modelContainer.transform);
+            TransformData.ResetTransform(modelContainer.transform);
+            TransformData.SetParent(modelContainer.transform, midAirStage.transform);
             midAirController.AdjustModelPosition();
             controlTutorial.ChangeTutorial(ControlTutorial.ControlTutorialEnum.MidAir);
             OnModeSelected?.Invoke(1);
@@ -198,8 +197,8 @@ namespace EAR.Presenter
             Debug.Log("Set groundplane target");
             ResetAll();
             groundPlaneController.gameObject.SetActive(true);
-            modelContainer.transform.parent = groudPlaneStage.transform;
-            ResetTransform(modelContainer.transform);
+            TransformData.ResetTransform(modelContainer.transform);
+            TransformData.SetParent(modelContainer.transform, groudPlaneStage.transform);
             controlTutorial.ChangeTutorial(ControlTutorial.ControlTutorialEnum.GroundPlane);
             OnModeSelected?.Invoke(0);
         }
@@ -220,13 +219,6 @@ namespace EAR.Presenter
                 default:
                     break;
             }
-        }
-
-        private void ResetTransform(Transform transform)
-        {
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
-            transform.localScale = Vector3.one;
         }
     }
 }

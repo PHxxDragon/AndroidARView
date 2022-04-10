@@ -32,5 +32,12 @@ namespace EAR
             transform.localRotation = Quaternion.Euler(Vector3.zero);
             transform.localScale = Vector3.one;
         }
+
+        public static void SetParent(Transform child, Transform parent)
+        {
+            TransformData data = TransformToTransformData(child);
+            child.parent = parent;
+            TransformDataToTransfrom(data, child);
+        } 
     }
 }

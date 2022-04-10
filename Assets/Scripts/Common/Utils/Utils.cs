@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 
-namespace EAR
+namespace EAR 
 {
     public class Utils : MonoBehaviour
     {
@@ -21,8 +21,8 @@ namespace EAR
                 return instance;
             }
         }
-
-        public static string GetFileSizeString(long size)
+		
+		public static string GetFileSizeString(long size)
         {
             if (size < 1000)
             {
@@ -96,7 +96,7 @@ namespace EAR
         public void GetSound(string soundUrl, string extension, Action<AudioClip> callback, Action<string> errorCallback = null, Action<float> progressCallback = null)
         {
             StartCoroutine(GetSoundCoroutine(soundUrl, extension, callback, errorCallback, progressCallback));
-        }
+        } 
 
         public void GetImageAsTexture2D(string imageUrl, Action<Texture2D> callback, Action<string> errorCallback = null, Action<float> progressCallback = null)
         {
@@ -167,8 +167,7 @@ namespace EAR
             using (UnityWebRequest uwr = UnityWebRequestMultimedia.GetAudioClip(soundUrl, GetAudioTypeFromExtension(extension)))
             {
                 UnityWebRequestAsyncOperation operation = uwr.SendWebRequest();
-                while (!operation.isDone)
-                {
+                while (!operation.isDone) {
                     progressCallback?.Invoke(operation.progress);
                     yield return null;
                 }

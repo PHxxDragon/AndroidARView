@@ -18,7 +18,7 @@ namespace EAR.View
 
         public void PopulateData(ModuleData data)
         {
-            id = data.id;
+            id = data.arModule.id;
             title.text = data.name;
             moduleClickEvent = data.moduleClickEvent;
         }

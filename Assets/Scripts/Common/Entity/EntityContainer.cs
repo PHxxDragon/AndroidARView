@@ -40,7 +40,7 @@ namespace EAR.Container
 
             BaseEntity.OnEntityCreated += (BaseEntity entity) =>
             {
-                entity.transform.parent = container.transform;
+                TransformData.SetParent(entity.transform, container.transform);
                 entityDict.Add(entity.GetId(), entity);
             };
             BaseEntity.OnEntityDestroy += (BaseEntity entity) =>
