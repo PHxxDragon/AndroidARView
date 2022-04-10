@@ -24,6 +24,8 @@ namespace EAR.Presenter
         GameObject canvas;
         [SerializeField]
         ProgressBar progressBar;
+        [SerializeField]
+        GameObject loadingPanel;
 
         void Start()
         {
@@ -96,6 +98,7 @@ namespace EAR.Presenter
                 EntityContainer.Instance.ApplyMetadata(metadataObject);
             }
             LoadDone?.Invoke();
+            loadingPanel.SetActive(false);
         }
     }
 }

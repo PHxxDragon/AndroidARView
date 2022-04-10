@@ -4622,6 +4622,7 @@ MonoBehaviour:
   modalPrefab: {fileID: 8965011324185570549, guid: d0752afdb4d60a54c9ecb32d2a27a02d, type: 3}
   canvas: {fileID: 6209858545726011298}
   progressBar: {fileID: 6209858545289246972}
+  loadingPanel: {fileID: 347941607}
 --- !u!1 &1586148310
 GameObject:
   m_ObjectHideFlags: 0
