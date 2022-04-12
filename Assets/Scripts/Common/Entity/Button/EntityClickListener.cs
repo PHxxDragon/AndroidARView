@@ -1,12 +1,21 @@
 using UnityEngine;
-using System;
 
 namespace EAR.Entity.EntityAction
 {
     public class EntityClickListener : MonoBehaviour
     {
-        public event Action OnEntityClicked;
-
+        private static EntityClickListener instance;
+        void Awake()
+        {
+            if (!instance)
+            {
+                instance = this;
+            }
+            else
+            {
+                Debug.LogError("Two listener instance");
+            }
+        }
         void Update()
         {
             if (Input.GetMouseButtonDown(0))
@@ -14,12 +23,21 @@ namespace EAR.Entity.EntityAction
                 if (!GlobalStates.IsMouseRaycastBlocked())
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out RaycastHit hit))
+                    RaycastHit[] hits = Physics.RaycastAll(ray);
+                    float minDistance = float.MaxValue;
+                    EntityClickTarget minTarget = null;
+                    foreach (RaycastHit hit in hits)
                     {
-                        if (hit.transform.GetComponentInParent<EntityClickListener>() == this)
+                        EntityClickTarget target = hit.transform.GetComponentInParent<EntityClickTarget>();
+                        if (target && minDistance > hit.distance)
                         {
-                            OnEntityClicked?.Invoke();
+                            minDistance = hit.distance;
+                            minTarget = target;
                         }
+                    }
+                    if (minTarget)
+                    {
+                        minTarget.Click();
                     }
                 }
             }

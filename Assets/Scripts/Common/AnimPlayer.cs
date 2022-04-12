@@ -25,6 +25,14 @@ namespace EAR.AnimationPlayer
             SetModel(gameObject);
         }
 
+        void OnEnable()
+        {
+            if (GlobalStates.IsPlayMode())
+            {
+                PlayAnimation(_currentIndex);
+            }
+        }
+
         public void ToggleAnimationPlay(bool play)
         {
             if (_animation != null)
@@ -107,9 +115,6 @@ namespace EAR.AnimationPlayer
 
         public void PlayAnimation(int index)
         {
-            if (_currentIndex == index)
-                return;
-
             _currentIndex = index;
             if (_animation != null && _animationList != null)
             {

@@ -111,6 +111,8 @@ namespace EAR.Entity
             SetTextColor(data.textColor);
             SetBorderColor(data.borderColor);
             SetTextBorderWidth(data.borderWidth);
+
+            isVisible = data.isVisible;
         }
 
         public void SetHeight(float height)

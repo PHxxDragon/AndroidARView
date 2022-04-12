@@ -19,26 +19,28 @@ namespace EAR.Entity
         protected override void Awake()
         {
             base.Awake();
+        }
 
-            GlobalStates.OnIsPlayModeChange += (isPlayMode) =>
+        public override void StartDefaultState()
+        {
+            base.StartDefaultState();
+            BaseEntity baseEntity = EntityContainer.Instance.GetEntity(activatorEntityId);
+            if (baseEntity && baseEntity.IsClickable())
             {
-                BaseEntity baseEntity = EntityContainer.Instance.GetEntity(activatorEntityId);
-                if (baseEntity && baseEntity.IsClickable())
-                {
-                    if (isPlayMode)
-                    {
-                        EntityClickListener entityClickListener = baseEntity.gameObject.AddComponent<EntityClickListener>();
-                        entityClickListener.OnEntityClicked += ActivateButton;
-                    } else
-                    {
-                        EntityClickListener entityClickListener = baseEntity.gameObject.GetComponent<EntityClickListener>();
-                        Destroy(entityClickListener);
-                    }  
-                } else
-                {
-                    Debug.Log("Unclickable entity");
-                }
-            };
+                EntityClickTarget entityClickListener = baseEntity.gameObject.AddComponent<EntityClickTarget>();
+                entityClickListener.OnEntityClicked += ActivateButton;
+            }
+        }
+
+        public override void ResetEntityState()
+        {
+            base.ResetEntityState();
+            BaseEntity baseEntity = EntityContainer.Instance.GetEntity(activatorEntityId);
+            if (baseEntity && baseEntity.IsClickable())
+            {
+                EntityClickTarget entityClickListener = baseEntity.gameObject.GetComponent<EntityClickTarget>();
+                Destroy(entityClickListener);
+            }
         }
 
         public ButtonData GetButtonData()
@@ -110,6 +112,11 @@ namespace EAR.Entity
         public string GetActivatorEntityId()
         {
             return activatorEntityId;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
     }
 }

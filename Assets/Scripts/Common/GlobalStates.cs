@@ -9,9 +9,9 @@ namespace EAR
             ViewModel, EditModel, EditARModule
         }
 
-        public static Action<Mode> OnModeChange;
-        public static Action<bool> OnEnableScreenshotChange;
-        public static Action<bool> OnIsPlayModeChange;
+        public static event Action<Mode> OnModeChange;
+        public static event Action<bool> OnEnableScreenshotChange;
+        public static event Action<bool> OnIsPlayModeChange;
 
         public delegate void MouseRaycastHandler(ref bool isBlocked);
         public static event MouseRaycastHandler CheckMouseRaycastBlocked;
@@ -23,7 +23,7 @@ namespace EAR
         public static bool IsMouseRaycastBlocked()
         {
             bool isBlocked = false;
-            CheckMouseRaycastBlocked(ref isBlocked);
+            CheckMouseRaycastBlocked?.Invoke(ref isBlocked);
             return isBlocked;
         }
 

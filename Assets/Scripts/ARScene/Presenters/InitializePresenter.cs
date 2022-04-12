@@ -99,6 +99,12 @@ namespace EAR.Presenter
             }
             LoadDone?.Invoke();
             loadingPanel.SetActive(false);
+            GlobalStates.SetIsPlayMode(true);
+        }
+
+        void OnDestroy()
+        {
+            GlobalStates.SetIsPlayMode(false);
         }
     }
 }

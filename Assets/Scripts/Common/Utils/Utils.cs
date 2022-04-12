@@ -152,7 +152,7 @@ namespace EAR
             {
                 if (meshRenderers.Length == 0)
                 {
-                    bounds = skinnedMeshRenderers[0].sharedMesh.bounds;
+                    bounds = skinnedMeshRenderers[0].bounds;
                 }
                 foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
                 {

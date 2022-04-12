@@ -79,7 +79,7 @@ namespace EAR.Entity
             return entityName;
         }
 
-        void OnDestroy()
+        protected virtual void OnDestroy()
         {
             GlobalStates.OnIsPlayModeChange -= action;
             OnEntityDestroy?.Invoke(this);

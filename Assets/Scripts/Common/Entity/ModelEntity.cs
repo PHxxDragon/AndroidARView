@@ -99,6 +99,9 @@ namespace EAR.Entity
         {
             ModelEntity modelEntity = new GameObject().AddComponent<ModelEntity>();
             GameObject model = AssetContainer.Instance.GetModel(modelData.assetId);
+
+            modelEntity.isVisible = modelData.isVisible;
+
             if (model)
             {
                 GameObject child = Instantiate(model);

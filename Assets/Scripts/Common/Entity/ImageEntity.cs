@@ -46,6 +46,8 @@ namespace EAR.Entity
             ImageEntity imagePrefab = AssetContainer.Instance.GetImagePrefab();
             ImageEntity imageEntity = Instantiate(imagePrefab);
 
+            imageEntity.isVisible = imageData.isVisible;
+
             if (!string.IsNullOrEmpty(imageData.id))
             {
                 imageEntity.SetId(imageData.id);

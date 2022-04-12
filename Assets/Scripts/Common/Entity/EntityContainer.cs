@@ -27,6 +27,8 @@ namespace EAR.Container
             }
         }
 
+        private Dictionary<string, BaseEntity> entityDict = new Dictionary<string, BaseEntity>();
+
         void Awake()
         {
             if (!instance)
@@ -38,18 +40,29 @@ namespace EAR.Container
                 Debug.LogError("Two instance of entity container found");
             }
 
-            BaseEntity.OnEntityCreated += (BaseEntity entity) =>
+            BaseEntity.OnEntityCreated += EntityCreatedHandler;
+            BaseEntity.OnEntityDestroy += EntityDestroyedHandler;
+        }
+
+        private void EntityCreatedHandler(BaseEntity entity)
+        {
+            TransformData.SetParent(entity.transform, container.transform);
+            entityDict.Add(entity.GetId(), entity);
+        }
+
+        private void EntityDestroyedHandler(BaseEntity entity)
+        {
+            if (entityDict.ContainsKey(entity.GetId()))
             {
-                TransformData.SetParent(entity.transform, container.transform);
-                entityDict.Add(entity.GetId(), entity);
-            };
-            BaseEntity.OnEntityDestroy += (BaseEntity entity) =>
-            {
-                if (entityDict.ContainsKey(entity.GetId()))
-                {
-                    entityDict.Remove(entity.GetId());
-                }
-            };
+                entityDict.Remove(entity.GetId());
+            }
+        }
+
+
+        void OnDestroy()
+        {
+            BaseEntity.OnEntityCreated -= EntityCreatedHandler;
+            BaseEntity.OnEntityDestroy -= EntityDestroyedHandler;
         }
 
         public void ApplyMetadata(MetadataObject metadataObject)
@@ -121,8 +134,6 @@ namespace EAR.Container
                 }
             }
         }
-
-        private Dictionary<string, BaseEntity> entityDict = new Dictionary<string, BaseEntity>();
 
         public BaseEntity GetEntity(string entityId)
         {
