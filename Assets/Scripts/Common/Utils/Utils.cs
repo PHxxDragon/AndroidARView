@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using EAR.Entity;
 using System.Collections;
 using System;
 
@@ -135,7 +136,7 @@ namespace EAR
             return bounds;
         }
 
-        public static Bounds GetModelBounds(GameObject model)
+        /*public static Bounds GetModelBounds(GameObject model)
         {
             MeshRenderer[] meshRenderers = model.GetComponentsInChildren<MeshRenderer>();
             Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
@@ -158,6 +159,119 @@ namespace EAR
                 {
                     bounds.Encapsulate(skinnedMeshRenderer.bounds);
                 }
+            }
+            return bounds;
+        }*/
+
+        private static Bounds GetExactBoundsFromCache(BoundsCache cache)
+        {
+            if (!cache)
+            {
+                return new Bounds(Vector3.zero, Vector3.zero);
+            }
+            Bounds local = cache.bounds;
+
+            Vector3 min = Vector3.positiveInfinity;
+            Vector3 max = Vector3.negativeInfinity;
+            Vector3[] corners = { 
+                new Vector3(-local.size.x, -local.size.y, -local.size.z),
+                new Vector3(local.size.x, -local.size.y, -local.size.z),
+                new Vector3(local.size.x, -local.size.y, local.size.z),
+                new Vector3(-local.size.x, -local.size.y, local.size.z) ,
+                new Vector3(-local.size.x, local.size.y, -local.size.z) ,
+                new Vector3(local.size.x, local.size.y, -local.size.z),
+                new Vector3(local.size.x, local.size.y, local.size.z) ,
+                new Vector3(-local.size.x, local.size.y, local.size.z)};
+
+            foreach (Vector3 corner in corners)
+            {
+                Vector3 vertice = cache.transform.TransformPoint(local.center + corner*0.5f);
+                min = Vector3.Min(min, vertice);
+                max = Vector3.Max(max, vertice);
+            }
+
+            Bounds bounds = new Bounds();
+            bounds.SetMinMax(min, max);
+            return bounds;
+        }
+
+        private static Bounds GetBoundsFromCache(BoundsCache cache)
+        {
+            Bounds local = cache.bounds;
+            Bounds global = new Bounds();
+            global.center = cache.transform.TransformPoint(local.center);
+            global.size = cache.transform.TransformVector(local.size);
+            return global;
+        }
+
+        public static Bounds GetEntityBounds(GameObject container)
+        {
+            BaseEntity[] entities = container.GetComponentsInChildren<BaseEntity>();
+            Bounds bounds = new Bounds();
+            foreach (BaseEntity baseEntity in entities)
+            {
+                Bounds bounds1 = GetUIBounds(baseEntity.gameObject);
+                if (bounds1 == new Bounds())
+                {
+                    bounds1 = GetModelBounds(baseEntity.gameObject); 
+                }
+                if (bounds == new Bounds())
+                {
+                    bounds = bounds1;
+                } else
+                {
+                    bounds.Encapsulate(bounds1);
+                }
+            }
+            return bounds;
+        }
+
+        public static Bounds GetModelBounds(GameObject model, bool exact = true)
+        {
+            BoundsCache cache = model.GetComponentInChildren<BoundsCache>();
+            if (cache)
+            {
+                if (exact) return GetExactBoundsFromCache(cache);
+                // This only works if the model is not rotated
+                return GetBoundsFromCache(cache); 
+            }
+
+            MeshFilter[] meshFilters = model.GetComponentsInChildren<MeshFilter>();
+            Vector3 min = Vector3.positiveInfinity;
+            Vector3 max = Vector3.negativeInfinity;
+            foreach (MeshFilter meshFilter in meshFilters)
+            {
+                foreach (Vector3 vertice in meshFilter.mesh.vertices)
+                {
+                    Vector3 verticeInGlobalSpace = meshFilter.transform.TransformPoint(vertice);
+                    min = Vector3.Min(min, verticeInGlobalSpace);
+                    max = Vector3.Max(max, verticeInGlobalSpace);
+                }
+            }
+            SkinnedMeshRenderer[] skinnedMeshRenderers = model.GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
+            {
+                foreach (Vector3 vertice in skinnedMeshRenderer.sharedMesh.vertices)
+                {
+                    Vector3 verticeInGlobalSpace = skinnedMeshRenderer.transform.TransformPoint(vertice);
+                    min = Vector3.Min(min, verticeInGlobalSpace);
+                    max = Vector3.Max(max, verticeInGlobalSpace);
+                }
+            }
+            Bounds bounds;
+            if (min == Vector3.positiveInfinity || max == Vector3.negativeInfinity)
+            {
+                bounds = new Bounds(Vector3.zero, Vector3.zero);
+            } else
+            {
+                bounds = new Bounds();
+                bounds.SetMinMax(min, max);
+            }
+
+            if (!cache)
+            {
+                BoundsCache boundsCache = model.AddComponent<BoundsCache>();
+                boundsCache.bounds = bounds;
             }
             return bounds;
         }

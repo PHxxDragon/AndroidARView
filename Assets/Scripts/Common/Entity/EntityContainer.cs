@@ -128,8 +128,8 @@ namespace EAR.Container
                     ModelEntity modelEntity = ModelEntity.InstantNewEntity(modelData);
                     Bounds bounds = Utils.GetModelBounds(modelEntity.gameObject);
                     float ratio = scaleToSize / bounds.extents.magnitude;
-                    modelEntity.transform.position = -(bounds.center * ratio) + new Vector3(0, distanceToPlane + bounds.extents.y * ratio, 0);
                     modelEntity.transform.localScale *= ratio;
+                    modelEntity.transform.position = -(bounds.center * ratio - modelEntity.transform.position) + new Vector3(0, distanceToPlane + bounds.extents.y * ratio, 0);
                     break;
                 }
             }

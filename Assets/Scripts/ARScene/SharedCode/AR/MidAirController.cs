@@ -100,7 +100,7 @@ namespace EAR.AR
         {
             if (modelContainer != null)
             {
-                Bounds bounds = Utils.GetModelBounds(modelContainer);
+                Bounds bounds = Utils.GetEntityBounds(modelContainer);
                 if (bounds.size == Vector3.zero)
                 {
                     return;

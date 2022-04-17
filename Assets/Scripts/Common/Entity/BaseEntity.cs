@@ -6,7 +6,6 @@ namespace EAR.Entity
     public class BaseEntity : MonoBehaviour
     {
         public static Action<BaseEntity> OnEntityCreated;
-        public static Action<BaseEntity> OnEntityChanged;
         public static Action<BaseEntity> OnEntityDestroy;
 
         private string id = Guid.NewGuid().ToString();
@@ -30,6 +29,32 @@ namespace EAR.Entity
             };
             GlobalStates.OnIsPlayModeChange += action;
 
+        }
+
+        public virtual EntityData GetData()
+        {
+            EntityData entityData = new EntityData();
+            entityData.id = GetId();
+            entityData.name = GetEntityName();
+            entityData.transform = TransformData.TransformToTransformData(transform);
+            return entityData;
+        }
+
+        public virtual void PopulateData(EntityData entityData)
+        {
+            if (!string.IsNullOrEmpty(entityData.id))
+            {
+                SetId(entityData.id);
+            }
+            if (!string.IsNullOrEmpty(entityData.name))
+            {
+                SetEntityName(entityData.name);
+            }
+            if (entityData.transform != null)
+            {
+                TransformData.TransformDataToTransfrom(entityData.transform, transform);
+                transform.hasChanged = false;
+            }
         }
 
         protected virtual string GetDefaultName()

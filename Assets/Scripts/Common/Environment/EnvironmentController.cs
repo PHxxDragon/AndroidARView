@@ -9,18 +9,25 @@ public class EnvironmentController : MonoBehaviour
     [SerializeField]
     private Light directionalLight;
 
-    public void SetAmbientLight(Color color)
+    public void SetAmbientLight(Color color, bool callEvent = true)
     {
         RenderSettings.ambientLight = color;
-        OnAmbientLightChanged?.Invoke(color);
+        if (callEvent)
+        {
+            OnAmbientLightChanged?.Invoke(color);
+        }
+        
     }
 
-    public void SetDirectionalLight(LightData lightData)
+    public void SetDirectionalLight(LightData lightData, bool callEvent = true)
     {
         SetDirectionalLightColor(lightData.color);
         SetDirectionalLightIntensity(lightData.intensity);
         SetDirectionalLightDirection(lightData.direction);
-        OnDirectionalLightDataChanged?.Invoke(lightData);
+        if (callEvent)
+        {
+            OnDirectionalLightDataChanged?.Invoke(lightData);
+        }
     }
 
     public void SetDirectionalLightColor(Color color)

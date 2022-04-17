@@ -1,6 +1,7 @@
 using UnityEngine;
 using EAR.Container;
 using EAR.AnimationPlayer;
+using System.Collections;
 
 namespace EAR.Entity
 {
@@ -13,6 +14,12 @@ namespace EAR.Entity
         protected override string GetDefaultName()
         {
             return "New model " + count++; 
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            SetModel("");
         }
 
         public override void ResetEntityState()
@@ -35,7 +42,7 @@ namespace EAR.Entity
             }
         }
 
-        public ModelData GetModelData()
+        public override EntityData GetData()
         {
             ModelData modelData = new ModelData();
             modelData.id = GetId();
@@ -66,7 +73,7 @@ namespace EAR.Entity
 
         public void SetModel(string assetId)
         {
-            if (this.assetId == assetId)
+            if (this.assetId == assetId || assetId == null)
             {
                 return;
             }
@@ -77,6 +84,7 @@ namespace EAR.Entity
             {
                 prev = TransformData.TransformToTransformData(child);
                 Destroy(child.gameObject);
+                child.parent = null;
             }
 
             GameObject model = AssetContainer.Instance.GetModel(assetId);
@@ -92,50 +100,38 @@ namespace EAR.Entity
             {
                 TransformData.TransformDataToTransfrom(prev, newChild.transform);
             }
-            OnEntityChanged?.Invoke(this);
+        }
+
+        public override void PopulateData(EntityData entityData)
+        {
+            if (entityData is ModelData modelData)
+            {
+                base.PopulateData(entityData);
+
+                if (modelData.assetId != null)
+                {
+                    SetModel(modelData.assetId);
+                }
+
+                if (modelData.isVisible.HasValue)
+                {
+                    isVisible = modelData.isVisible.Value;
+                }
+
+                if (modelData.defaultAnimation.HasValue)
+                {
+                    defaultAnimationIndex = modelData.defaultAnimation.Value;
+                }
+            } else
+            {
+                Debug.LogError("Wrong data class entity id: " + entityData.id);
+            }
         }
 
         public static ModelEntity InstantNewEntity(ModelData modelData)
         {
             ModelEntity modelEntity = new GameObject().AddComponent<ModelEntity>();
-            GameObject model = AssetContainer.Instance.GetModel(modelData.assetId);
-
-            modelEntity.isVisible = modelData.isVisible;
-
-            if (model)
-            {
-                GameObject child = Instantiate(model);
-                modelEntity.assetId = modelData.assetId;
-                TransformData.ResetTransform(child.transform);
-                TransformData.SetParent(child.transform, modelEntity.transform);
-            } else
-            {
-                model = AssetContainer.Instance.GetModelPrefab();
-                GameObject child = Instantiate(model);
-                TransformData.ResetTransform(child.transform);
-                TransformData.SetParent(child.transform, modelEntity.transform);
-            }
-
-            if (!string.IsNullOrEmpty(modelData.name))
-            {
-                modelEntity.SetEntityName(modelData.name);
-            }
-            
-            if (modelData.transform != null)
-            {
-                TransformData.TransformDataToTransfrom(modelData.transform, modelEntity.transform);
-            }
-            
-            if (!string.IsNullOrEmpty(modelData.id))
-            {
-                modelEntity.SetId(modelData.id);
-            }
-
-            if (modelData.defaultAnimation > 0)
-            {
-                modelEntity.defaultAnimationIndex = modelData.defaultAnimation;
-            }
-
+            modelEntity.PopulateData(modelData);
             OnEntityCreated?.Invoke(modelEntity);
             return modelEntity;
         }

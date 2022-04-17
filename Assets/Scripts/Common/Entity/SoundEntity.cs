@@ -6,7 +6,7 @@ namespace EAR.Entity
     public class SoundEntity : InvisibleEntity
 {
         private static int count = 1;
-        private string assetId;
+        private string assetId = "";
         private bool playAtStart;
 
         protected override string GetDefaultName()
@@ -62,7 +62,7 @@ namespace EAR.Entity
             audioSource.clip = AssetContainer.Instance.GetSound(assetId);
         }
 
-        public SoundData GetSoundData()
+        public override EntityData GetData()
         {
             AudioSource audioSource = GetComponentInChildren<AudioSource>();
             SoundData soundData = new SoundData();
@@ -75,33 +75,42 @@ namespace EAR.Entity
             return soundData;
         }
 
+        public override void PopulateData(EntityData entityData)
+        {
+            if (entityData is SoundData soundData)
+            {
+                base.PopulateData(entityData);
+
+                if (soundData.playAtStart.HasValue)
+                {
+                    playAtStart = soundData.playAtStart.Value;
+                }
+
+                AudioSource audioSource = GetComponentInChildren<AudioSource>();
+
+                if (soundData.loop.HasValue)
+                {
+                    audioSource.loop = soundData.loop.Value;
+                }
+
+                if (soundData.assetId != null)
+                {
+                    AudioClip audioClip = AssetContainer.Instance.GetSound(soundData.assetId);
+                    audioSource.clip = audioClip;
+                    assetId = soundData.assetId;
+                }
+            } else
+            {
+                Debug.LogError("Wrong data class entity id: " + entityData.id);
+            }
+            
+        }
+
         public static SoundEntity InstantNewEntity(SoundData soundData)
         {
             SoundEntity soundPrefab = AssetContainer.Instance.GetSoundPrefab();
             SoundEntity soundEntity = Instantiate(soundPrefab);
-            if (!string.IsNullOrEmpty(soundData.id))
-            {
-                soundEntity.SetId(soundData.id);
-            }
-
-            if (!string.IsNullOrEmpty(soundData.name))
-            {
-                soundEntity.SetEntityName(soundData.name);
-            }
-
-            soundEntity.playAtStart = soundData.playAtStart;
-
-            AudioSource audioSource = soundEntity.GetComponentInChildren<AudioSource>();
-            audioSource.loop = soundData.loop;
-
-            if (!string.IsNullOrEmpty(soundData.assetId))
-            {
-                AudioClip audioClip = AssetContainer.Instance.GetSound(soundData.assetId);
-                audioSource.clip = audioClip;
-                soundEntity.assetId = soundData.assetId;
-            }
-
-            TransformData.TransformDataToTransfrom(soundData.transform, soundEntity.transform);
+            soundEntity.PopulateData(soundData);
             OnEntityCreated?.Invoke(soundEntity);
             return soundEntity;
         }

@@ -50,13 +50,13 @@ namespace EAR.Entity
             return noteEntity;
         }
 
-        public NoteData GetNoteData()
+        public override EntityData GetData()
         {
             NoteData noteData = new NoteData();
             noteData.id = GetId();
             noteData.name = GetEntityName();
             noteData.noteContent = text.text;
-            noteData.noteTransformData = TransformData.TransformToTransformData(transform);
+            noteData.transform = TransformData.TransformToTransformData(transform);
             noteData.noteContentRectTransformData = RectTransformData.RectTransformToRectTransformData(noteContainer);
             if (noteData.noteContentRectTransformData.localScale == Vector3.zero)
             {
@@ -74,45 +74,65 @@ namespace EAR.Entity
             return noteData;
         }
 
-        private void PopulateData(NoteData data)
+        public override void PopulateData(EntityData entityData)
         {
-            if (data.noteTransformData != null)
+            if (entityData is NoteData noteData)
             {
-                TransformData.TransformDataToTransfrom(data.noteTransformData, transform);
-            }
+                base.PopulateData(entityData);
 
-            if (data.noteContentRectTransformData != null)
-            {
-                RectTransformData.RectTransformDataToRectTransform(data.noteContentRectTransformData, noteContainer);
-            }
-            
-            if (data.noteContent != null)
-            {
-                text.text = data.noteContent;
-            }
-            
-            if (data.boxWidth > 0)
-            {
-                SetBoxWidth(data.boxWidth);
-            }
-            
-            if (data.fontSize > 0)
-            {
-                SetFontSize(data.fontSize);
-            }
+                if (noteData.noteContentRectTransformData != null)
+                {
+                    RectTransformData.RectTransformDataToRectTransform(noteData.noteContentRectTransformData, noteContainer);
+                }
 
-            if (data.id != null)
-            {
-                SetId(data.id);
-            }
-            
-            SetTextBackgroundColor(data.textBackgroundColor);
-            SetTextBorderRadius(data.textBorderRadius);
-            SetTextColor(data.textColor);
-            SetBorderColor(data.borderColor);
-            SetTextBorderWidth(data.borderWidth);
+                if (noteData.noteContent != null)
+                {
+                    text.text = noteData.noteContent;
+                }
 
-            isVisible = data.isVisible;
+                if (noteData.boxWidth.HasValue)
+                {
+                    SetBoxWidth(noteData.boxWidth.Value);
+                }
+
+                if (noteData.fontSize.HasValue)
+                {
+                    SetFontSize(noteData.fontSize.Value);
+                }
+
+                if (noteData.textBackgroundColor.HasValue)
+                {
+                    SetTextBackgroundColor(noteData.textBackgroundColor.Value);
+                }
+
+                if (noteData.textBorderRadius.HasValue)
+                {
+                    SetTextBorderRadius(noteData.textBorderRadius.Value);
+                }
+
+                if (noteData.textColor.HasValue)
+                {
+                    SetTextColor(noteData.textColor.Value);
+                }
+
+                if (noteData.borderColor.HasValue)
+                {
+                    SetBorderColor(noteData.borderColor.Value);
+                }
+
+                if (noteData.borderWidth.HasValue)
+                {
+                    SetTextBorderWidth(noteData.borderWidth.Value);
+                }
+
+                if (noteData.isVisible.HasValue)
+                {
+                    isVisible = noteData.isVisible.Value;
+                }
+            } else
+            {
+                Debug.LogError("Wrong data class entity id: " + entityData.id);
+            }
         }
 
         public void SetHeight(float height)

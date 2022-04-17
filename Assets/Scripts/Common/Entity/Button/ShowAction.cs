@@ -10,7 +10,7 @@ namespace EAR.Entity.EntityAction
         public override void ExecuteAction()
         {
             BaseEntity entity = EntityContainer.Instance.GetEntity(GetTargetEntityId());
-            if (entity.IsViewable())
+            if (entity && entity.IsViewable())
             {
                 entity.gameObject.SetActive(true);
             }

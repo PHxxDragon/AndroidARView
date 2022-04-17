@@ -8,7 +8,7 @@ namespace EAR.Entity
     public class ButtonEntity : InvisibleEntity
     {
         private static int count = 1;
-        private string activatorEntityId;
+        private string activatorEntityId = "";
         public readonly List<ButtonAction> actions = new List<ButtonAction>();
 
         protected override string GetDefaultName()
@@ -43,13 +43,14 @@ namespace EAR.Entity
             }
         }
 
-        public ButtonData GetButtonData()
+        public override EntityData GetData()
         {
             ButtonData buttonData = new ButtonData();
             buttonData.transform = TransformData.TransformToTransformData(transform);
             buttonData.name = GetEntityName();
             buttonData.id = GetId();
             buttonData.activatorEntityId = activatorEntityId;
+            buttonData.actionDatas = new List<ButtonActionData>();
             foreach (ButtonAction buttonAction in actions)
             {
                 buttonData.actionDatas.Add(buttonAction.GetButtonActionData());
@@ -57,36 +58,38 @@ namespace EAR.Entity
             return buttonData;
         }
 
+        public override void PopulateData(EntityData entityData)
+        {
+            if (entityData is ButtonData buttonData)
+            {
+                base.PopulateData(entityData);
+
+                if (buttonData.activatorEntityId != null)
+                {
+                    SetActivatorEntityId(buttonData.activatorEntityId);
+                }
+
+                if (buttonData.actionDatas != null)
+                {
+                    actions.Clear();
+                    foreach (ButtonActionData buttonActionData in buttonData.actionDatas)
+                    {
+                        actions.Add(ButtonActionFactory.CreateButtonAction(buttonActionData));
+                    }
+                }
+            } else
+            {
+                Debug.LogError("Wrong data class entity id " + entityData.id);
+            }
+            
+            
+        }
+
         public static ButtonEntity InstantNewEntity(ButtonData buttonData)
         {
             ButtonEntity buttonPrefab = AssetContainer.Instance.GetButtonPrefab();
             ButtonEntity buttonEntity = Instantiate(buttonPrefab);
-
-            if (!string.IsNullOrEmpty(buttonData.id))
-            {
-                buttonEntity.SetId(buttonData.id);
-            }
-
-            if (!string.IsNullOrEmpty(buttonData.name))
-            {
-                buttonEntity.SetEntityName(buttonData.name);
-            }
-
-            if (!string.IsNullOrEmpty(buttonData.activatorEntityId))
-            {
-                buttonEntity.SetActivatorEntityId(buttonData.activatorEntityId);
-            }
-
-            if (buttonData.transform != null)
-            {
-                TransformData.TransformDataToTransfrom(buttonData.transform, buttonEntity.transform);
-            }
-
-            foreach (ButtonActionData buttonActionData in buttonData.actionDatas)
-            {
-                buttonEntity.actions.Add(ButtonActionFactory.CreateButtonAction(buttonActionData));
-            }
-
+            buttonEntity.PopulateData(buttonData);
             OnEntityCreated?.Invoke(buttonEntity);
             return buttonEntity;
         }
@@ -98,6 +101,7 @@ namespace EAR.Entity
 
         public void ActivateButton()
         {
+            Debug.Log("Action count: " + actions.Count);
             foreach(ButtonAction action in actions)
             {
                 action.ExecuteAction();

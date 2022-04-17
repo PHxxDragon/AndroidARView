@@ -6,7 +6,7 @@ namespace EAR
     {
         public enum Mode
         {
-            ViewModel, EditModel, EditARModule
+            ViewModel, EditModel, EditARModule, ViewARModule
         }
 
         public static event Action<Mode> OnModeChange;

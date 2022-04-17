@@ -17,14 +17,18 @@ namespace EAR
     }
 
     [Serializable]
-    public class ButtonData
+    public class EntityData
     {
         public string id;
         public string name;
-
         public TransformData transform;
+    }
+
+    [Serializable]
+    public class ButtonData : EntityData
+    {
         public string activatorEntityId;
-        public List<ButtonActionData> actionDatas = new List<ButtonActionData>();
+        public List<ButtonActionData> actionDatas;
     }
 
     [Serializable]
@@ -41,62 +45,46 @@ namespace EAR
     }
 
     [Serializable]
-    public class SoundData
+    public class SoundData : EntityData
     {
-        public string id;
-        public string name;
-
-        public TransformData transform;
         public string assetId;
-        public bool playAtStart;
-        public bool loop;
+        public bool? playAtStart;
+        public bool? loop;
     }
 
     [Serializable]
-    public class ImageData
+    public class ImageData : EntityData
     {
-        public string id;
-        public string name;
-
-        public TransformData transform;
         public string assetId;
-        public bool isVisible = true;
+        public bool? isVisible;
     }
 
     [Serializable]
-    public class ModelData
+    public class ModelData : EntityData
     {
-        public string id;
-        public string name;
-        public int defaultAnimation;
-
-        public TransformData transform;
+        public int? defaultAnimation;
         public string assetId;
-        public bool isVisible = true;
+        public bool? isVisible;
     }
 
     [Serializable]
-    public class NoteData
+    public class NoteData : EntityData
     {
-        public string id;
-        public string name;
+        public bool? isVisible;
 
-        public bool isVisible = true;
-
-        public TransformData noteTransformData;
         public RectTransformData noteContentRectTransformData;
 
         public string noteContent;
-        public Color textBackgroundColor = Color.white;
+        public Color? textBackgroundColor;
 
-        public Vector4 borderWidth = Vector4.zero;
-        public Vector4 textBorderRadius = Vector4.zero;
-        public Color borderColor = Color.white;
+        public Vector4? borderWidth;
+        public Vector4? textBorderRadius;
+        public Color? borderColor;
 
-        public int fontSize;
-        public Color textColor = Color.black;
+        public int? fontSize;
+        public Color? textColor;
 
-        public float boxWidth;
+        public float? boxWidth;
     }
 
     [Serializable]
@@ -106,7 +94,7 @@ namespace EAR
         public string name;
 
         public LightType lightType = LightType.Directional;
-        public Color color = Color.black;
+        public Color color = Color.white;
         public float intensity = 1f;
         public Vector3 direction = new Vector3(0, -1, 0);
 

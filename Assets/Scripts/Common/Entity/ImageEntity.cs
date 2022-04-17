@@ -11,14 +11,14 @@ namespace EAR.Entity
         [SerializeField]
         private Image image;
 
-        private string assetId;
+        private string assetId = "";
 
         protected override string GetDefaultName()
         {
             return "New image " + count++;
         }
 
-        public ImageData GetImageData()
+        public override EntityData GetData()
         {
             ImageData imageData = new ImageData();
             imageData.assetId = assetId;
@@ -31,49 +31,48 @@ namespace EAR.Entity
 
         public void SetImage(string assetId)
         {
+            if (this.assetId == assetId || assetId == null)
+            {
+                return;
+            }
+
+            this.assetId = assetId;
+
             Texture2D image = AssetContainer.Instance.GetImage(assetId); 
             if (!image)
             {
                 image = AssetContainer.Instance.GetDefaultImage();
             }
             this.image.sprite = Utils.Instance.Texture2DToSprite(image);
-            this.assetId = assetId;
-            //OnEntityChanged?.Invoke(this);
+        }
+
+        public override void PopulateData(EntityData entityData)
+        {
+            if (entityData is ImageData imageData)
+            {
+                base.PopulateData(entityData);
+
+                if (imageData.isVisible.HasValue)
+                {
+                    isVisible = imageData.isVisible.Value;
+                }
+
+                if (imageData.assetId != null)
+                {
+                    SetImage(imageData.assetId);
+                }
+            } else
+            {
+                Debug.LogError("Wrong data class entity id " + entityData.id);
+            }
+            
         }
 
         public static ImageEntity InstantNewEntity(ImageData imageData)
         {
             ImageEntity imagePrefab = AssetContainer.Instance.GetImagePrefab();
             ImageEntity imageEntity = Instantiate(imagePrefab);
-
-            imageEntity.isVisible = imageData.isVisible;
-
-            if (!string.IsNullOrEmpty(imageData.id))
-            {
-                imageEntity.SetId(imageData.id);
-            }
-
-            Texture2D image = AssetContainer.Instance.GetImage(imageData.assetId);
-            if (image)
-            {
-                imageEntity.image.sprite = Utils.Instance.Texture2DToSprite(image);
-                imageEntity.assetId = imageData.assetId;
-            } else
-            {
-                image = AssetContainer.Instance.GetDefaultImage();
-                imageEntity.image.sprite = Utils.Instance.Texture2DToSprite(image);
-            }
-
-            if (!string.IsNullOrEmpty(imageData.name))
-            {
-                imageEntity.SetEntityName(imageData.name);
-            }
-
-            if (imageData.transform != null)
-            {
-                TransformData.TransformDataToTransfrom(imageData.transform, imageEntity.transform);
-            }
-
+            imageEntity.PopulateData(imageData);
             OnEntityCreated?.Invoke(imageEntity);
             return imageEntity;
         }
