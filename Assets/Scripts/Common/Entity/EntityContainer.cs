@@ -129,7 +129,7 @@ namespace EAR.Container
                     Bounds bounds = Utils.GetModelBounds(modelEntity.gameObject);
                     float ratio = scaleToSize / bounds.extents.magnitude;
                     modelEntity.transform.localScale *= ratio;
-                    modelEntity.transform.position = -(bounds.center * ratio - modelEntity.transform.position) + new Vector3(0, distanceToPlane + bounds.extents.y * ratio, 0);
+                    modelEntity.transform.position = -(bounds.center * ratio - modelEntity.transform.position * ratio) + new Vector3(0, distanceToPlane + bounds.extents.y * ratio, 0);
                     break;
                 }
             }
