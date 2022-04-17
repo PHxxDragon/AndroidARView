@@ -130,6 +130,7 @@ namespace EAR.Container
                     float ratio = scaleToSize / bounds.extents.magnitude;
                     modelEntity.transform.localScale *= ratio;
                     modelEntity.transform.position = -(bounds.center * ratio - modelEntity.transform.position * ratio) + new Vector3(0, distanceToPlane + bounds.extents.y * ratio, 0);
+                    modelEntity.transform.localPosition = modelEntity.transform.position;
                     break;
                 }
             }
