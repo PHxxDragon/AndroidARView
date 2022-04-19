@@ -48,43 +48,134 @@ namespace EAR
     public class SoundData : EntityData
     {
         public string assetId;
-        public bool? playAtStart;
-        public bool? loop;
+        public NullableBool playAtStart;
+        public NullableBool loop;
     }
 
     [Serializable]
     public class ImageData : EntityData
     {
         public string assetId;
-        public bool? isVisible;
+        public NullableBool isVisible;
+    }
+
+    [Serializable]
+    public struct NullableBool
+    {
+        public bool Value;
+        public bool HasValue;
+
+        public NullableBool(bool value)
+        {
+            Value = value;
+            HasValue = true;
+        }
+
+        public static implicit operator NullableBool(NullableNull _) => new NullableBool();
+        public static implicit operator NullableBool(bool value) => new NullableBool(value);
+        public static implicit operator bool(NullableBool value) => value.Value;
+    }
+
+    public sealed class NullableNull
+    {
+        private NullableNull()
+        { }
+    }
+
+    [Serializable]
+    public struct NullableInt
+    {
+        public int Value;
+        public bool HasValue;
+
+        public NullableInt(int value)
+        {
+            Value = value;
+            HasValue = true;
+        }
+
+        public static implicit operator NullableInt(NullableNull _) => new NullableInt();
+        public static implicit operator NullableInt(int value) => new NullableInt(value);
+        public static implicit operator int(NullableInt value) => value.Value;
+    }
+
+    [Serializable]
+    public struct NullableFloat
+    {
+        public float Value;
+        public bool HasValue;
+
+        public NullableFloat(float value)
+        {
+            Value = value;
+            HasValue = true;
+        }
+
+        public static implicit operator NullableFloat(NullableNull _) => new NullableFloat();
+        public static implicit operator NullableFloat(float value) => new NullableFloat(value);
+        public static implicit operator float(NullableFloat value) => value.Value;
+    }
+
+    [Serializable]
+    public struct NullableColor
+    {
+        public Color Value;
+        public bool HasValue;
+
+        public NullableColor(Color value)
+        {
+            Value = value;
+            HasValue = true;
+        }
+
+        public static implicit operator NullableColor(NullableNull _) => new NullableColor();
+        public static implicit operator NullableColor(Color value) => new NullableColor(value);
+        public static implicit operator Color(NullableColor value) => value.Value;
+    }
+
+    [Serializable]
+    public struct NullableVector4
+    {
+        public Vector4 Value;
+        public bool HasValue;
+
+        public NullableVector4(Vector4 value)
+        {
+            Value = value;
+            HasValue = true;
+        }
+
+        public static implicit operator NullableVector4(NullableNull _) => new NullableVector4();
+        public static implicit operator NullableVector4(Vector4 value) => new NullableVector4(value);
+        public static implicit operator Vector4(NullableVector4 value) => value.Value;
     }
 
     [Serializable]
     public class ModelData : EntityData
     {
-        public int? defaultAnimation;
+        public NullableInt defaultAnimation;
         public string assetId;
-        public bool? isVisible;
+        public NullableBool isVisible;
     }
 
     [Serializable]
     public class NoteData : EntityData
     {
-        public bool? isVisible;
+        public NullableBool isVisible;
 
         public RectTransformData noteContentRectTransformData;
 
         public string noteContent;
-        public Color? textBackgroundColor;
+        public NullableColor textBackgroundColor;
 
-        public Vector4? borderWidth;
-        public Vector4? textBorderRadius;
-        public Color? borderColor;
+        public NullableVector4 borderWidth;
+        public NullableVector4 textBorderRadius;
+        public NullableColor borderColor;
 
-        public int? fontSize;
-        public Color? textColor;
+        public NullableInt fontSize;
+        public NullableColor textColor;
 
-        public float? boxWidth;
+        public NullableFloat boxWidth;
     }
 
     [Serializable]

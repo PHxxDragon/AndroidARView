@@ -101,7 +101,6 @@ namespace EAR.Entity
 
         public void ActivateButton()
         {
-            Debug.Log("Action count: " + actions.Count);
             foreach(ButtonAction action in actions)
             {
                 action.ExecuteAction();

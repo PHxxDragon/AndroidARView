@@ -53,7 +53,6 @@ namespace EAR.Entity
             if (entityData.transform != null)
             {
                 TransformData.TransformDataToTransfrom(entityData.transform, transform);
-                transform.hasChanged = false;
             }
         }
 

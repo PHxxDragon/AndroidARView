@@ -50,6 +50,7 @@ namespace EAR.AnimationPlayer
 
         public void SetAnimationState(float value)
         {
+            Debug.Log("Value: " + value + "Entity: " + GetComponentInParent<BaseEntity>().GetEntityName());
             if (_animation != null)
             {
                 _currentAnimationState.normalizedTime = value;

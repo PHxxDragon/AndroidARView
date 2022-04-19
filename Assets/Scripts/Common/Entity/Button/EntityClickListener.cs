@@ -37,7 +37,11 @@ namespace EAR.Entity.EntityAction
                     }
                     if (minTarget)
                     {
-                        minTarget.Click();
+                        EntityClickTarget[] entityClicks = minTarget.GetComponents<EntityClickTarget>();
+                        foreach(EntityClickTarget entityClickTarget in entityClicks)
+                        {
+                            entityClickTarget.Click();
+                        }
                     }
                 }
             }
