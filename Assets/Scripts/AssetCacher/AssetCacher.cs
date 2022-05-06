@@ -184,7 +184,8 @@ namespace EAR.AssetCache
 
                 if (cacheMetadata[moduleId].urlToLocalDict.ContainsKey(asset.url))
                 {
-                    asset.url = cacheMetadata[moduleId].urlToLocalDict[asset.url];
+                    string url = cacheMetadata[moduleId].urlToLocalDict[asset.url];
+                    asset.url = new Uri(url).AbsoluteUri;
                     progressInfo.assetCount -= 1;
                     if (progressInfo.assetCount == 0 && !progressInfo.hasError)
                     {

@@ -5700,6 +5700,7 @@ MonoBehaviour:
   groundPlaneController: {fileID: 1481134614}
   midAirController: {fileID: 140811210}
   modelContainer: {fileID: 1668057568}
+  loadingPanel: {fileID: 347941607}
 --- !u!1 &1817867505
 GameObject:
   m_ObjectHideFlags: 0
