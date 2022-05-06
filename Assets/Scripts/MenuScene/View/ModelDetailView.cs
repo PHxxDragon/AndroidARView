@@ -84,7 +84,7 @@ namespace EAR.View
                     coverImage.sprite = image;
             };
             title.text = modelDataObject.name;
-            downloadSize.text = LocalizationUtils.GetLocalizedText(DOWNLOAD_SIZE) + Utils.GetFileSizeString(modelDataObject.totalSize);
+            downloadSize.text = LocalizationUtils.GetLocalizedText(DOWNLOAD_SIZE) + Utils.GetFileSizeString(modelDataObject.size);
             likes.text = modelDataObject.numOfFav + LocalizationUtils.GetLocalizedText(LIKES);
             description.text = modelDataObject.description;
             categories.text = modelDataObject.categories.Count == 0 ? LocalizationUtils.GetLocalizedText(NO_CATEGORY) : LocalizationUtils.GetLocalizedText(CATEGORY) + string.Join(", ", modelDataObject.categories);

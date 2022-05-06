@@ -29,7 +29,7 @@ namespace EAR
         //Serialize JSON
         public int id;
         public int numOfFav;
-        public long totalSize;
+        public long size;
         public string name;
         public string description;
         public string url;
