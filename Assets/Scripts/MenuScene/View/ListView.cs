@@ -16,9 +16,15 @@ namespace EAR.View
         protected GameObject container;
         [SerializeField]
         protected TMP_Dropdown pageDropdown;
+        [SerializeField]
+        protected GameObject emptyIndicator;
+        [SerializeField]
+        protected GameObject loadingCircle;
 
         protected virtual void Awake()
         {
+            emptyIndicator.gameObject.SetActive(false);
+            loadingCircle.gameObject.SetActive(false);
             pageDropdown.onValueChanged.AddListener((value) =>
             {
                 Refresh();
@@ -27,6 +33,16 @@ namespace EAR.View
 
         public virtual void PopulateData(List<T2> data, int pageCount)
         {
+            loadingCircle.gameObject.SetActive(false);
+            container.gameObject.SetActive(true);
+            if (data.Count != 0)
+            {
+                emptyIndicator.gameObject.SetActive(false);
+            } else
+            {
+                emptyIndicator.gameObject.SetActive(true);
+            }
+
             if (pageCount != 0)
             {
                 pageDropdown.ClearOptions();
@@ -50,6 +66,13 @@ namespace EAR.View
                 T1 modelView = Instantiate(viewPrefab, container.transform).GetComponent<T1>();
                 modelView.PopulateData(datum);
             }
+        }
+
+        public override void Refresh(object args = null)
+        {
+            loadingCircle.gameObject.SetActive(true);
+            container.gameObject.SetActive(false);
+            emptyIndicator.gameObject.SetActive(false);
         }
     }
 }

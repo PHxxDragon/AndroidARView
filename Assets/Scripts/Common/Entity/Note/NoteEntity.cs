@@ -36,10 +36,15 @@ namespace EAR.Entity
 
         private Vector3 originalScale;
 
-        protected override string GetDefaultName()
+        public static int GetNextId()
+        {
+            return count++;
+        }
+
+/*        protected override string GetDefaultName()
         {
             return "New note " + count++;
-        }
+        }*/
 
         public static NoteEntity InstantNewEntity(NoteData noteData)
         {
@@ -79,6 +84,13 @@ namespace EAR.Entity
             if (entityData is NoteData noteData)
             {
                 base.PopulateData(entityData);
+
+                if (noteData.fontAssetId != null)
+                {
+                    text.font = AssetContainer.Instance.GetFont(noteData.fontAssetId);
+                    Debug.Log(AssetContainer.Instance.GetFont(noteData.fontAssetId));
+                    Debug.Log(text.font);
+                }
 
                 if (noteData.noteContentRectTransformData != null)
                 {
@@ -133,18 +145,6 @@ namespace EAR.Entity
             {
                 Debug.LogError("Wrong data class entity id: " + entityData.id);
             }
-        }
-
-        public void SetHeight(float height)
-        {
-            Vector3 localPosition = noteContainer.localPosition;
-            localPosition.y = height;
-            noteContainer.localPosition = localPosition;
-        }
-
-        public float GetHeight()
-        {
-            return noteContainer.localPosition.y;
         }
 
         public void SetBoxWidth(float boxWidth)

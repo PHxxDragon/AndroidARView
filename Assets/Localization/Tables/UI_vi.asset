@@ -221,5 +221,85 @@ MonoBehaviour:
       b\xE0i h\u1ECDc n\xE0y"
     m_Metadata:
       m_Items: []
+  - m_Id: 23843854078128128
+    m_Localized: "Ng\xF4n ng\u1EEF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24485524317978624
+    m_Localized: "Ch\u1ECDn ng\xF4n ng\u1EEF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24485667104669696
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24485738583998464
+    m_Localized: "Ti\u1EBFng Vi\u1EC7t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24488423370571776
+    m_Localized: "Ng\xF4n ng\u1EEF \u0111ang s\u1EED d\u1EE5ng"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24489396474265600
+    m_Localized: "L\u01B0u tr\u1EEF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24489841963876352
+    m_Localized: "L\u01B0u tr\u1EEF t\u1ED1i \u0111a"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24490034415321088
+    m_Localized: "\u0110ang s\u1EED d\u1EE5ng"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24515775009964032
+    m_Localized: "Ch\u1ECDn dung l\u01B0\u1EE3ng t\u1ED1i \u0111a"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24516595747176448
+    m_Localized: "H\u1EE7y"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24516840996519936
+    m_Localized: "X\xF3a b\u1ED9 nh\u1EDB t\u1EA1m"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24517795267788800
+    m_Localized: "X\xF3a"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25230309321859072
+    m_Localized: "Ph\xE1t l\u1EA1i b\xE0i h\u1ECDc"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25230512552665088
+    m_Localized: "B\u1EA1n c\xF3 mu\u1ED1n ph\xE1t l\u1EA1i b\xE0i h\u1ECDc kh\xF4ng?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25605832392286208
+    m_Localized: "T\xECm ki\u1EBFm"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25607981155196928
+    m_Localized: "T\u1EA5t c\u1EA3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25608975255576576
+    m_Localized: "S\u1EDF h\u1EEFu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25609203350216704
+    m_Localized: "\u0110\xE3 tham gia"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25640359177199616
+    m_Localized: "Kh\xF4ng t\xECm th\u1EA5y kh\xF3a h\u1ECDc n\xE0o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25648942803558400
+    m_Localized: "Kh\xF4ng t\xECm th\u1EA5y m\xF4 h\xECnh n\xE0o"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

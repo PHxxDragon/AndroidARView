@@ -16,6 +16,7 @@ namespace EAR.WebRequest
         private const string WRONG_CREDENTIALS = "WrongCredentials";
         private const string UNEXPECTED = "UnexpectedConnectionError";
         private const string NO_CONNECTION = "NoConnection";
+        private const string TOKEN_EXPIRED_ERROR = "TokenExpiredError";
 
         private ApplicationConfiguration applicationConfiguration;
         private Dictionary<string, Dictionary<int, string>> localizedCategory = new Dictionary<string, Dictionary<int, string>>();
@@ -186,9 +187,9 @@ namespace EAR.WebRequest
             }));
         }
 
-        public void GetCourseList(int page, int limit, Action<CourseListData> callback = null, Action<string> errorCallback = null)
+        public void GetCourseList(int page, int limit, string type, string keyword, Action<CourseListData> callback = null, Action<string> errorCallback = null)
         {
-            string url = applicationConfiguration.GetCourseListPath(page, limit);
+            string url = applicationConfiguration.GetCourseListPath(page, limit, type, keyword);
             StartCoroutine(GetRequestCoroutine<CourseListDataResponse>(url,
                 (response) =>
                 {
@@ -225,9 +226,9 @@ namespace EAR.WebRequest
                 }));
         }
 
-        public void GetModelList(int page, int limit, bool isBoughtModel, Action<ModelListResponseData> callback = null, Action<string> errorCallback = null)
+        public void GetModelList(int page, int limit, string filter, string keyword, Action<ModelListResponseData> callback = null, Action<string> errorCallback = null)
         {
-            string url = isBoughtModel ? applicationConfiguration.GetBoughtModelListPath(page, limit) : applicationConfiguration.GetUploadedModelListPath(page, limit);
+            string url = applicationConfiguration.GetModelListPath(page, limit, filter, keyword);
             StartCoroutine(GetRequestCoroutine<ModelListResponse>(url,
                 (response) =>
                 {
@@ -285,8 +286,10 @@ namespace EAR.WebRequest
                     errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(NO_CONNECTION), -1);
                 } else
                 {
-                    if (unityWebRequest.responseCode == 401 && !retried)
+                    ErrorResponse errorResponse = JsonUtility.FromJson<ErrorResponse>(unityWebRequest.downloadHandler.text);
+                    if (errorResponse?.error?.name == TOKEN_EXPIRED_ERROR && !retried)
                     {
+                        Debug.Log("Token expired!");
                         Login((response) =>
                         {
                             StartCoroutine(GetRequestCoroutine(url, callback, errorCallback, true));
@@ -296,6 +299,7 @@ namespace EAR.WebRequest
                     } else
                     {
                         Debug.Log("error: " + unityWebRequest.downloadHandler.text);
+                        Debug.Log("Error Url: " + unityWebRequest.url);
                         errorCallback?.Invoke(unityWebRequest.error, unityWebRequest.responseCode);
                     }
                 }

@@ -22,6 +22,8 @@ namespace EAR.Presenter
         private ModelListView home;
         [SerializeField]
         private CourseListView courseList;
+        [SerializeField]
+        private SettingView settingView;
 
         void Start()
         {
@@ -61,10 +63,11 @@ namespace EAR.Presenter
                         courseList.Refresh();
                         break;
                     case Sidebar.SidebarToggle.Settings:
-                        //TODO
-                        Debug.Log("Unhandled");
+                        screenNavigator.OpenView(settingView);
+                        settingView.Refresh();
                         break;
                 }
+                sidebar.CloseSidebar();
             };
         }
     }

@@ -5,6 +5,7 @@ using EAR.Container;
 using EAR.SceneChange;
 using Vuforia;
 using EAR.AR;
+using EAR.AssetCache;
 
 
 namespace EAR.Presenter
@@ -14,22 +15,50 @@ namespace EAR.Presenter
         public event Action LoadDone;
 
         [SerializeField]
-        ImageTargetCreator imageTargetCreator;
+        private ImageTargetCreator imageTargetCreator;
         [SerializeField]
-        GameObject modelContainer;
+        private GameObject modelContainer;
 
         [SerializeField]
-        Modal modalPrefab;
+        private Modal modalPrefab;
         [SerializeField]
-        GameObject canvas;
+        private GameObject canvas;
         [SerializeField]
-        ProgressBar progressBar;
+        private ProgressBar progressBar;
         [SerializeField]
-        GameObject loadingPanel;
+        private GameObject loadingPanel;
+        [SerializeField]
+        private AssetCacher assetCacher;
 
         void Start()
         {
-            Load(ARSceneParam.assetInformation);
+            if (ARSceneParam.hasCached)
+            {
+                Load(ARSceneParam.assetInformation);
+            } else
+            {
+                StartCache(ARSceneParam.assetInformation);
+            }
+        }
+
+        private void StartCache(AssetInformation assetInformation)
+        {
+            progressBar.EnableProgressBar();
+            assetCacher.ProcessCache(AssetCacher.GetIdFromTypeAndId(assetInformation.id, assetInformation.type), assetInformation,
+            (assetInformation) =>
+            {
+                progressBar.DisableProgressBar();
+                Load(assetInformation);
+            }, (error) =>
+            {
+                Modal modal = Instantiate(modalPrefab, canvas.transform);
+                modal.SetModalContent("Error", error);
+                modal.DisableCancelButton();
+                progressBar.DisableProgressBar();
+            }, (progress) =>
+            {
+                progressBar.SetProgress(progress, "downloading");
+            });
         }
 
 
@@ -99,7 +128,6 @@ namespace EAR.Presenter
             }
             LoadDone?.Invoke();
             loadingPanel.SetActive(false);
-            GlobalStates.SetIsPlayMode(true);
         }
 
         void OnDestroy()

@@ -4,6 +4,7 @@ using EAR.WebRequest;
 using System.Collections.Generic;
 using EAR.SceneChange;
 using UnityEngine.SceneManagement;
+using EAR.AssetCache;
 
 namespace EAR.MenuScene.Presenter
 {

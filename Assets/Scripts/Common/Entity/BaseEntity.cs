@@ -6,6 +6,7 @@ namespace EAR.Entity
     public class BaseEntity : MonoBehaviour
     {
         public static Action<BaseEntity> OnEntityCreated;
+        public static Action<BaseEntity> OnEntityNameChanged;
         public static Action<BaseEntity> OnEntityDestroy;
 
         private string id = Guid.NewGuid().ToString();
@@ -49,6 +50,7 @@ namespace EAR.Entity
             if (!string.IsNullOrEmpty(entityData.name))
             {
                 SetEntityName(entityData.name);
+                OnEntityNameChanged?.Invoke(this);
             }
             if (entityData.transform != null)
             {

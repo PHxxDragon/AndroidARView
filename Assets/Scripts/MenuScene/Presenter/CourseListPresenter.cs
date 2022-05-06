@@ -26,9 +26,9 @@ namespace EAR.MenuScene.Presenter
         {
             if (courseListView != null && webRequest != null)
             {
-                courseListView.CourseListRefreshEvent += (page, limit) =>
+                courseListView.CourseListRefreshEvent += (page, limit, type, keyword) =>
                 {
-                    webRequest.GetCourseList(page, limit,
+                    webRequest.GetCourseList(page, limit, type.ToString(), keyword,
                     (response) =>
                     {
                         courseListView.PopulateData(response.courses, response.pageCount);

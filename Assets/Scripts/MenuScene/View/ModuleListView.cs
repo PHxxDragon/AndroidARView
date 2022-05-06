@@ -14,6 +14,8 @@ namespace EAR.View
         private GameObject compositePrefab;
         [SerializeField]
         private GameObject container;
+        [SerializeField]
+        private GameObject loadingIcon;
 
         [SerializeField]
         private Button backButton;
@@ -22,6 +24,7 @@ namespace EAR.View
 
         void Awake()
         {
+            loadingIcon.gameObject.SetActive(false);
             backButton.onClick.AddListener(() =>
             {
                 BackButtonClickEvent?.Invoke();
@@ -30,6 +33,9 @@ namespace EAR.View
 
         public void PopulateData(List<object> moduleDatas)
         {
+            container.gameObject.SetActive(true);
+            loadingIcon.gameObject.SetActive(false);
+
             foreach (Transform child in container.transform)
             {
                 Destroy(child.gameObject);
@@ -48,6 +54,8 @@ namespace EAR.View
                 courseId = (int)args;
             }
 
+            loadingIcon.gameObject.SetActive(true);
+            container.gameObject.SetActive(false);
             ModuleListRefreshEvent?.Invoke(courseId);
         }
     }

@@ -4,12 +4,19 @@ using UnityEngine.UI;
 using EAR.Entity;
 using System.Collections;
 using System;
+using System.Security.Cryptography;
+using System.IO;
+using System.Text;
 
 namespace EAR 
 {
     public class Utils : MonoBehaviour
     {
         private static Utils instance;
+
+        public const long KILOBYTE = 1024;
+        public const long MEGABYTE = 1024 * KILOBYTE;
+        public const long GIGABYTE = 1024 * MEGABYTE;
 
         public static Utils Instance
         {
@@ -25,17 +32,20 @@ namespace EAR
 		
 		public static string GetFileSizeString(long size)
         {
-            if (size < 1000)
+            if (size < KILOBYTE)
             {
-                return size + " b";
+                return size + " B";
             }
-            else if (size < 1000000)
+            else if (size < MEGABYTE)
             {
-                return ((float)size / 1000).ToString("#.#") + " kb";
+                return ((float)size / KILOBYTE).ToString("#.#") + " KB";
             }
-            else
+            else if (size < GIGABYTE)
             {
-                return ((float)size / 1000000).ToString("#.#") + " mb";
+                return ((float)size / MEGABYTE).ToString("#.#") + " MB";
+            } else
+            {
+                return ((float)size / GIGABYTE).ToString("#.#") + " GB";
             }
         }
 
@@ -102,6 +112,11 @@ namespace EAR
         public void GetImageAsTexture2D(string imageUrl, Action<Texture2D> callback, Action<string> errorCallback = null, Action<float> progressCallback = null)
         {
             StartCoroutine(GetImageCoroutine(imageUrl, callback, errorCallback, progressCallback));
+        }
+
+        public void GetFile(string url, string extension, string folder, Action<string> callback, Action<string> errorCallback = null, Action<float> progressCallback = null)
+        {
+            StartCoroutine(GetFileCoroutine(url, extension, folder, callback, errorCallback, progressCallback));
         }
 
         public static Bounds GetUIBounds(GameObject UIObject)
@@ -274,6 +289,45 @@ namespace EAR
                 boundsCache.bounds = bounds;
             }
             return bounds;
+        }
+
+        public string GetHashString(string inputString)
+        {
+            using HashAlgorithm algorithm = SHA256.Create();
+            byte[] hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (byte b in hash)
+            {
+                stringBuilder.Append(b.ToString("x2"));
+            }
+            return stringBuilder.ToString();
+        }
+
+        private IEnumerator GetFileCoroutine(string url, string extension, string folder, Action<string> callback, Action<string> errorCallback, Action<float> progressCallback)
+        {
+            using (UnityWebRequest uwr = UnityWebRequest.Get(url))
+            {
+                UnityWebRequestAsyncOperation operation = uwr.SendWebRequest();
+                while (!operation.isDone)
+                {
+                    progressCallback?.Invoke(operation.progress);
+                    yield return null;
+                }
+                if (uwr.result != UnityWebRequest.Result.Success)
+                {
+                    errorCallback?.Invoke(uwr.error);
+                }
+                else
+                {
+                    if (!Directory.Exists(folder))
+                    {
+                        Directory.CreateDirectory(folder);
+                    }
+                    string localUrl = Path.Combine(folder, GetHashString(url) + "." + extension);
+                    File.WriteAllBytes(localUrl, uwr.downloadHandler.data);
+                    callback?.Invoke(localUrl);
+                }
+            }
         }
 
         private IEnumerator GetSoundCoroutine(string soundUrl, string extension, Action<AudioClip> callback, Action<string> errorCallback, Action<float> progressCallback)

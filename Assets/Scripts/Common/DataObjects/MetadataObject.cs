@@ -12,6 +12,7 @@ namespace EAR
         public List<LightData> lightDatas = new List<LightData>();
         public List<SoundData> soundDatas = new List<SoundData>();
         public List<ButtonData> buttonDatas = new List<ButtonData>();
+        public List<VideoData> videoDatas = new List<VideoData>();
         public List<ImageData> imageDatas = new List<ImageData>();
         public Color ambientColor = Color.white;
     }
@@ -22,6 +23,15 @@ namespace EAR
         public string id;
         public string name;
         public TransformData transform;
+    }
+
+    [Serializable]
+    public class VideoData: EntityData
+    {
+        public string assetId;
+        public NullableBool playAtStart;
+        public NullableBool loop;
+        public NullableBool isVisible;
     }
 
     [Serializable]
@@ -36,7 +46,7 @@ namespace EAR
     {
         public enum ActionType
         {
-            Show, Hide, PlayAnimation, PlaySound, StopSound
+            Show, Hide, PlayAnimation, PlaySound, StopSound, PlayVideo, StopVideo
         }
 
         public ActionType actionType;
@@ -166,6 +176,7 @@ namespace EAR
         public RectTransformData noteContentRectTransformData;
 
         public string noteContent;
+        public string fontAssetId;
         public NullableColor textBackgroundColor;
 
         public NullableVector4 borderWidth;

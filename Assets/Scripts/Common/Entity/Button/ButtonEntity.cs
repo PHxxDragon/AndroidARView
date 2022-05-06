@@ -11,10 +11,15 @@ namespace EAR.Entity
         private string activatorEntityId = "";
         public readonly List<ButtonAction> actions = new List<ButtonAction>();
 
-        protected override string GetDefaultName()
+        public static int GetNextId()
+        {
+            return count++;
+        }
+
+/*        protected override string GetDefaultName()
         {
             return "New button " + count++;
-        }
+        }*/
 
         protected override void Awake()
         {

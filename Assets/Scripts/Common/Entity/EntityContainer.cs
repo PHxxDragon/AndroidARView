@@ -102,6 +102,13 @@ namespace EAR.Container
                     ButtonEntity.InstantNewEntity(buttonData);
                 }
             }
+            if (metadataObject.videoDatas != null)
+            {
+                foreach (VideoData videoData in metadataObject.videoDatas)
+                {
+                    VideoEntity.InstantNewEntity(videoData);
+                }
+            }
 
             environmentController.SetAmbientLight(metadataObject.ambientColor);
             if (metadataObject.lightDatas.Count > 0)

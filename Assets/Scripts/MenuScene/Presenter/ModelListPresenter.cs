@@ -19,9 +19,9 @@ namespace EAR.Presenter
 
         void Awake()
         {
-            modelListView.ModelListRefreshEvent += (page, limit, modelType) =>
+            modelListView.ModelListRefreshEvent += (page, limit, modelType, keyword) =>
             {
-                webRequest.GetModelList(page, limit, modelType == ModelListView.ModelType.Bought,
+                webRequest.GetModelList(page, limit, modelType.ToString(), keyword,
                     (result) => {
                         foreach (ModelDataObject modelDataObject in result.models)
                         {

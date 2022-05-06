@@ -21,6 +21,9 @@ namespace EAR.Entity
             } else if (entityData is NoteData noteData)
             {
                 return NoteEntity.InstantNewEntity(noteData);
+            } else if (entityData is VideoData videoData)
+            {
+                return VideoEntity.InstantNewEntity(videoData);
             } else
             {
                 throw new ArgumentException(entityData.ToString());

@@ -2,8 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using System.IO;
 using EAR.Entity;
 using EAR.AR;
+using TMPro;
 
 namespace EAR.Container
 {
@@ -38,6 +40,8 @@ namespace EAR.Container
         private readonly Dictionary<string, (AssetObject, GameObject)> models = new Dictionary<string, (AssetObject, GameObject)>();
         private readonly Dictionary<string, (AssetObject, Texture2D)> images = new Dictionary<string, (AssetObject, Texture2D)>();
         private readonly Dictionary<string, (AssetObject, AudioClip)> sounds = new Dictionary<string, (AssetObject, AudioClip)>();
+        private readonly Dictionary<string, (AssetObject, string)> videos = new Dictionary<string, (AssetObject, string)>();
+        private readonly Dictionary<string, (AssetObject, TMP_FontAsset)> fonts = new Dictionary<string, (AssetObject, TMP_FontAsset)>();
 
         [SerializeField]
         private ModelLoader modelLoader;
@@ -50,6 +54,9 @@ namespace EAR.Container
 
         [SerializeField]
         private NoteEntity notePrefab;
+
+        [SerializeField]
+        private VideoEntity videoPrefab;
 
         [SerializeField]
         private Texture2D defaultTexture;
@@ -66,6 +73,19 @@ namespace EAR.Container
         private int assetCount;
         private bool hasError;
 
+        private string GetTempSaveFolder(string folderName)
+        {
+            return Path.Combine(Application.persistentDataPath, "tempAssets", folderName);
+        }
+
+        void OnDestroy()
+        {
+            if (Directory.Exists(GetTempSaveFolder("")))
+            {
+                Directory.Delete(GetTempSaveFolder(""), true);
+            }
+        }
+
         public void LoadAssets(List<AssetObject> assetObjects, Action callback = null, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
         {
             assetCount = assetObjects.Count;
@@ -75,13 +95,19 @@ namespace EAR.Container
                 switch (assetObject.type)
                 {
                     case AssetObject.MODEL_TYPE:
-                        LoadModel(assetObject, assetObject.url, assetObject.extension, assetObject.isZipFile, errorCallback, progressCallback);
+                        LoadModel(assetObject, errorCallback, progressCallback);
                         break;
                     case AssetObject.IMAGE_TYPE:
-                        LoadImage(assetObject, assetObject.url, errorCallback, progressCallback);
+                        LoadImage(assetObject, errorCallback, progressCallback);
                         break;
                     case AssetObject.SOUND_TYPE:
-                        LoadSound(assetObject, assetObject.url, assetObject.extension, errorCallback, progressCallback);
+                        LoadSound(assetObject, errorCallback, progressCallback);
+                        break;
+                    case AssetObject.VIDEO_TYPE:
+                        LoadVideo(assetObject, errorCallback, progressCallback);
+                        break;
+                    case AssetObject.FONT_TYPE:
+                        LoadFont(assetObject, errorCallback, progressCallback);
                         break;
                     default:
                         assetCount -= 1;
@@ -109,9 +135,9 @@ namespace EAR.Container
             }
         }
 
-        private void LoadModel(AssetObject assetObject, string url, string extension, bool isZipFile, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
+        private void LoadModel(AssetObject assetObject, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
         {
-            modelLoader.LoadModel(url, extension, isZipFile,
+            modelLoader.LoadModel(assetObject.url, assetObject.extension, assetObject.isZipFile,
             (model) =>
             {
                 AddModel(assetObject, model);
@@ -132,9 +158,9 @@ namespace EAR.Container
             });
         }
 
-        private void LoadSound(AssetObject assetObject, string url, string extension, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
+        private void LoadSound(AssetObject assetObject, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
         {
-            Utils.Instance.GetSound(url, extension,
+            Utils.Instance.GetSound(assetObject.url, assetObject.extension,
             (audioClip) =>
             {
                 AddSound(assetObject, audioClip);
@@ -155,9 +181,9 @@ namespace EAR.Container
             });
         }
 
-        private void LoadImage(AssetObject assetObject, string url, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
+        private void LoadImage(AssetObject assetObject, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
         {
-            Utils.Instance.GetImageAsTexture2D(url,
+            Utils.Instance.GetImageAsTexture2D(assetObject.url,
             (image) =>
             {
                 AddImage(assetObject, image);
@@ -170,12 +196,124 @@ namespace EAR.Container
                     errorCallback?.Invoke(error + " asset name: " + assetObject.name);
                 }
             }
-            , (value) => {
+            , (value) => 
+            {
                 if (!hasError)
                 {
                     progressCallback?.Invoke(value, "Loading image");
                 }
             });
+        }
+
+        private void LoadVideo(AssetObject assetObject, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
+        {
+            Debug.Log("Load video: " + assetObject.url);
+            if (!assetObject.predownload)
+            {
+                AddVideo(assetObject, assetObject.url);
+                assetCount -= 1;
+            }
+            else
+            {
+                Utils.Instance.GetFile(assetObject.url, assetObject.extension, GetTempSaveFolder("videos"), (url) =>
+                {
+                    AddVideo(assetObject, new Uri(url).AbsoluteUri);
+                    assetCount -= 1;
+                }, 
+                (error) => 
+                {
+                    if (!hasError)
+                    {
+                        hasError = true;
+                        errorCallback?.Invoke(error + " asset name: " + assetObject.name);
+                    }
+                }, 
+                (value) =>
+                {
+                    if (!hasError)
+                    {
+                        progressCallback?.Invoke(value, "Loading video");
+                    }
+                });
+            }
+        }
+
+        private void LoadFont(AssetObject assetObject, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
+        {
+            Utils.Instance.GetFile(assetObject.url, assetObject.extension, GetTempSaveFolder("fonts"), (url) =>
+            {
+                AddFont(assetObject, url);
+                assetCount -= 1;
+            },
+               (error) =>
+               {
+                   if (!hasError)
+                   {
+                       hasError = true;
+                       errorCallback?.Invoke(error + " asset name: " + assetObject.name);
+                   }
+               },
+               (value) =>
+               {
+                   if (!hasError)
+                   {
+                       progressCallback?.Invoke(value, "Loading video");
+                   }
+               });
+        }
+
+        public TMP_FontAsset GetFont(string assetId)
+        {
+            try
+            {
+                return fonts[assetId].Item2;
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+        }
+
+        public string GetVideo(string assetId)
+        {
+            try
+            {
+                return videos[assetId].Item2;
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+        }
+
+        private void AddVideo(AssetObject assetObject, string url)
+        {
+            videos.Add(assetObject.assetId, (assetObject, url));
+            OnAssetObjectAdded?.Invoke(assetObject);
+        }
+
+        private void AddFont(AssetObject assetObject, string url)
+        {
+           
+            if (File.Exists(url))
+            {
+                Font font = new Font(url);
+                TMP_FontAsset tMP_FontAsset = TMP_FontAsset.CreateFontAsset(font);
+                fonts.Add(assetObject.assetId, (assetObject, tMP_FontAsset));
+                OnAssetObjectAdded?.Invoke(assetObject);
+            } else
+            {
+                Debug.LogError("Cannot read file " + url);
+            }
+            
         }
 
         private void AddModel(AssetObject assetObject, GameObject model)
@@ -242,6 +380,11 @@ namespace EAR.Container
             {
                 return null;
             }
+        }
+
+        public VideoEntity GetVideoPrefab()
+        {
+            return videoPrefab;
         }
 
         public GameObject GetModelPrefab()

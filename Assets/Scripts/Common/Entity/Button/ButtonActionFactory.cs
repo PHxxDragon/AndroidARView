@@ -16,6 +16,10 @@ namespace EAR.Entity.EntityAction
                     return new PlaySoundAction(buttonActionData);
                 case ButtonActionData.ActionType.StopSound:
                     return new StopSoundAction(buttonActionData);
+                case ButtonActionData.ActionType.PlayVideo:
+                    return new PlayVideoAction(buttonActionData);
+                case ButtonActionData.ActionType.StopVideo:
+                    return new StopVideoAction(buttonActionData);
                 default:
                     return null;
             }

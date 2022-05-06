@@ -43,6 +43,8 @@ namespace EAR.Presenter
 
         [SerializeField]
         private Button resetButton;
+        [SerializeField]
+        private Button spaceResetButton;
 
         [SerializeField]
         private ControlTutorial controlTutorial;
@@ -88,6 +90,24 @@ namespace EAR.Presenter
                 }
             };
             resetButton.onClick.AddListener(OnResetButtonClick);
+            spaceResetButton.onClick.AddListener(OnSpaceResetButtonClick);
+        }
+
+        private void OnResetButtonClick()
+        {
+            Modal modal = Instantiate(modalPrefab, canvas);
+            modal.SetModalContent(LocalizationUtils.GetLocalizedText("ConfirmResetModuleTitle"), LocalizationUtils.GetLocalizedText("ConfirmResetModuleMessage"));
+            modal.OnConfirmButtonClick += ResetModule;
+            modal.OnCancelButtonClick += () =>
+            {
+                Destroy(modal.gameObject);
+            };
+        }
+
+        private void ResetModule()
+        {
+            GlobalStates.SetIsPlayMode(false);
+            GlobalStates.SetIsPlayMode(true);
         }
 
         void Start()
@@ -95,10 +115,10 @@ namespace EAR.Presenter
             ActiveGroundPlane();
         }
 
-        private void OnResetButtonClick()
+        private void OnSpaceResetButtonClick()
         {
             Modal modal = Instantiate<Modal>(modalPrefab, canvas);
-            modal.SetModalContent(LocalizationUtils.GetLocalizedText("ConfirmResetTitle"), LocalizationUtils.GetLocalizedText("ConfirmResetMessage"));
+            modal.SetModalContent(LocalizationUtils.GetLocalizedText("ConfirmResetSpaceTitle"), LocalizationUtils.GetLocalizedText("ConfirmResetSpaceMessage"));
             modal.OnConfirmButtonClick += ResetTrackingStatus;
             modal.OnCancelButtonClick += () =>
             {
@@ -172,6 +192,7 @@ namespace EAR.Presenter
                 };
                 return;
             }
+            TransformData.SetParent(modelContainer.transform, null);
             ResetAll();
             imageTarget.gameObject.SetActive(true);
             TransformData.ResetTransform(modelContainer.transform);
@@ -183,6 +204,7 @@ namespace EAR.Presenter
         private void ActiveMidAir()
         {
             Debug.Log("Set midair target");
+            TransformData.SetParent(modelContainer.transform, null);
             ResetAll();
             midAirController.gameObject.SetActive(true);
             TransformData.ResetTransform(modelContainer.transform);
@@ -195,6 +217,7 @@ namespace EAR.Presenter
         private void ActiveGroundPlane()
         {
             Debug.Log("Set groundplane target");
+            TransformData.SetParent(modelContainer.transform, null);
             ResetAll();
             groundPlaneController.gameObject.SetActive(true);
             TransformData.ResetTransform(modelContainer.transform);

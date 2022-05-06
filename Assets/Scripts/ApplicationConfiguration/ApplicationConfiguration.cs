@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using Unity.RemoteConfig;
 
 namespace EAR
 {
@@ -7,7 +7,7 @@ namespace EAR
     public class ApplicationConfiguration : ScriptableObject
     {
         [SerializeField]
-        private string serverName;
+        private string localServerName;
 
         [SerializeField]
         private string loginPath;
@@ -22,10 +22,7 @@ namespace EAR
         private string modelPath;
 
         [SerializeField]
-        private string boughtModelListPath;
-
-        [SerializeField]
-        private string uploadedModelListPath;
+        private string modelListPath;
 
         [SerializeField]
         private string qrCodePath;
@@ -41,6 +38,24 @@ namespace EAR
 
         [SerializeField]
         private string moduleListPath;
+
+        private string serverName;
+
+        public struct UserAttributes { }
+        public struct AppAttributes { }
+
+        void Awake()
+        {
+            serverName = localServerName;
+            ConfigManager.FetchCompleted += ApplyRemoteSettings;
+            ConfigManager.FetchConfigs(new UserAttributes(), new AppAttributes());
+        }
+
+        private void ApplyRemoteSettings(ConfigResponse obj)
+        {
+            serverName = ConfigManager.appConfig.GetString("ServerName");
+            Debug.Log("Loaded Server Name " + serverName);
+        }
 
         public string GetServerName()
         {
@@ -62,14 +77,11 @@ namespace EAR
             return serverName + armodulePath + "/" + moduleId;
         }
 
-        public string GetBoughtModelListPath(int page, int limit)
+        public string GetModelListPath(int page, int limit, string filter, string keyword)
         {
-            return serverName + boughtModelListPath + "?page=" + page + "&limit=" + limit;
-        }
-
-        public string GetUploadedModelListPath(int page, int limit)
-        {
-            return serverName + uploadedModelListPath + "?page=" + page + "&limit=" + limit;
+            string typeQuery = string.IsNullOrEmpty(filter) ? "" : "&type=" + filter;
+            string keywordQuery = string.IsNullOrEmpty(keyword) ? "" : "&keyword=" + keyword;
+            return serverName + modelPath + "/" + modelListPath + "?page=" + page + "&limit=" + limit +  typeQuery + keywordQuery;
         }
 
         public string GetModelPath(int modelId)
@@ -92,14 +104,21 @@ namespace EAR
             return serverName + categoriesPath + "?langCode=" + langCode;
         }
 
-        public string GetCourseListPath(int page, int limit)
+        public string GetCourseListPath(int page, int limit, string type, string keyword)
         {
-            return serverName + CourseListPath + "?page=" + page + "&limit=" + limit;
+            string typeQuery = string.IsNullOrEmpty(type) ? "" : "&type=" + type;
+            string keywordQuery = string.IsNullOrEmpty(keyword) ? "" : "&keyword=" + keyword;
+            return serverName + CourseListPath + "?page=" + page + "&limit=" + limit + typeQuery + keywordQuery;
         }
 
         public string GetModuleListPath(int arModule)
         {
             return serverName + coursesPath + "/" + arModule + "/" + moduleListPath;
+        }
+
+        void OnDestroy()
+        {
+            ConfigManager.FetchCompleted -= ApplyRemoteSettings;
         }
     }
 }

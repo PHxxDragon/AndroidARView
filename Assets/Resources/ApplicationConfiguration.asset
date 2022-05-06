@@ -12,15 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2135d2ec4780fc74fbe5d2e7de68d7ef, type: 3}
   m_Name: ApplicationConfiguration
   m_EditorClassIdentifier: 
-  serverName: http://192.168.1.9:3000/
+  localServerName: http://192.168.1.7:3000/
   loginPath: api/v1/users/login
   profilePath: api/v1/users/get-user-by-token
   armodulePath: api/v1/modules/ar
   modelPath: api/v1/models
-  boughtModelListPath: api/v1/models/get-my-bought-models
-  uploadedModelListPath: api/v1/models/get-my-uploaded-models
+  modelListPath: get-all-user-models-paging
   qrCodePath: api/v1/qrcodes
-  categoriesPath: api/v1/models/get-model-categories
-  CourseListPath: api/v1/courses/get-joined-courses
+  categoriesPath: api/v1/ear/model-categories
+  CourseListPath: api/v1/dashboards/get-joined-course
   coursesPath: api/v1/courses
   moduleListPath: get-modules-flat

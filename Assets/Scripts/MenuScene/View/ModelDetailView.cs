@@ -35,23 +35,31 @@ namespace EAR.View
         [SerializeField]
         private ContentSizeFitter contentSizeFitter;
 
+        [SerializeField]
+        private GameObject container;
+        [SerializeField]
+        private GameObject loadingIndicator;
+
         private UnityAction listener;
-        private Sprite originalCoverImage;
+        [SerializeField]
+        private Sprite emptyCoverImage;
 
         public override void Refresh(object args = null)
         {
             int id = (int)args;
+            loadingIndicator.gameObject.SetActive(true);
+            container.gameObject.SetActive(false);
             OnLoadModel?.Invoke(id);
         }
 
-        void Start()
+        void Awake()
         {
-            originalCoverImage = coverImage.sprite;
+            loadingIndicator.gameObject.SetActive(false);
         }
 
         public void Clear()
         {
-            coverImage.sprite = originalCoverImage;
+            coverImage.sprite = emptyCoverImage;
             title.text = "";
             downloadSize.text = "";
             likes.text = "";
@@ -67,9 +75,13 @@ namespace EAR.View
 
         public void PopulateData(ModelDataObject modelDataObject)
         {
+            loadingIndicator.gameObject.SetActive(false);
+            container.gameObject.SetActive(true);
+
             modelDataObject.coverImage += (image) =>
             {
-                coverImage.sprite = image;
+                if (image)
+                    coverImage.sprite = image;
             };
             title.text = modelDataObject.name;
             downloadSize.text = LocalizationUtils.GetLocalizedText(DOWNLOAD_SIZE) + Utils.GetFileSizeString(modelDataObject.totalSize);

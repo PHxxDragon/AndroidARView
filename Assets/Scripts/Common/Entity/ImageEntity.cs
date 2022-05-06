@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using EAR.Container;
@@ -13,10 +12,15 @@ namespace EAR.Entity
 
         private string assetId = "";
 
-        protected override string GetDefaultName()
+        public static int GetNextId()
+        {
+            return count++;
+        }
+
+/*        protected override string GetDefaultName()
         {
             return "New image " + count++;
-        }
+        }*/
 
         public override EntityData GetData()
         {

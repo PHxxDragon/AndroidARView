@@ -16,7 +16,7 @@ namespace EAR
                 if (instance == null)
                 {
                     instance = new GameObject().AddComponent<ApplicationConfigurationHolder>();
-                    instance.applicationConfiguration = Resources.Load<ApplicationConfiguration>("ApplicationConfiguration");
+                    instance.applicationConfiguration = Instantiate(Resources.Load<ApplicationConfiguration>("ApplicationConfiguration"));
                     Debug.Log(instance.applicationConfiguration.GetServerName());
                 }
                 return instance;

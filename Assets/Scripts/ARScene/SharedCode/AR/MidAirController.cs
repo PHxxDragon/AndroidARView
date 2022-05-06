@@ -30,7 +30,7 @@ namespace EAR.AR
                 if (isActiveAndEnabled)
                 {
                     OnStateChanged?.Invoke(state);
-                } 
+                }
             }
         }
 

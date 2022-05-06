@@ -1,7 +1,7 @@
 using TMPro;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace EAR.View
 {
@@ -9,13 +9,15 @@ namespace EAR.View
     {
         public enum ModelType
         {
-            Uploaded, Bought
+            All, Uploaded, Bought
         }
 
-        public event Action<int, int, ModelType> ModelListRefreshEvent;
+        public event Action<int, int, ModelType, string> ModelListRefreshEvent;
 
         [SerializeField]
         private TMP_Dropdown modelTypeDropdown;
+        [SerializeField]
+        private SearchBar searchBar;
 
         protected override void Awake()
         {
@@ -24,11 +26,16 @@ namespace EAR.View
             {
                 Refresh();
             });
+            searchBar.OnSearch += (text) =>
+            {
+                Refresh();
+            };
         }
 
         public override void Refresh(object args = null)
         {
-            ModelListRefreshEvent?.Invoke(pageDropdown.value + 1, LIMIT, (ModelType) modelTypeDropdown.value);
+            base.Refresh(args);
+            ModelListRefreshEvent?.Invoke(pageDropdown.value + 1, LIMIT, (ModelType) modelTypeDropdown.value, searchBar.GetText());
         }
     }
 }
