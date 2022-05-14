@@ -301,5 +301,9 @@ MonoBehaviour:
     m_Localized: "Kh\xF4ng t\xECm th\u1EA5y m\xF4 h\xECnh n\xE0o"
     m_Metadata:
       m_Items: []
+  - m_Id: 28419511605239808
+    m_Localized: "Th\u01B0 vi\u1EC7n"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

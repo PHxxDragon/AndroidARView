@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EAR
 {
@@ -24,9 +25,12 @@ namespace EAR
         public float rating;
         public string courseType;
         public string teachers;
-        public string imageUrl;
+        public string thumbnail;
 
+        [NonSerialized]
         public Action<int> courseClickEvent;
+        [NonSerialized]
+        public Action<Sprite> coverImage;
     }
 
 }

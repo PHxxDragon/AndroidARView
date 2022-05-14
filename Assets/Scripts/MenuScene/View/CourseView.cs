@@ -40,6 +40,13 @@ namespace EAR.View
             ratings.text = data.rating + "";
             courseType.text = data.courseType;
             teachers.text = data.teachers;
+            data.coverImage += (image) =>
+            {
+                if (courseImage)
+                {
+                    courseImage.sprite = image;
+                }
+            };
             if (listener != null)
             {
                 button.onClick.RemoveListener(listener);

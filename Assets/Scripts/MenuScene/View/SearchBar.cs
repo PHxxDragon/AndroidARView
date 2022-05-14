@@ -10,17 +10,23 @@ public class SearchBar : MonoBehaviour
     [SerializeField]
     private TMP_InputField searchInputField;
     [SerializeField]
-    private Button searchButton;
+    private Button button;
+
+    private string keyword;
 
     void Awake()
     {
-        searchButton.onClick.AddListener(() =>
+        button.onClick.AddListener(() =>
         {
-            OnSearch?.Invoke(searchInputField.text);
+            if (keyword != searchInputField.text)
+            {
+                keyword = searchInputField.text;
+                OnSearch?.Invoke(keyword);
+            }
         });
-
         searchInputField.onSubmit.AddListener((text) =>
         {
+            keyword = text;
             OnSearch?.Invoke(text);
         });
     }

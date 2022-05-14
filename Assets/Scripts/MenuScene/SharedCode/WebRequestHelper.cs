@@ -286,8 +286,8 @@ namespace EAR.WebRequest
                     errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(NO_CONNECTION), -1);
                 } else
                 {
-                    ErrorResponse errorResponse = JsonUtility.FromJson<ErrorResponse>(unityWebRequest.downloadHandler.text);
-                    if (errorResponse?.error?.name == TOKEN_EXPIRED_ERROR && !retried)
+                    //ErrorResponse errorResponse = JsonUtility.FromJson<ErrorResponse>(unityWebRequest.downloadHandler.text);
+                    if (!retried)
                     {
                         Debug.Log("Token expired!");
                         Login((response) =>

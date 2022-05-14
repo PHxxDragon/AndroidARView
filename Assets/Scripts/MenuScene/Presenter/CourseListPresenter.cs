@@ -34,6 +34,13 @@ namespace EAR.MenuScene.Presenter
                         courseListView.PopulateData(response.courses, response.pageCount);
                         foreach (CourseData courseData in response.courses)
                         {
+                            if (!string.IsNullOrEmpty(courseData.thumbnail))
+                            {
+                                Utils.Instance.GetImageAsTexture2D(courseData.thumbnail, (image) =>
+                                {
+                                    courseData.coverImage?.Invoke(Utils.Instance.Texture2DToSprite(image));
+                                });
+                            }
                             courseData.courseClickEvent += (id) =>
                             {
                                 screenNavigator.PushView(moduleListView);

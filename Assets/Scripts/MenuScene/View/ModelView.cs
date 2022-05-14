@@ -24,7 +24,10 @@ namespace EAR.View
             modelDescription.text = modelDataObject.description;
             modelDataObject.coverImage += (image) =>
             {
-                modelImage.sprite = image;
+                if (modelImage)
+                {
+                    modelImage.sprite = image;
+                }
             };
             if (listener != null)
             {

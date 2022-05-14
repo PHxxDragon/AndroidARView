@@ -44,9 +44,15 @@ namespace EAR.AssetCache
         {
             if (File.Exists(GetCacheMetadataFilePath()))
             {
-                using FileStream fileStream = File.Open(GetCacheMetadataFilePath(), FileMode.Open);
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                return (Dictionary<string, AssetCacheMetadata>)binaryFormatter.Deserialize(fileStream);
+                try
+                {
+                    using FileStream fileStream = File.Open(GetCacheMetadataFilePath(), FileMode.Open);
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    return (Dictionary<string, AssetCacheMetadata>)binaryFormatter.Deserialize(fileStream);
+                } catch (Exception)
+                {
+                    return new Dictionary<string, AssetCacheMetadata>();
+                }
             } else
             {
                 return new Dictionary<string, AssetCacheMetadata>();
