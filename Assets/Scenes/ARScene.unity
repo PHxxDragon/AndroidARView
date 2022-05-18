@@ -5848,7 +5848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlaneIndicator: {fileID: 4997725335335974718, guid: d2ec547a4baa5274e827e2f84b1a4b7c, type: 3}
-  Height: 1.4
+  Height: 2
   OnInteractiveHitTest:
     m_PersistentCalls:
       m_Calls:

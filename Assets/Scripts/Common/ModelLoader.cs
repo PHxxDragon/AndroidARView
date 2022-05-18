@@ -185,10 +185,16 @@ namespace EAR.AR
         {
             TransformData transformData = TransformData.TransformToTransformData(model.transform);
             TransformData.ResetTransform(model.transform);
-            Bounds bound = Utils.GetModelBounds(model);
-            BoxCollider collider = model.AddComponent<BoxCollider>();
-            collider.center = bound.center;
-            collider.size = bound.size;
+            Utils.GetModelBounds(model); // For caching
+            /*            BoxCollider collider = model.AddComponent<BoxCollider>();
+                        collider.center = bound.center;
+                        collider.size = bound.size;*/
+            Renderer[] allRenderers = model.GetComponentsInChildren<Renderer>();
+            Debug.Log(allRenderers.Length);
+            foreach (Renderer renderer in allRenderers)
+            {
+                renderer.gameObject.AddComponent<BoxCollider>();
+            }
             TransformData.TransformDataToTransfrom(transformData, model.transform);
             yield return null;
         }

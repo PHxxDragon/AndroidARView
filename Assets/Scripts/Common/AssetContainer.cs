@@ -207,7 +207,6 @@ namespace EAR.Container
 
         private void LoadVideo(AssetObject assetObject, Action<string> errorCallback = null, Action<float, string> progressCallback = null)
         {
-            Debug.Log("Load video: " + assetObject.url);
             if (!assetObject.predownload)
             {
                 AddVideo(assetObject, assetObject.url);

@@ -20,7 +20,7 @@ namespace EAR.Entity.EntityAction
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (!GlobalStates.IsMouseRaycastBlocked())
+                if (!GlobalStates.IsMouseRaycastBlocked() && GlobalStates.IsPlayMode())
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit[] hits = Physics.RaycastAll(ray);
