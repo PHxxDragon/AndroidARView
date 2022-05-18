@@ -11,6 +11,8 @@ namespace EAR.Entity
         private string activatorEntityId = "";
         public readonly List<ButtonAction> actions = new List<ButtonAction>();
 
+        private EntityClickTarget currentClickTarget;
+
         public static int GetNextId()
         {
             return count++;
@@ -32,8 +34,13 @@ namespace EAR.Entity
             BaseEntity baseEntity = EntityContainer.Instance.GetEntity(activatorEntityId);
             if (baseEntity && baseEntity.IsClickable())
             {
-                EntityClickTarget entityClickListener = baseEntity.gameObject.AddComponent<EntityClickTarget>();
-                entityClickListener.OnEntityClicked += ActivateButton;
+                if (currentClickTarget)
+                {
+                    Destroy(currentClickTarget);
+                }
+
+                currentClickTarget = baseEntity.gameObject.AddComponent<EntityClickTarget>();
+                currentClickTarget.OnEntityClicked += ActivateButton;
             }
         }
 
@@ -43,8 +50,10 @@ namespace EAR.Entity
             BaseEntity baseEntity = EntityContainer.Instance.GetEntity(activatorEntityId);
             if (baseEntity && baseEntity.IsClickable())
             {
-                EntityClickTarget entityClickListener = baseEntity.gameObject.GetComponent<EntityClickTarget>();
-                Destroy(entityClickListener);
+                if (currentClickTarget)
+                {
+                    Destroy(currentClickTarget);
+                }
             }
         }
 
