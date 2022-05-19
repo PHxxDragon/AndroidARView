@@ -15,6 +15,9 @@ namespace EAR.AR
     {
         private List<GltfImportTask> tasks = new List<GltfImportTask>();
 
+        private const float scaleToSize = 1f;
+        private const float distanceToPlane = 0f;
+
         public void LoadModel(string url, string extension, bool isZipFile, Action<GameObject> OnLoadEnded = null, Action<string> OnLoadError = null, Action<float, string> OnLoadProgressChanged = null)
         {
             StartCoroutine(LoadModelCoroutine(url, extension, isZipFile, OnLoadEnded, OnLoadError, OnLoadProgressChanged));
@@ -126,7 +129,7 @@ namespace EAR.AR
                 {
                     model.AddComponent<AnimPlayer>();
                 }
-                StartCoroutine(AddCollider(model));
+                StartCoroutine(PreprocessModel(model));
                 OnLoadEnded?.Invoke(model);
             };
         }
@@ -160,7 +163,7 @@ namespace EAR.AR
         {
             return (AssetLoaderContext obj) =>
             {
-                StartCoroutine(AddCollider(obj.RootGameObject));
+                StartCoroutine(PreprocessModel(obj.RootGameObject));
                 OnLoadEnded?.Invoke(obj.RootGameObject);
             };
         }
@@ -181,20 +184,25 @@ namespace EAR.AR
             };
         }
 
-        private IEnumerator AddCollider(GameObject model)
+        private IEnumerator PreprocessModel(GameObject model)
         {
-            TransformData transformData = TransformData.TransformToTransformData(model.transform);
-            TransformData.ResetTransform(model.transform);
-            Utils.GetModelBounds(model); // For caching
+            Bounds bounds = Utils.GetModelBounds(model); // For caching
             /*            BoxCollider collider = model.AddComponent<BoxCollider>();
                         collider.center = bound.center;
                         collider.size = bound.size;*/
+            if (bounds.extents.magnitude != 0)
+            {
+                float ratio = scaleToSize / bounds.extents.magnitude;
+                model.transform.localScale *= ratio;
+                model.transform.position = -(bounds.center * ratio - model.transform.position * ratio) + new Vector3(0, distanceToPlane + bounds.extents.y * ratio, 0);
+                model.transform.localPosition = model.transform.position;
+            }
             Renderer[] allRenderers = model.GetComponentsInChildren<Renderer>();
             foreach (Renderer renderer in allRenderers)
             {
                 renderer.gameObject.AddComponent<BoxCollider>();
             }
-            TransformData.TransformDataToTransfrom(transformData, model.transform);
+
             yield return null;
         }
     }

@@ -84,10 +84,9 @@ namespace EAR.Entity
             }
 
             this.assetId = assetId;
-            TransformData prev = null;
+
             foreach (Transform child in transform)
             {
-                prev = TransformData.TransformToTransformData(child);
                 Destroy(child.gameObject);
                 child.parent = null;
             }
@@ -98,13 +97,7 @@ namespace EAR.Entity
             }
 
             GameObject newChild = Instantiate(model);
-            TransformData.ResetTransform(newChild.transform);
             TransformData.SetParent(newChild.transform, transform);
-
-            if (prev != null)
-            {
-                TransformData.TransformDataToTransfrom(prev, newChild.transform);
-            }
         }
 
         public override void PopulateData(EntityData entityData)

@@ -12,10 +12,6 @@ namespace EAR.Container
         private GameObject container;
         [SerializeField]
         private EnvironmentController environmentController;
-        [SerializeField]
-        private float scaleToSize = 1f;
-        [SerializeField]
-        private float distanceToPlane = 0f;
 
         private static EntityContainer instance;
 
@@ -132,12 +128,7 @@ namespace EAR.Container
                 {
                     ModelData modelData = new ModelData();
                     modelData.assetId = assetObject.assetId;
-                    ModelEntity modelEntity = ModelEntity.InstantNewEntity(modelData);
-                    Bounds bounds = Utils.GetModelBounds(modelEntity.gameObject);
-                    float ratio = scaleToSize / bounds.extents.magnitude;
-                    modelEntity.transform.localScale *= ratio;
-                    modelEntity.transform.position = -(bounds.center * ratio - modelEntity.transform.position * ratio) + new Vector3(0, distanceToPlane + bounds.extents.y * ratio, 0);
-                    modelEntity.transform.localPosition = modelEntity.transform.position;
+                    ModelEntity.InstantNewEntity(modelData);
                     break;
                 }
             }
