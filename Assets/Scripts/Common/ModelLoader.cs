@@ -190,7 +190,6 @@ namespace EAR.AR
                         collider.center = bound.center;
                         collider.size = bound.size;*/
             Renderer[] allRenderers = model.GetComponentsInChildren<Renderer>();
-            Debug.Log(allRenderers.Length);
             foreach (Renderer renderer in allRenderers)
             {
                 renderer.gameObject.AddComponent<BoxCollider>();

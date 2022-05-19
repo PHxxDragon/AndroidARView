@@ -88,8 +88,6 @@ namespace EAR.Entity
                 if (noteData.fontAssetId != null)
                 {
                     text.font = AssetContainer.Instance.GetFont(noteData.fontAssetId);
-                    Debug.Log(AssetContainer.Instance.GetFont(noteData.fontAssetId));
-                    Debug.Log(text.font);
                 }
 
                 if (noteData.noteContentRectTransformData != null)
