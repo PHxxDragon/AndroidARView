@@ -298,5 +298,13 @@ MonoBehaviour:
     m_Localized: Library
     m_Metadata:
       m_Items: []
+  - m_Id: 30690774725816320
+    m_Localized: Course
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30692326563770368
+    m_Localized: No module found
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

@@ -4,7 +4,6 @@ using EAR.WebRequest;
 using System.Collections.Generic;
 using EAR.SceneChange;
 using UnityEngine.SceneManagement;
-using EAR.AssetCache;
 
 namespace EAR.MenuScene.Presenter
 {
@@ -22,18 +21,26 @@ namespace EAR.MenuScene.Presenter
         [SerializeField]
         private ModalShower modalShower;
 
+        [SerializeField]
+        private BreadCrumbView breadCrumbView;
+
+        private const string COURSE = "Course";
+
         private List<SectionData> sectionStack = new List<SectionData>();
         private List<SectionData> sections = new List<SectionData>();
 
         void Start()
         {
-            moduleListView.ModuleListRefreshEvent += (courseId) => {
+            moduleListView.ModuleListRefreshEvent += (courseId, courseName) => {
                 sectionStack.Clear();
+                breadCrumbView.PopulateData(sectionStack);
                 webRequest.GetModuleList(courseId, 
                 (response) => {
                     sections = response;
                     SectionData dummySection = new SectionData();
                     dummySection.childrenSection = GetChildrenSection(0);
+                    dummySection.name = LocalizationUtils.GetLocalizedText(COURSE);
+                    moduleListView.SetHeaderTitle(courseName);
                     PushSection(dummySection);
                 }, 
                 (error) => {
@@ -42,20 +49,47 @@ namespace EAR.MenuScene.Presenter
             };
             moduleListView.BackButtonClickEvent += () =>
             {
-                sectionStack.RemoveAt(sectionStack.Count - 1);
+                BackToSection(sectionStack.Count - 2);
+            };
+            breadCrumbView.OnBreadCrumbItemClick += (index) =>
+            {
+                BackToSection(index);
+            };
+        }
+
+        private void BackToSection(int index)
+        {
+            if (index >= sectionStack.Count || index < -1)
+            {
+                Debug.LogError("Invalid index");
+            } 
+            else
+            {
+                if (index == sectionStack.Count - 1) return;
+
+                int removeCount = sectionStack.Count - index - 1;
+
+                for (int i = 0; i < removeCount; i++)
+                {
+                    sectionStack.RemoveAt(index + 1);
+                }
+
+                breadCrumbView.PopulateData(sectionStack);
                 if (sectionStack.Count > 0)
                 {
                     PopulateSection(sectionStack[sectionStack.Count - 1]);
-                } else
+                }
+                else
                 {
                     screenNavigator.GoBack();
                 }
-            };
+            }
         }
 
         private void PushSection(SectionData sectionData)
         {
             sectionStack.Add(sectionData);
+            breadCrumbView.PopulateData(sectionStack);
             PopulateSection(sectionData);
         }
 

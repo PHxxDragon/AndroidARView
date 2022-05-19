@@ -53,7 +53,7 @@ namespace EAR.View
             }
             listener = () =>
             {
-                data.courseClickEvent?.Invoke(id);
+                data.courseClickEvent?.Invoke(id, courseName.text);
             };
             button.onClick.AddListener(listener);
         }

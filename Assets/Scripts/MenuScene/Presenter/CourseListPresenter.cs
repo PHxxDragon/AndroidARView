@@ -41,10 +41,10 @@ namespace EAR.MenuScene.Presenter
                                     courseData.coverImage?.Invoke(Utils.Instance.Texture2DToSprite(image));
                                 });
                             }
-                            courseData.courseClickEvent += (id) =>
+                            courseData.courseClickEvent += (id, name) =>
                             {
                                 screenNavigator.PushView(moduleListView);
-                                moduleListView.Refresh(id);
+                                moduleListView.Refresh((id, name));
                             };
                         }
                     }, (error) =>

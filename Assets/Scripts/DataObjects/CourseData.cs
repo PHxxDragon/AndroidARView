@@ -28,7 +28,7 @@ namespace EAR
         public string thumbnail;
 
         [NonSerialized]
-        public Action<int> courseClickEvent;
+        public Action<int, string> courseClickEvent;
         [NonSerialized]
         public Action<Sprite> coverImage;
     }
