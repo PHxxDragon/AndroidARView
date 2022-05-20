@@ -6653,7 +6653,7 @@ GameObject:
   - component: {fileID: 1050093770}
   - component: {fileID: 1050093771}
   m_Layer: 0
-  m_Name: Login
+  m_Name: LoginPresenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6688,6 +6688,8 @@ MonoBehaviour:
   webRequest: {fileID: 1556263299}
   loginView: {fileID: 1011876002}
   courseListView: {fileID: 72504413}
+  moduleListView: {fileID: 1245896717}
+  modelDetailView: {fileID: 1125496698}
   sidebar: {fileID: 4321915973611347897}
   screenNavigator: {fileID: 1248383205}
 --- !u!224 &1068906430 stripped

@@ -2,6 +2,7 @@ using EAR.View;
 using EAR.WebRequest;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using EAR.SceneChange;
 
 namespace EAR.Presenter
 {
@@ -32,6 +33,7 @@ namespace EAR.Presenter
                 sidebar.CloseSidebar();
                 screenNavigator.OpenView(loginView);
                 webRequestHelper.Logout();
+                MenuSceneParam.Reset();
             };
             sidebar.OnScanQRCodeButtonClick += () =>
             {

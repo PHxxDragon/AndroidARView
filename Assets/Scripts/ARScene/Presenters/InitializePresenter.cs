@@ -57,6 +57,7 @@ namespace EAR.Presenter
                 progressBar.DisableProgressBar();
             }, (progress) =>
             {
+                //TODO: all label
                 progressBar.SetProgress(progress, "downloading");
             });
         }

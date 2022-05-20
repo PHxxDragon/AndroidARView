@@ -46,6 +46,8 @@ namespace EAR.View
                             (arData) =>
                             {
                                 ARSceneParam.assetInformation = arData;
+                                MenuSceneParam.modelId = id;
+                                MenuSceneParam.courseId = -1;
                                 SceneManager.LoadScene("ARScene");
                             }, (error) =>
                             {
@@ -62,6 +64,7 @@ namespace EAR.View
             modelDetailView.OnGoBack += () =>
             {
                 screenNavigator.OpenView(modelListView);
+                modelListView.Refresh();
             };
         }
     }

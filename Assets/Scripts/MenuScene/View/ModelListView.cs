@@ -35,7 +35,7 @@ namespace EAR.View
         public override void Refresh(object args = null)
         {
             base.Refresh(args);
-            ModelListRefreshEvent?.Invoke(pageDropdown.value + 1, LIMIT, (ModelType) modelTypeDropdown.value, searchBar.GetText());
+            ModelListRefreshEvent?.Invoke(pageDropdown.value + 1, LIMIT, (ModelType)modelTypeDropdown.value, searchBar.GetText());
         }
 
         public override void GoBack()

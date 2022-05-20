@@ -31,10 +31,17 @@ namespace EAR.View
             });
         }
 
+        public virtual void KeepData()
+        {
+            loadingCircle.gameObject.SetActive(false);
+            container.gameObject.SetActive(true);
+        }
+
         public virtual void PopulateData(List<T2> data, int pageCount)
         {
             loadingCircle.gameObject.SetActive(false);
             container.gameObject.SetActive(true);
+
             if (data.Count != 0)
             {
                 emptyIndicator.gameObject.SetActive(false);

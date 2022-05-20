@@ -1,6 +1,7 @@
 using EAR.WebRequest;
 using EAR.View;
 using UnityEngine;
+using EAR.SceneChange;
 
 namespace EAR.MenuScene.Presenter
 {
@@ -14,6 +15,12 @@ namespace EAR.MenuScene.Presenter
 
         [SerializeField]
         private CourseListView courseListView;
+
+        [SerializeField]
+        private ModuleListView moduleListView;
+
+        [SerializeField]
+        private ModelDetailView modelDetailView;
 
         [SerializeField]
         private Sidebar sidebar;
@@ -36,11 +43,29 @@ namespace EAR.MenuScene.Presenter
 
         private void LoginSuccessCallback(UserProfileData userProfileData)
         {
-            screenNavigator.OpenView(courseListView);
-            courseListView.Refresh();
             sidebar.PopulateUserDetail(userProfileData.name, userProfileData.email);
             sidebar.Refresh();
             Utils.Instance.GetImageAsTexture2D(userProfileData.avatar, LoadAvatarSucceedCallback);
+            OpenLastView();
+        }
+
+        private void OpenLastView()
+        {
+            if (MenuSceneParam.courseId != -1)
+            {
+                screenNavigator.OpenView(moduleListView);
+                moduleListView.Refresh((MenuSceneParam.courseId, MenuSceneParam.courseName));
+            } 
+            else if (MenuSceneParam.modelId != -1)
+            {
+                screenNavigator.OpenView(modelDetailView);
+                modelDetailView.Refresh(MenuSceneParam.modelId);
+            }
+            else
+            {
+                screenNavigator.OpenView(courseListView);
+                courseListView.Refresh();
+            }
         }
 
         private void LoginErrorCallback(string errorMessage)

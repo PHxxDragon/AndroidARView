@@ -32,9 +32,14 @@ namespace EAR.MenuScene.Presenter
         private List<SectionData> sectionStack = new List<SectionData>();
         private List<SectionData> sections = new List<SectionData>();
 
+        private int courseId = -1;
+        private string courseName = "";
+
         void Start()
         {
             moduleListView.ModuleListRefreshEvent += (courseId, courseName) => {
+                this.courseId = courseId;
+                this.courseName = courseName;
                 sectionStack.Clear();
                 breadCrumbView.PopulateData(sectionStack);
                 webRequest.GetModuleList(courseId, 
@@ -87,6 +92,7 @@ namespace EAR.MenuScene.Presenter
                 else
                 {
                     screenNavigator.OpenView(courseListView);
+                    courseListView.Refresh();
                 }
             }
         }
@@ -140,6 +146,9 @@ namespace EAR.MenuScene.Presenter
             (arModule) =>
             {
                 ARSceneParam.assetInformation = arModule;
+                MenuSceneParam.courseId = courseId;
+                MenuSceneParam.courseName = courseName;
+                MenuSceneParam.modelId = -1;
                 SceneManager.LoadScene("ARScene");
             }, (error) =>
             {
