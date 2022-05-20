@@ -37,6 +37,8 @@ namespace EAR.MenuScene.Presenter
                 webRequest.GetModuleList(courseId, 
                 (response) => {
                     sections = response;
+                    sections.Sort((sectionData1, sectionData2) => sectionData1.id - sectionData2.id);
+                    sections.ForEach(sectionData => sectionData.modules.Sort((module1, module2) => module1.createdAt.CompareTo(module2.createdAt)));
                     SectionData dummySection = new SectionData();
                     dummySection.childrenSection = GetChildrenSection(0);
                     dummySection.name = LocalizationUtils.GetLocalizedText(COURSE);

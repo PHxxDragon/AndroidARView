@@ -37,6 +37,7 @@ namespace EAR
         public string name;
         public string moduleType;
         public ARModuleData arModule;
+        public DateTime createdAt;
 
         [NonSerialized]
         public Action<int> moduleClickEvent;

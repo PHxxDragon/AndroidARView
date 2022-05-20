@@ -5670,6 +5670,10 @@ PrefabInstance:
       propertyPath: m_text
       value: No module found
       objectReference: {fileID: 0}
+    - target: {fileID: 2876643079911634574, guid: 2d1cd1399358adb4d92573836e9b62a5, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 30692326563770368
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d1cd1399358adb4d92573836e9b62a5, type: 3}
 --- !u!1 &898672304 stripped
@@ -10146,7 +10150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079104811581796829, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9079104811581796829, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
       propertyPath: m_AnchorMax.x
@@ -10206,7 +10210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079104811581796829, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -220
+      value: -120
       objectReference: {fileID: 0}
     - target: {fileID: 9079104811581796829, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -13186,7 +13190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079104811581796829, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9079104811581796829, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
       propertyPath: m_AnchorMax.x
@@ -13246,7 +13250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9079104811581796829, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -120
+      value: -220
       objectReference: {fileID: 0}
     - target: {fileID: 9079104811581796829, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14653,8 +14657,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1028713988159000207}
   - {fileID: 1587703582}
+  - {fileID: 1028713988159000207}
   - {fileID: 4321915973546952561}
   m_Father: {fileID: 4321915972858707857}
   m_RootOrder: 0

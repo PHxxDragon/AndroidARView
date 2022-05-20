@@ -172,6 +172,13 @@ namespace EAR.AssetCache
                 cacheMetadata.Remove(oldest.Key);
             }
 
+            // If the module itself is removed from the metedata, don't cache
+            if (!cacheMetadata.ContainsKey(moduleId))
+            {
+                callback?.Invoke(assetInformation);
+                return;
+            }
+
             //Start caching
             AssetCacheProgressInfo progressInfo = new AssetCacheProgressInfo();
             progressInfo.assetCount = newInformation.assets.Count;
