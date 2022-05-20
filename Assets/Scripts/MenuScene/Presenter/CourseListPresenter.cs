@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using EAR.View;
 using EAR.WebRequest;
@@ -43,7 +42,7 @@ namespace EAR.MenuScene.Presenter
                             }
                             courseData.courseClickEvent += (id, name) =>
                             {
-                                screenNavigator.PushView(moduleListView);
+                                screenNavigator.OpenView(moduleListView);
                                 moduleListView.Refresh((id, name));
                             };
                         }

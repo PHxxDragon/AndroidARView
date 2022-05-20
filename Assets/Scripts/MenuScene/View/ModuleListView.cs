@@ -73,5 +73,10 @@ namespace EAR.View
             empty.gameObject.SetActive(false);
             ModuleListRefreshEvent?.Invoke(courseId.Item1, courseId.Item2);
         }
+
+        public override void GoBack()
+        {
+            BackButtonClickEvent?.Invoke();
+        }
     }
 }

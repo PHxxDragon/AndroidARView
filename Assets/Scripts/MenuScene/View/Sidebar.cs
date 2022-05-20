@@ -86,5 +86,10 @@ namespace EAR.View
         public override void Refresh(object args = null)
         {
         }
+
+        public override void GoBack()
+        {
+            CloseSidebar();
+        }
     }
 }

@@ -15,6 +15,8 @@ namespace EAR.Presenter
         [SerializeField]
         private ScreenNavigator screenNavigator;
         [SerializeField]
+        private CourseListView courseListView;
+        [SerializeField]
         private ModalShower modalShower;
 
         void Awake()
@@ -34,7 +36,7 @@ namespace EAR.Presenter
                             }
                             modelDataObject.onClick += () =>
                             {
-                                screenNavigator.PushView(modelDetailView);
+                                screenNavigator.OpenView(modelDetailView);
                                 modelDetailView.Clear();
                                 modelDetailView.Refresh(modelDataObject.id);
                             };
@@ -44,6 +46,11 @@ namespace EAR.Presenter
                     (error) => {
                         modalShower.ShowErrorModal(error);
                     });
+            };
+
+            modelListView.OnGoBack += () =>
+            {
+                screenNavigator.OpenView(courseListView);
             };
         }
     }

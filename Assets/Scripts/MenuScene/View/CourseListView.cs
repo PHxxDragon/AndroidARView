@@ -36,6 +36,11 @@ namespace EAR.View
             base.Refresh(args);
             CourseListRefreshEvent?.Invoke(pageDropdown.value + 1, LIMIT, (CourseType) courseTypeDropdown.value, searchBar.GetText());
         }
+
+        public override void GoBack()
+        {
+            Application.Quit();
+        }
     }
 }
 

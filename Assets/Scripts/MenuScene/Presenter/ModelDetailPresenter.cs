@@ -13,6 +13,10 @@ namespace EAR.View
         private WebRequestHelper webRequestHelper;
         [SerializeField]
         private ModalShower modalShower;
+        [SerializeField]
+        private ModelListView modelListView;
+        [SerializeField]
+        private ScreenNavigator screenNavigator;
 
         void Awake()
         {
@@ -53,6 +57,11 @@ namespace EAR.View
                     {
                         modalShower.ShowErrorModal(error);
                     });
+            };
+
+            modelDetailView.OnGoBack += () =>
+            {
+                screenNavigator.OpenView(modelListView);
             };
         }
     }

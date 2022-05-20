@@ -39,7 +39,7 @@ namespace EAR.Presenter
             };
             swipeDetector.OnSwipeRight += () =>
             {
-                if (!screenNavigator.CanGoBack() && screenNavigator.IsLoggedIn())
+                if (screenNavigator.CanOpenSideBar())
                 {
                     sidebar.OpenSidebar();
                 }
@@ -50,7 +50,7 @@ namespace EAR.Presenter
             };
             sidebar.OnSidebarToggleChange += (value) =>
             {
-                if (!screenNavigator.IsLoggedIn() || screenNavigator.CanGoBack())
+                if (!screenNavigator.CanOpenSideBar())
                     return;
                 switch(value)
                 {

@@ -26,6 +26,10 @@ namespace EAR.View
         private TMP_Text maxStorage;
         [SerializeField]
         private TMP_Text storageUsed;
+        [SerializeField]
+        private ScreenNavigator screenNavigator;
+        [SerializeField]
+        private CourseListView courseListView;
         
 
         void Awake()
@@ -66,7 +70,10 @@ namespace EAR.View
             OnRefresh?.Invoke();
         }
 
-
+        public override void GoBack()
+        {
+            screenNavigator.OpenView(courseListView);
+        }
     }
 }
 

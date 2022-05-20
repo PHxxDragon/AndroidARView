@@ -51,5 +51,10 @@ namespace EAR.View
         {
             SceneManager.LoadScene("QRCodeScene");
         }
+
+        public override void GoBack()
+        {
+            Application.Quit();
+        }
     }
 }

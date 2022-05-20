@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 namespace EAR.View
 {
@@ -13,6 +12,7 @@ namespace EAR.View
         }
 
         public event Action<int, int, ModelType, string> ModelListRefreshEvent;
+        public event Action OnGoBack;
 
         [SerializeField]
         private TMP_Dropdown modelTypeDropdown;
@@ -36,6 +36,11 @@ namespace EAR.View
         {
             base.Refresh(args);
             ModelListRefreshEvent?.Invoke(pageDropdown.value + 1, LIMIT, (ModelType) modelTypeDropdown.value, searchBar.GetText());
+        }
+
+        public override void GoBack()
+        {
+            OnGoBack?.Invoke();
         }
     }
 }

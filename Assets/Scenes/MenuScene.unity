@@ -1584,8 +1584,8 @@ MonoBehaviour:
   loginView: {fileID: 1011876002}
   webRequestHelper: {fileID: 1556263299}
   swipeDetector: {fileID: 35845404}
-  home: {fileID: 497710390}
   courseList: {fileID: 72504413}
+  home: {fileID: 497710390}
   settingView: {fileID: 431905637}
 --- !u!1001 &277085219
 PrefabInstance:
@@ -2439,6 +2439,8 @@ MonoBehaviour:
   langaugeUsed: {fileID: 1291223269}
   maxStorage: {fileID: 94572494}
   storageUsed: {fileID: 769490028}
+  screenNavigator: {fileID: 0}
+  courseListView: {fileID: 0}
 --- !u!114 &431905638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5021,14 +5023,14 @@ PrefabInstance:
     - target: {fileID: 568214748665440442, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1248383205}
+      objectReference: {fileID: 1125496698}
     - target: {fileID: 568214748665440442, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: GoBack
       objectReference: {fileID: 0}
     - target: {fileID: 568214748665440442, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: EAR.View.ScreenNavigator, Assembly-CSharp
+      value: EAR.View.ModelDetailView, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1105079171096310317, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
       propertyPath: m_Sprite
@@ -9187,9 +9189,29 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 568214748665440442, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 568214748665440442, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4321915973611347897}
+      objectReference: {fileID: 1245896717}
+    - target: {fileID: 568214748665440442, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 568214748665440442, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoBack
+      objectReference: {fileID: 0}
+    - target: {fileID: 568214748665440442, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: EAR.View.ModuleListView, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 568214748665440442, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1105079171096310317, guid: 8eaf99bc087fcd842b672614bc24271b, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -9831,6 +9853,7 @@ MonoBehaviour:
   webRequest: {fileID: 1556263299}
   modalShower: {fileID: 1250334264}
   breadCrumbView: {fileID: 5304735643252025113}
+  courseListView: {fileID: 72504413}
 --- !u!1001 &1521573176
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10954,6 +10977,7 @@ MonoBehaviour:
   webRequest: {fileID: 1556263299}
   modelDetailView: {fileID: 1125496698}
   screenNavigator: {fileID: 1248383205}
+  courseListView: {fileID: 72504413}
   modalShower: {fileID: 1250334264}
 --- !u!1001 &1774170476
 PrefabInstance:
@@ -12406,6 +12430,8 @@ MonoBehaviour:
   modelDetailView: {fileID: 1125496698}
   webRequestHelper: {fileID: 1556263299}
   modalShower: {fileID: 1250334264}
+  modelListView: {fileID: 497710390}
+  screenNavigator: {fileID: 1248383205}
 --- !u!1 &2066284353
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ namespace EAR.View
         private const string CATEGORY = "Category";
 
         public event Action<int> OnLoadModel;
+        public event Action OnGoBack;
 
         [SerializeField]
         private Image coverImage;
@@ -98,6 +99,11 @@ namespace EAR.View
             };
             viewInARButton.onClick.AddListener(listener);
             LayoutRebuilder.ForceRebuildLayoutImmediate(contentSizeFitter.gameObject.transform as RectTransform);
+        }
+
+        public override void GoBack()
+        {
+            OnGoBack?.Invoke();
         }
     }
 

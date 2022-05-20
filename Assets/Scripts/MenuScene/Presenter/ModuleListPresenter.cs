@@ -24,6 +24,9 @@ namespace EAR.MenuScene.Presenter
         [SerializeField]
         private BreadCrumbView breadCrumbView;
 
+        [SerializeField]
+        private CourseListView courseListView;
+
         private const string COURSE = "Course";
 
         private List<SectionData> sectionStack = new List<SectionData>();
@@ -83,7 +86,7 @@ namespace EAR.MenuScene.Presenter
                 }
                 else
                 {
-                    screenNavigator.GoBack();
+                    screenNavigator.OpenView(courseListView);
                 }
             }
         }

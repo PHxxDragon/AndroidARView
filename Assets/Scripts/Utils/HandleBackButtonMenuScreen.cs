@@ -14,8 +14,7 @@ namespace EAR.Presenter
             {
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
-                    if (screenNavigator.CanGoBack())
-                        screenNavigator.GoBack();
+                    screenNavigator.GoBack();
                 }
             }
         }
