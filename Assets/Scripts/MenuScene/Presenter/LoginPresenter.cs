@@ -13,7 +13,7 @@ namespace EAR.MenuScene.Presenter
         private LoginView loginView;
 
         [SerializeField]
-        private ModelListView modelListView;
+        private CourseListView courseListView;
 
         [SerializeField]
         private Sidebar sidebar;
@@ -36,9 +36,10 @@ namespace EAR.MenuScene.Presenter
 
         private void LoginSuccessCallback(UserProfileData userProfileData)
         {
-            screenNavigator.OpenView(modelListView);
-            modelListView.Refresh();
+            screenNavigator.OpenView(courseListView);
+            courseListView.Refresh();
             sidebar.PopulateUserDetail(userProfileData.name, userProfileData.email);
+            sidebar.Refresh();
             Utils.Instance.GetImageAsTexture2D(userProfileData.avatar, LoadAvatarSucceedCallback);
         }
 

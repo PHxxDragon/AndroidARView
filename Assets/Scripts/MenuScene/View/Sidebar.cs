@@ -27,9 +27,9 @@ namespace EAR.View
         [SerializeField]
         private Button scanQRCodeButton;
         [SerializeField]
-        private Toggle homeToggle;
-        [SerializeField]
         private Toggle courseToggle;
+        [SerializeField]
+        private Toggle homeToggle;
         [SerializeField]
         private Toggle settingToggle;
 
@@ -57,11 +57,6 @@ namespace EAR.View
             });
         }
 
-        void Start()
-        {
-            homeToggle.isOn = true;
-        }
-
         public void OpenSidebar()
         {
             gameObject.SetActive(true);
@@ -79,8 +74,8 @@ namespace EAR.View
 
         public void PopulateUserDetail(string name, string username)
         {
-            this.nameText.text = name;
-            this.usernameText.text = username;
+            nameText.text = name;
+            usernameText.text = username;
         }
 
         public void PopulateUserAvatar(Sprite avatar)

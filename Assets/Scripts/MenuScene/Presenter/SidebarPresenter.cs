@@ -19,9 +19,9 @@ namespace EAR.Presenter
         private SwipeDetector swipeDetector;
 
         [SerializeField]
-        private ModelListView home;
-        [SerializeField]
         private CourseListView courseList;
+        [SerializeField]
+        private ModelListView home;
         [SerializeField]
         private SettingView settingView;
 

@@ -275,7 +275,7 @@ namespace EAR.WebRequest
 
         public IEnumerator GetRequestCoroutine<T>(string url, Action<T> callback, Action<string, long> errorCallback, bool retried = false)
         {
-            Debug.Log("url: " + url);
+/*            Debug.Log("url: " + url);*/
             string token = LocalStorage.Load(TOKEN_KEY);
             using UnityWebRequest unityWebRequest = UnityWebRequest.Get(url);
             unityWebRequest.SetRequestHeader("Authorization", "Bearer " + token);
@@ -308,7 +308,7 @@ namespace EAR.WebRequest
             } else
             {
                 string requestResult = unityWebRequest.downloadHandler.text;
-                Debug.Log(unityWebRequest.downloadHandler.text);
+/*                Debug.Log(unityWebRequest.downloadHandler.text);*/
                 T response = JsonUtility.FromJson<T>(requestResult);
                 callback?.Invoke(response);
             }
@@ -316,7 +316,7 @@ namespace EAR.WebRequest
 
         public IEnumerator PostRequestCoroutine<T1, T2>(string url, T1 requestData, Action<T2> callback, Action<string, long> errorCallback)
         {
-            Debug.Log("url: " + url);
+/*            Debug.Log("url: " + url);*/
             string requestBody = JsonUtility.ToJson(requestData);
             using UnityWebRequest unityWebRequest = new UnityWebRequest(url, "POST");
             unityWebRequest.SetRequestHeader("Content-Type", "application/json");

@@ -6685,7 +6685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   webRequest: {fileID: 1556263299}
   loginView: {fileID: 1011876002}
-  modelListView: {fileID: 497710390}
+  courseListView: {fileID: 72504413}
   sidebar: {fileID: 4321915973611347897}
   screenNavigator: {fileID: 1248383205}
 --- !u!224 &1068906430 stripped
@@ -13160,10 +13160,6 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 1087205382323568309, guid: e453f302a83eaea4f8a68b82edca90fe, type: 2}
-    - target: {fileID: 1103967237549878308, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
-      propertyPath: m_IsOn
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3575650835555415934, guid: 059ae6aabbb728b44a89548954c5dedf, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -14925,8 +14921,8 @@ MonoBehaviour:
   sidebarRect: {fileID: 4321915973478366023}
   logoutButton: {fileID: 4321915972357480493}
   scanQRCodeButton: {fileID: 1532637695}
-  homeToggle: {fileID: 915452462}
   courseToggle: {fileID: 1587703591}
+  homeToggle: {fileID: 915452462}
   settingToggle: {fileID: 1697828592}
 --- !u!224 &4321915973611347902
 RectTransform:

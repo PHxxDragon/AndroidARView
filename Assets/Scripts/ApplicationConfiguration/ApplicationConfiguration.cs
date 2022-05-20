@@ -54,7 +54,7 @@ namespace EAR
         private void ApplyRemoteSettings(ConfigResponse obj)
         {
             serverName = ConfigManager.appConfig.GetString("ServerName");
-            Debug.Log("Loaded Server Name " + serverName);
+/*            Debug.Log("Loaded Server Name " + serverName);*/
         }
 
         public string GetServerName()
