@@ -34,7 +34,7 @@ namespace EAR.Presenter
                     modelListView.KeepData();
                     return;
                 }
-                MenuSceneParam.Reset();
+                MenuSceneParam.ResetId();
                 webRequest.GetModelList(page, limit, modelType.ToString(), keyword,
                     (result) => {
                         foreach (ModelDataObject modelDataObject in result.models)

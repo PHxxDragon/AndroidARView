@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using System;
+using EAR.SceneChange;
 
 namespace EAR.View
 {
@@ -30,17 +31,33 @@ namespace EAR.View
             {
                 Refresh();
             };
+            LoadState();
         }
 
         public override void Refresh(object args = null)
         {
             base.Refresh(args);
-            ModelListRefreshEvent?.Invoke(pageDropdown.value + 1, LIMIT, (ModelType)modelTypeDropdown.value, searchBar.GetText());
+            SaveState();
+            ModelListRefreshEvent?.Invoke(MenuSceneParam.modelPage, LIMIT, MenuSceneParam.modelType, MenuSceneParam.modelKeyword);
         }
 
         public override void GoBack()
         {
             OnGoBack?.Invoke();
+        }
+
+        private void SaveState()
+        {
+            MenuSceneParam.modelPage = pageDropdown.value + 1;
+            MenuSceneParam.modelKeyword = searchBar.GetText();
+            MenuSceneParam.modelType = (ModelType) modelTypeDropdown.value;
+        }
+
+        private void LoadState()
+        {
+            pageDropdown.value = MenuSceneParam.modelPage - 1;
+            searchBar.SetText(MenuSceneParam.modelKeyword);
+            modelTypeDropdown.value = (int) MenuSceneParam.modelType;
         }
     }
 }

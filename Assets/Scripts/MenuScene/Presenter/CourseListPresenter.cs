@@ -37,7 +37,7 @@ namespace EAR.MenuScene.Presenter
                     return;
                 }
 
-                MenuSceneParam.Reset();
+                MenuSceneParam.ResetId();
                 webRequest.GetCourseList(page, limit, type.ToString(), keyword,
                 (response) =>
                 {

@@ -33,7 +33,7 @@ namespace EAR.Presenter
                 sidebar.CloseSidebar();
                 screenNavigator.OpenView(loginView);
                 webRequestHelper.Logout();
-                MenuSceneParam.Reset();
+                MenuSceneParam.ResetAll();
             };
             sidebar.OnScanQRCodeButtonClick += () =>
             {

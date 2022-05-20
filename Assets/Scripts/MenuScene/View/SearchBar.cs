@@ -31,6 +31,10 @@ public class SearchBar : MonoBehaviour
         });
     }
 
+    public void SetText(string text)
+    {
+        searchInputField.text = text;
+    }
     public string GetText()
     {
         return searchInputField.text;

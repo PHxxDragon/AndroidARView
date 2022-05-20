@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using TMPro;
+using EAR.SceneChange;
 
 namespace EAR.View
 {
@@ -23,23 +24,41 @@ namespace EAR.View
             base.Awake();
             courseTypeDropdown.onValueChanged.AddListener((value) =>
             {
+                SaveState();
                 Refresh();
             });
             searchBar.OnSearch += (text) =>
             {
+                SaveState();
                 Refresh();
             };
+            LoadState();
         }
 
         public override void Refresh(object args = null)
         {
             base.Refresh(args);
-            CourseListRefreshEvent?.Invoke(pageDropdown.value + 1, LIMIT, (CourseType) courseTypeDropdown.value, searchBar.GetText());
+            SaveState();
+            CourseListRefreshEvent?.Invoke(MenuSceneParam.coursePage, LIMIT, MenuSceneParam.courseType, MenuSceneParam.courseKeyword);
         }
 
         public override void GoBack()
         {
             Application.Quit();
+        }
+
+        private void SaveState()
+        {
+            MenuSceneParam.coursePage = pageDropdown.value + 1;
+            MenuSceneParam.courseKeyword = searchBar.GetText();
+            MenuSceneParam.courseType = (CourseType)courseTypeDropdown.value;
+        }
+
+        private void LoadState()
+        {
+            pageDropdown.value = MenuSceneParam.coursePage - 1;
+            searchBar.SetText(MenuSceneParam.courseKeyword);
+            courseTypeDropdown.value = (int)MenuSceneParam.courseType;
         }
     }
 }
