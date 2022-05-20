@@ -32,6 +32,8 @@ namespace EAR.View
         private Toggle homeToggle;
         [SerializeField]
         private Toggle settingToggle;
+        [SerializeField]
+        private ScreenNavigator screenNavigator;
 
         void Awake()
         {
@@ -55,6 +57,30 @@ namespace EAR.View
             {
                 if (isOn) OnSidebarToggleChange?.Invoke(SidebarToggle.Settings);
             });
+
+            screenNavigator.OnViewChanged += SetToggle;
+        }
+
+        private void SetToggle(ViewInterface viewInterface)
+        {
+            if (viewInterface is CourseListView)
+            {
+                courseToggle.isOn = true;
+                homeToggle.isOn = false;
+                settingToggle.isOn = false;
+            }
+            else if (viewInterface is ModelListView)
+            {
+                homeToggle.isOn = true;
+                courseToggle.isOn = false;
+                settingToggle.isOn = false;
+            }
+            else if (viewInterface is SettingView)
+            {
+                settingToggle.isOn = true;
+                homeToggle.isOn = false;
+                courseToggle.isOn = false;
+            }
         }
 
         public void OpenSidebar()

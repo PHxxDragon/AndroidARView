@@ -1,11 +1,17 @@
 using UnityEngine;
-using System.Collections.Generic;
+using System;
 
 namespace EAR.View
 {
     public class ScreenNavigator : MonoBehaviour
     {
         private ViewInterface currentView;
+        public event Action<ViewInterface> OnViewChanged;
+
+        public ViewInterface GetCurrentView()
+        {
+            return currentView;
+        }
 
         public bool CanOpenSideBar()
         {
@@ -23,6 +29,7 @@ namespace EAR.View
             }
             newView.gameObject.SetActive(true);
             currentView = newView;
+            OnViewChanged?.Invoke(currentView);
         }
 
         public void GoBack()

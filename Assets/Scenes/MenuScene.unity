@@ -14952,6 +14952,7 @@ MonoBehaviour:
   courseToggle: {fileID: 1587703591}
   homeToggle: {fileID: 915452462}
   settingToggle: {fileID: 1697828592}
+  screenNavigator: {fileID: 1248383205}
 --- !u!224 &4321915973611347902
 RectTransform:
   m_ObjectHideFlags: 0
