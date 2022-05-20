@@ -176,55 +176,63 @@ namespace EAR.AssetCache
             AssetCacheProgressInfo progressInfo = new AssetCacheProgressInfo();
             progressInfo.assetCount = newInformation.assets.Count;
 
-            foreach (AssetObject asset in newInformation.assets)
+            if (newInformation.assets.Count == 0)
             {
-                if (asset.type == AssetObject.VIDEO_TYPE && !asset.predownload)
+                callback?.Invoke(newInformation);
+            } else
+            {
+                foreach (AssetObject asset in newInformation.assets)
                 {
-                    progressInfo.assetCount -= 1;
-                    if (progressInfo.assetCount == 0 && !progressInfo.hasError)
+                    if (asset.type == AssetObject.VIDEO_TYPE && !asset.predownload)
                     {
-                        callback?.Invoke(newInformation);
+                        progressInfo.assetCount -= 1;
+                        if (progressInfo.assetCount == 0 && !progressInfo.hasError)
+                        {
+                            callback?.Invoke(newInformation);
+                        }
+                        continue;
                     }
-                    continue;
+
+                    if (cacheMetadata[moduleId].urlToLocalDict.ContainsKey(asset.url))
+                    {
+                        string url = cacheMetadata[moduleId].urlToLocalDict[asset.url];
+                        asset.url = new Uri(url).AbsoluteUri;
+                        progressInfo.assetCount -= 1;
+                        if (progressInfo.assetCount == 0 && !progressInfo.hasError)
+                        {
+                            callback?.Invoke(newInformation);
+                        }
+
+                        continue;
+                    }
+
+                    Utils.Instance.GetFile(asset.url, asset.extension, GetCacheFolderPath(moduleId),
+                    (url) =>
+                    {
+                        cacheMetadata[moduleId].urlToLocalDict.Add(asset.url, url);
+                        asset.url = new Uri(url).AbsoluteUri;
+                        progressInfo.assetCount -= 1;
+                        if (progressInfo.assetCount == 0 && !progressInfo.hasError)
+                        {
+                            callback?.Invoke(newInformation);
+                        }
+                    },
+                    (error) =>
+                    {
+                        progressInfo.hasError = true;
+                        errorCallback?.Invoke(error + " asset name: " + asset.name);
+                    },
+                    (progress) =>
+                    {
+                        if (!progressInfo.hasError)
+                        {
+                            progressCallback?.Invoke(progress);
+                        }
+                    });
                 }
+            }
 
-                if (cacheMetadata[moduleId].urlToLocalDict.ContainsKey(asset.url))
-                {
-                    string url = cacheMetadata[moduleId].urlToLocalDict[asset.url];
-                    asset.url = new Uri(url).AbsoluteUri;
-                    progressInfo.assetCount -= 1;
-                    if (progressInfo.assetCount == 0 && !progressInfo.hasError)
-                    {
-                        callback?.Invoke(newInformation);
-                    }
-
-                    continue;
-                }
-
-                Utils.Instance.GetFile(asset.url, asset.extension, GetCacheFolderPath(moduleId), 
-                (url) =>
-                {
-                    cacheMetadata[moduleId].urlToLocalDict.Add(asset.url, url);
-                    asset.url = new Uri(url).AbsoluteUri;
-                    progressInfo.assetCount -= 1;
-                    if (progressInfo.assetCount == 0 && !progressInfo.hasError)
-                    {
-                        callback?.Invoke(newInformation);
-                    }
-                }, 
-                (error) =>
-                {
-                    progressInfo.hasError = true;
-                    errorCallback?.Invoke(error + " asset name: " + asset.name);
-                }, 
-                (progress) =>
-                {
-                    if (!progressInfo.hasError)
-                    {
-                        progressCallback?.Invoke(progress);
-                    }
-                });
-             }
+            
         }
 
         public void ClearCache(string moduleId)

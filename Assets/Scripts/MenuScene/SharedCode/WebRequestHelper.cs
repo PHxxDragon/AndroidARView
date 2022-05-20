@@ -275,6 +275,7 @@ namespace EAR.WebRequest
 
         public IEnumerator GetRequestCoroutine<T>(string url, Action<T> callback, Action<string, long> errorCallback, bool retried = false)
         {
+            Debug.Log("url: " + url);
             string token = LocalStorage.Load(TOKEN_KEY);
             using UnityWebRequest unityWebRequest = UnityWebRequest.Get(url);
             unityWebRequest.SetRequestHeader("Authorization", "Bearer " + token);
@@ -283,6 +284,7 @@ namespace EAR.WebRequest
             {
                 if (unityWebRequest.result == UnityWebRequest.Result.ConnectionError)
                 {
+                    Debug.Log("No connection");
                     errorCallback?.Invoke(LocalizationUtils.GetLocalizedText(NO_CONNECTION), -1);
                 } else
                 {
@@ -314,6 +316,7 @@ namespace EAR.WebRequest
 
         public IEnumerator PostRequestCoroutine<T1, T2>(string url, T1 requestData, Action<T2> callback, Action<string, long> errorCallback)
         {
+            Debug.Log("url: " + url);
             string requestBody = JsonUtility.ToJson(requestData);
             using UnityWebRequest unityWebRequest = new UnityWebRequest(url, "POST");
             unityWebRequest.SetRequestHeader("Content-Type", "application/json");
