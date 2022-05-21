@@ -74,12 +74,18 @@ namespace EAR.MenuScene.Presenter
 
         private void BackToSection(int index)
         {
-            if (index >= sectionStack.Count || index < -1)
+            if (index >= sectionStack.Count || index < -2)
             {
                 Debug.LogError("Invalid index");
             } 
             else
             {
+                if (sectionStack.Count == 0)
+                {
+                    BackToCourseList();
+                    return;
+                }
+
                 if (index == sectionStack.Count - 1) return;
 
                 int removeCount = sectionStack.Count - index - 1;
