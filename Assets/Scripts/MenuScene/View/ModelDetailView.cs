@@ -11,13 +11,13 @@ namespace EAR.View
         private const string DOWNLOAD_SIZE = "DownloadSize";
         private const string LIKES = "Likes";
         private const string NO_CATEGORY = "NoCategory";
+        private const string NO_TAG = "NoTag";
         private const string CATEGORY = "Category";
+        private const string TAG = "Tag";
 
         public event Action<int> OnLoadModel;
         public event Action OnGoBack;
 
-        [SerializeField]
-        private Image coverImage;
         [SerializeField]
         private TMP_Text title;
         [SerializeField]
@@ -32,6 +32,8 @@ namespace EAR.View
         private TMP_Text categories;
         [SerializeField]
         private TMP_Text tags;
+        [SerializeField]
+        private ImageList imageList;
 
         [SerializeField]
         private ContentSizeFitter contentSizeFitter;
@@ -60,12 +62,13 @@ namespace EAR.View
 
         public void Clear()
         {
-            coverImage.sprite = emptyCoverImage;
             title.text = "";
             downloadSize.text = "";
             likes.text = "";
             description.text = "";
             categories.text = "";
+            tags.text = "";
+            imageList.SetNumImage(0);
             if (listener != null)
             {
                 viewInARButton.onClick.RemoveListener(listener);
@@ -79,16 +82,24 @@ namespace EAR.View
             loadingIndicator.gameObject.SetActive(false);
             container.gameObject.SetActive(true);
 
-            modelDataObject.coverImage += (image) =>
+            imageList.SetNumImage(modelDataObject.coverImages.Count);
+            for (int i = 0; i < modelDataObject.coverImages.Count; i++)
             {
-                if (image)
-                    coverImage.sprite = image;
-            };
+                int j = i;
+                modelDataObject.coverImages[i] += (image) =>
+                {
+                    if (image)
+                    {
+                        imageList.SetImage(image, j);
+                    }
+                };
+            }
             title.text = modelDataObject.name;
             downloadSize.text = LocalizationUtils.GetLocalizedText(DOWNLOAD_SIZE) + Utils.GetFileSizeString(modelDataObject.size);
             likes.text = modelDataObject.numOfFav + LocalizationUtils.GetLocalizedText(LIKES);
             description.text = modelDataObject.description;
             categories.text = modelDataObject.categories.Count == 0 ? LocalizationUtils.GetLocalizedText(NO_CATEGORY) : LocalizationUtils.GetLocalizedText(CATEGORY) + string.Join(", ", modelDataObject.categories);
+            tags.text = modelDataObject.tags.Count == 0 ? LocalizationUtils.GetLocalizedText(NO_TAG) : LocalizationUtils.GetLocalizedText(TAG) + string.Join(", ", modelDataObject.tags);
             if (listener != null)
             {
                 viewInARButton.onClick.RemoveListener(listener);

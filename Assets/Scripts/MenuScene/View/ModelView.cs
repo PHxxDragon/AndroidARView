@@ -22,7 +22,7 @@ namespace EAR.View
         {
             modelTitle.text = modelDataObject.name;
             modelDescription.text = modelDataObject.description;
-            modelDataObject.coverImage += (image) =>
+            modelDataObject.coverImages[0] += (image) =>
             {
                 if (modelImage)
                 {

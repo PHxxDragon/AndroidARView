@@ -2,6 +2,7 @@ using UnityEngine;
 using EAR.WebRequest;
 using EAR.SceneChange;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 namespace EAR.View
 {
@@ -29,12 +30,20 @@ namespace EAR.View
                         {
                             response.categories[i] = webRequestHelper.GetLocalizedCategory(int.Parse(response.categories[i]));
                         }
-                        modelDetailView.PopulateData(response);
-                        if (response.images.Count > 0)
+                        response.coverImages = new List<System.Action<Sprite>>();
+                        for (int i = 0; i < response.images.Count; i++)
                         {
-                            Utils.Instance.GetImageAsTexture2D(response.images[0], (image) =>
+                            response.coverImages.Add(null);
+                        }
+
+                        modelDetailView.PopulateData(response);
+
+                        for (int i = 0; i < response.images.Count; i++)
+                        {
+                            int j = i;
+                            Utils.Instance.GetImageAsTexture2D(response.images[i], (image) =>
                             {
-                                response.coverImage?.Invoke(Utils.Instance.Texture2DToSprite(image));
+                                response.coverImages[j]?.Invoke(Utils.Instance.Texture2DToSprite(image));
                             }, (error) =>
                             {
                                 Debug.Log(error);

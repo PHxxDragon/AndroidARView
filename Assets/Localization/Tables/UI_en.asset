@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 527699165184
-    m_Localized: Put the QR Code in the center of the square
+    m_Localized: Put the QR Code in the center of the square.
     m_Metadata:
       m_Items: []
   - m_Id: 780611502080
@@ -175,7 +175,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10284022020939776
-    m_Localized: There is an unexpected error happened when communicating with server
+    m_Localized: There is an unexpected error happened when communicating with server.
     m_Metadata:
       m_Items: []
   - m_Id: 10284676781154304
@@ -195,7 +195,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10308242796945408
-    m_Localized: This model has no category
+    m_Localized: This model has no category.
     m_Metadata:
       m_Items: []
   - m_Id: 10308362208780288
@@ -211,7 +211,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 12188226758410240
-    m_Localized: No model configured for this AR module
+    m_Localized: No model configured for this AR module.
     m_Metadata:
       m_Items: []
   - m_Id: 23843854078128128
@@ -332,6 +332,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 31369889551065088
     m_Localized: About
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31391667388260352
+    m_Localized: This model has no tag.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31391900897746944
+    m_Localized: 'Tag: '
     m_Metadata:
       m_Items: []
   references:

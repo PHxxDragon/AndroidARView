@@ -2,6 +2,7 @@ using EAR.View;
 using UnityEngine;
 using EAR.WebRequest;
 using EAR.SceneChange;
+using System.Collections.Generic;
 
 namespace EAR.Presenter
 {
@@ -39,11 +40,13 @@ namespace EAR.Presenter
                     (result) => {
                         foreach (ModelDataObject modelDataObject in result.models)
                         {
+                            modelDataObject.coverImages = new List<System.Action<Sprite>>();
+                            modelDataObject.coverImages.Add(null);
                             if (modelDataObject.images.Count > 0)
                             {
                                 Utils.Instance.GetImageAsTexture2D(modelDataObject.images[0], (image) =>
                                 {
-                                    modelDataObject.coverImage?.Invoke(Utils.Instance.Texture2DToSprite(image));
+                                    modelDataObject.coverImages[0]?.Invoke(Utils.Instance.Texture2DToSprite(image));
                                 });
                             }
                             modelDataObject.onClick += () =>

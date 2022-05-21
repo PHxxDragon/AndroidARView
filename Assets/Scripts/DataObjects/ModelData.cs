@@ -37,10 +37,11 @@ namespace EAR
         public bool isZipFile;
         public List<string> images = new List<string>();
         public List<string> categories = new List<string>();
+        public List<string> tags = new List<string>();
 
         //Additional properties
         [NonSerialized]
-        public Action<Sprite> coverImage;
+        public List<Action<Sprite>> coverImages;
         [NonSerialized]
         public Action onClick;
     }

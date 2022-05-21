@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 527699165184
-    m_Localized: "\u0110\u1EB7t m\xE3 QR v\xE0o gi\u1EEFa h\xECnh vu\xF4ng"
+    m_Localized: "\u0110\u1EB7t m\xE3 QR v\xE0o gi\u1EEFa h\xECnh vu\xF4ng."
     m_Metadata:
       m_Items: []
   - m_Id: 780611502080
@@ -181,7 +181,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10284022020939776
     m_Localized: "\u0110\xE3 c\xF3 l\u1ED7i x\xE3y ra khi k\u1EBFt n\u1ED1i v\u1EDBi
-      m\xE1y ch\u1EE7"
+      m\xE1y ch\u1EE7."
     m_Metadata:
       m_Items: []
   - m_Id: 10284676781154304
@@ -201,7 +201,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10308242796945408
-    m_Localized: "M\xF4 h\xECnh n\xE0y kh\xF4ng c\xF3 ph\xE2n lo\u1EA1i"
+    m_Localized: "M\xF4 h\xECnh n\xE0y kh\xF4ng c\xF3 ph\xE2n lo\u1EA1i."
     m_Metadata:
       m_Items: []
   - m_Id: 10308362208780288
@@ -218,7 +218,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 12188226758410240
     m_Localized: "Ch\u01B0a c\xF3 m\xF4 h\xECnh \u0111\u01B0\u1EE3c ch\u1ECDn cho
-      b\xE0i h\u1ECDc n\xE0y"
+      b\xE0i h\u1ECDc n\xE0y."
     m_Metadata:
       m_Items: []
   - m_Id: 23843854078128128
@@ -339,6 +339,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 31369889551065088
     m_Localized: "V\u1EC1 kh\xF3a h\u1ECDc"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31391667388260352
+    m_Localized: "M\xF4 h\xECnh n\xE0y kh\xF4ng c\xF3 nh\xE3n n\xE0o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31391900897746944
+    m_Localized: "Nh\xE3n: "
     m_Metadata:
       m_Items: []
   references:
