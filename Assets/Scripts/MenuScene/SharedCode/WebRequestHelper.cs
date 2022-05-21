@@ -308,7 +308,7 @@ namespace EAR.WebRequest
             } else
             {
                 string requestResult = unityWebRequest.downloadHandler.text;
-/*                Debug.Log(unityWebRequest.downloadHandler.text);*/
+                Debug.Log(unityWebRequest.downloadHandler.text);
                 T response = JsonUtility.FromJson<T>(requestResult);
                 callback?.Invoke(response);
             }

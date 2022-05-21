@@ -306,5 +306,33 @@ MonoBehaviour:
     m_Localized: No module found
     m_Metadata:
       m_Items: []
+  - m_Id: 31364910991908864
+    m_Localized: 'Accessibility: <b>Public</b>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31365130123321344
+    m_Localized: 'Accessibility: <b>Private</b>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31367450445848576
+    m_Localized: 'Pacing: <b>Self-paced</b>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31367779862290432
+    m_Localized: 'Pacing: <b>Instructor-paced</b>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31368919270137856
+    m_Localized: Start date
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31368998055944192
+    m_Localized: End date
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31369889551065088
+    m_Localized: About
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

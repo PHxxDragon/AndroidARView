@@ -22,9 +22,11 @@ namespace EAR
     {
         public int id;
         public string name;
-        public float rating;
-        public string courseType;
-        public string teachers;
+        public string about;
+        public string type;
+        public string accessibility;
+        public DateTime startDate;
+        public DateTime endDate;
         public string thumbnail;
 
         [NonSerialized]

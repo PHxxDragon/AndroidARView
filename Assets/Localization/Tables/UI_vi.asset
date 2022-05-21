@@ -313,5 +313,33 @@ MonoBehaviour:
     m_Localized: "Kh\xF4ng c\xF3 b\xE0i h\u1ECDc n\xE0o"
     m_Metadata:
       m_Items: []
+  - m_Id: 31364910991908864
+    m_Localized: "Truy c\u1EADp: <b>C\xF4ng khai</b>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31365130123321344
+    m_Localized: "Truy c\u1EADp: <b>Ri\xEAng t\u01B0</b>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31367450445848576
+    m_Localized: "Nh\u1ECBp \u0111\u1ED9: <b>T\u1EF1 h\u1ECDc</b>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31367779862290432
+    m_Localized: "Nh\u1ECBp \u0111\u1ED9: <b>C\xF3 gi\u1EA3ng vi\xEAn</b>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31368919270137856
+    m_Localized: "Ng\xE0y b\u1EAFt \u0111\u1EA7u"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31368998055944192
+    m_Localized: "Ng\xE0y k\u1EBFt th\xFAc"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31369889551065088
+    m_Localized: "V\u1EC1 kh\xF3a h\u1ECDc"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
