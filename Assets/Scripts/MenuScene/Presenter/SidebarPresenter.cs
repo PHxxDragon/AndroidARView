@@ -71,6 +71,8 @@ namespace EAR.Presenter
                 }
                 sidebar.CloseSidebar();
             };
+
+            screenNavigator.OnViewChanged += sidebar.SetToggle;
         }
     }
 }

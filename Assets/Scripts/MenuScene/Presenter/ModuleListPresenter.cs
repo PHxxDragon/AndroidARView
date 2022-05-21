@@ -28,6 +28,7 @@ namespace EAR.MenuScene.Presenter
         private CourseListView courseListView;
 
         private const string COURSE = "Course";
+        private const int DUMMY_SECTION_ID = -2345;
 
         private List<SectionData> sectionStack = new List<SectionData>();
         private List<SectionData> sections = new List<SectionData>();
@@ -48,10 +49,11 @@ namespace EAR.MenuScene.Presenter
                     sections.Sort((sectionData1, sectionData2) => sectionData1.id - sectionData2.id);
                     sections.ForEach(sectionData => sectionData.modules.Sort((module1, module2) => module1.createdAt.CompareTo(module2.createdAt)));
                     SectionData dummySection = new SectionData();
-                    dummySection.childrenSection = GetChildrenSection(0);
                     dummySection.name = LocalizationUtils.GetLocalizedText(COURSE);
+                    dummySection.id = DUMMY_SECTION_ID;
                     moduleListView.SetHeaderTitle(courseName);
                     PushSection(dummySection);
+                    LoadState();
                 }, 
                 (error) => {
                     modalShower.ShowErrorModal(error, () =>
@@ -112,12 +114,41 @@ namespace EAR.MenuScene.Presenter
             PopulateSection(sectionData);
         }
 
+        private void LoadState()
+        {
+            if (MenuSceneParam.sectionId == DUMMY_SECTION_ID) return;
+
+            List<SectionData> traverseUpList = new List<SectionData>();
+            SectionData sectionData = GetSection(MenuSceneParam.sectionId);
+            while (sectionData != null)
+            {
+                traverseUpList.Add(sectionData);
+                sectionData = GetSection(sectionData.parentSectionId);
+            }
+            traverseUpList.Reverse();
+            sectionStack.AddRange(traverseUpList);
+            breadCrumbView.PopulateData(sectionStack);
+            PopulateSection(sectionStack[sectionStack.Count - 1]);
+        }
+
+        private SectionData GetSection(int id)
+        {
+            foreach (SectionData data in sections)
+            {
+                if (data.id == id)
+                {
+                    return data;
+                }
+            }
+            return null;
+        }
+
         private List<SectionData> GetChildrenSection(int id)
         {
             List<SectionData> result = new List<SectionData>();
             foreach (SectionData data in sections)
             {
-                if (data.parentSectionId == id)
+                if (data.parentSectionId == id || (id == DUMMY_SECTION_ID && data.parentSectionId == 0))
                 {
                     result.Add(data);
                 }
@@ -127,13 +158,14 @@ namespace EAR.MenuScene.Presenter
 
         private void PopulateSection(SectionData sectionData)
         {
+            sectionData.childrenSection = GetChildrenSection(sectionData.id);
+
             List<object> data = new List<object>();
             data.AddRange(sectionData.childrenSection);
             foreach(SectionData sectionData1 in sectionData.childrenSection)
             {
                 sectionData1.sectionClickEvent = () =>
                 {
-                    sectionData1.childrenSection = GetChildrenSection(sectionData1.id);
                     PushSection(sectionData1);
                 };
             }
@@ -157,6 +189,7 @@ namespace EAR.MenuScene.Presenter
                 MenuSceneParam.courseId = courseId;
                 MenuSceneParam.courseName = courseName;
                 MenuSceneParam.modelId = -1;
+                MenuSceneParam.sectionId = sectionStack[sectionStack.Count - 1].id;
                 SceneManager.LoadScene("ARScene");
             }, (error) =>
             {

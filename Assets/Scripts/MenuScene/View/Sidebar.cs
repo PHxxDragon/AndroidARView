@@ -57,11 +57,9 @@ namespace EAR.View
             {
                 if (isOn) OnSidebarToggleChange?.Invoke(SidebarToggle.Settings);
             });
-
-            screenNavigator.OnViewChanged += SetToggle;
         }
 
-        private void SetToggle(ViewInterface viewInterface)
+        public void SetToggle(ViewInterface viewInterface)
         {
             if (viewInterface is CourseListView)
             {

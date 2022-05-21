@@ -7,6 +7,7 @@ namespace EAR.SceneChange
         public static int courseId;
         public static int modelId;
         public static string courseName;
+        public static int sectionId;
 
         public static int modelPage;
         public static ModelListView.ModelType modelType;
@@ -46,6 +47,7 @@ namespace EAR.SceneChange
             modelId = -1;
             courseId = -1;
             courseName = "";
+            sectionId = -1;
         }
     }
 }

@@ -10,12 +10,9 @@ namespace EAR.Presenter
 
         void Update()
         {
-            if (Application.platform == RuntimePlatform.Android)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    screenNavigator.GoBack();
-                }
+                screenNavigator.GoBack();
             }
         }
     }
