@@ -25,6 +25,9 @@ namespace EAR.View
         private TMP_Text endDateText;
 
         [SerializeField]
+        private GameObject row1;
+
+        [SerializeField]
         private TMP_Text about;
 
         [SerializeField]
@@ -51,20 +54,30 @@ namespace EAR.View
             courseName.text = data.name;
             courseAccessibility.text = LocalizationUtils.GetLocalizedText("Accessibility" + UpperFirstLetter(data.accessibility));
             courseType.text = LocalizationUtils.GetLocalizedText("Pacing" + UpperFirstLetter(data.type));
-            if (data.startDate != new DateTime())
+            if (!string.IsNullOrEmpty(data.startDate))
             {
-                startDateText.text = LocalizationUtils.GetLocalizedText("StartDate") + ": " + data.startDate.ToString("dd-MM-yyyy");
+                startDateText.gameObject.SetActive(true);
+                startDateText.text = LocalizationUtils.GetLocalizedText("StartDate") + ": " + DateTime.Parse(data.startDate).ToString("dd-MM-yyyy");
             } else
             {
                 startDateText.gameObject.SetActive(false);
             }
             
-            if (data.endDate != new DateTime())
+            if (!string.IsNullOrEmpty(data.endDate))
             {
-                endDateText.text = LocalizationUtils.GetLocalizedText("EndDate") + ": " + data.endDate.ToString("dd-MM-yyyy");
+                endDateText.gameObject.SetActive(true);
+                endDateText.text = LocalizationUtils.GetLocalizedText("EndDate") + ": " + DateTime.Parse(data.endDate).ToString("dd-MM-yyyy");
             } else
             {
                 endDateText.gameObject.SetActive(false);
+            }
+
+            if (!startDateText.gameObject.activeSelf && !endDateText.gameObject.activeSelf)
+            {
+                row1.gameObject.SetActive(false);
+            } else
+            {
+                row1.gameObject.SetActive(true);
             }
             
             if (!string.IsNullOrEmpty(data.about))

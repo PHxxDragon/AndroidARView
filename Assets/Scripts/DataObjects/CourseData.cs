@@ -25,8 +25,8 @@ namespace EAR
         public string about;
         public string type;
         public string accessibility;
-        public DateTime startDate;
-        public DateTime endDate;
+        public string startDate;
+        public string endDate;
         public string thumbnail;
 
         [NonSerialized]
