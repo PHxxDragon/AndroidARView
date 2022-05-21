@@ -51,21 +51,32 @@ namespace EAR.View
                                 SceneManager.LoadScene("ARScene");
                             }, (error) =>
                             {
-                                modalShower.ShowErrorModal(error);
+                                modalShower.ShowErrorModal(error, () =>
+                                {
+                                    GoBackToModelList();
+                                });
                             });
                         };
                     }, 
                     (error) =>
                     {
-                        modalShower.ShowErrorModal(error);
+                        modalShower.ShowErrorModal(error, () =>
+                        {
+                            GoBackToModelList();
+                        });
                     });
             };
 
             modelDetailView.OnGoBack += () =>
             {
-                screenNavigator.OpenView(modelListView);
-                modelListView.Refresh();
+                GoBackToModelList();
             };
+        }
+
+        private void GoBackToModelList()
+        {
+            screenNavigator.OpenView(modelListView);
+            modelListView.Refresh();
         }
     }
 }

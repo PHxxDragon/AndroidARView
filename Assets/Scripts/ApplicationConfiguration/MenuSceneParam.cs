@@ -43,7 +43,7 @@ namespace EAR.SceneChange
 
         public static void ResetId()
         {
-            modelId = -1;
+            modelId = -100;
             courseId = -1;
             courseName = "";
         }

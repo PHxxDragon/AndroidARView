@@ -54,7 +54,10 @@ namespace EAR.MenuScene.Presenter
                     PushSection(dummySection);
                 }, 
                 (error) => {
-                    Debug.Log(error);
+                    modalShower.ShowErrorModal(error, () =>
+                    {
+                        BackToCourseList();
+                    });
                 });
             };
             moduleListView.BackButtonClickEvent += () =>
@@ -91,10 +94,15 @@ namespace EAR.MenuScene.Presenter
                 }
                 else
                 {
-                    screenNavigator.OpenView(courseListView);
-                    courseListView.Refresh();
+                    BackToCourseList();
                 }
             }
+        }
+        
+        private void BackToCourseList()
+        {
+            screenNavigator.OpenView(courseListView);
+            courseListView.Refresh();
         }
 
         private void PushSection(SectionData sectionData)

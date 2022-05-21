@@ -1,5 +1,6 @@
 using UnityEngine;
 using EAR.View;
+using System;
 
 namespace EAR
 {
@@ -13,13 +14,14 @@ namespace EAR
         [SerializeField]
         private RectTransform canvas;
 
-        public void ShowErrorModal(string error)
+        public void ShowErrorModal(string error, Action confirm = null)
         {
             Modal modal = Instantiate(modalPrefab, canvas);
             modal.SetModalContent(LocalizationUtils.GetLocalizedText(ERROR), error);
             modal.DisableCancelButton();
             modal.OnConfirmButtonClick += () =>
             {
+                confirm?.Invoke();
                 Destroy(modal.gameObject);
             };
         }
