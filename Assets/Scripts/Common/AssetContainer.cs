@@ -176,7 +176,8 @@ namespace EAR.Container
             , (value) => {
                 if (!hasError)
                 {
-                    progressCallback?.Invoke(value, "Loading sound");
+                    //TODO: label
+                    progressCallback?.Invoke(value, "Loading... " + string.Format("{0:0.00}%", value * 100));
                 }
             });
         }
@@ -200,7 +201,8 @@ namespace EAR.Container
             {
                 if (!hasError)
                 {
-                    progressCallback?.Invoke(value, "Loading image");
+                    //TODO: label
+                    progressCallback?.Invoke(value, "Loading... " + string.Format("{0:0.00}%", value * 100));
                 }
             });
         }
@@ -231,7 +233,8 @@ namespace EAR.Container
                 {
                     if (!hasError)
                     {
-                        progressCallback?.Invoke(value, "Loading video");
+                        //TODO: label
+                        progressCallback?.Invoke(value, "Loading... " + string.Format("{0:0.00}%", value * 100));
                     }
                 });
             }
@@ -256,7 +259,8 @@ namespace EAR.Container
                {
                    if (!hasError)
                    {
-                       progressCallback?.Invoke(value, "Loading video");
+                       //TODO: label
+                       progressCallback?.Invoke(value, "Loading... " + string.Format("{0:0.00}%", value * 100));
                    }
                });
         }

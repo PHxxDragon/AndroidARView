@@ -35,7 +35,8 @@ namespace EAR.AR
                 UnityWebRequestAsyncOperation operation = uwr.SendWebRequest();
                 while (!operation.isDone)
                 {
-                    OnLoadProgressChanged?.Invoke(uwr.downloadProgress, "Downloading ");
+                    //TODO: label
+                    OnLoadProgressChanged?.Invoke(uwr.downloadProgress, "Loading... " + string.Format("{0:0.00}%", uwr.downloadProgress * 100));
                     yield return null;
                 }
                 if (uwr.result == UnityWebRequest.Result.ConnectionError)
@@ -180,7 +181,8 @@ namespace EAR.AR
         {
             return (arg1, arg2) =>
             {
-                OnLoadProgressChanged?.Invoke(arg2, "Loading...");
+                //TODO: label
+                OnLoadProgressChanged?.Invoke(arg2, "Loading... " + string.Format("{0:0.00}%", arg2 * 100));
             };
         }
 

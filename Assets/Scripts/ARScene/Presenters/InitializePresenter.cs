@@ -58,7 +58,7 @@ namespace EAR.Presenter
             }, (progress) =>
             {
                 //TODO: all label
-                progressBar.SetProgress(progress, "downloading");
+                progressBar.SetProgress(progress, "Loading... " + string.Format("{0:0.00}%", progress * 100));
             });
         }
 
