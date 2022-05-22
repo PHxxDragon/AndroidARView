@@ -4,6 +4,7 @@ using EAR.WebRequest;
 using System.Collections.Generic;
 using EAR.SceneChange;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace EAR.MenuScene.Presenter
 {
@@ -46,8 +47,26 @@ namespace EAR.MenuScene.Presenter
                 webRequest.GetModuleList(courseId, 
                 (response) => {
                     sections = response;
-                    sections.Sort((sectionData1, sectionData2) => sectionData1.id - sectionData2.id);
-                    sections.ForEach(sectionData => sectionData.modules.Sort((module1, module2) => module1.createdAt.CompareTo(module2.createdAt)));
+                    sections.Sort((sectionData1, sectionData2) =>
+                    {
+                        int orderCompare = sectionData1.order - sectionData2.order;
+                        if (orderCompare == 0) return sectionData1.id - sectionData2.id;
+                        return orderCompare;
+                    });
+                    sections.ForEach(sectionData => sectionData.modules.Sort((module1, module2) => {
+                        int orderCompare = module1.order - module2.order;
+                        if (orderCompare == 0)
+                        {
+                            try
+                            {
+                                return DateTime.Parse(module1.createdAt).CompareTo(DateTime.Parse(module2.createdAt));
+                            } catch
+                            {
+                                return 0;
+                            }
+                        }
+                        return orderCompare;
+                    }));
                     SectionData dummySection = new SectionData();
                     dummySection.name = LocalizationUtils.GetLocalizedText(COURSE);
                     dummySection.id = DUMMY_SECTION_ID;

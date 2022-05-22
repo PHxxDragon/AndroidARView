@@ -21,6 +21,7 @@ namespace EAR
         public int id;
         public string name;
         public int courseId;
+        public int order;
         public int parentSectionId;
         public List<ModuleData> modules = new List<ModuleData>();
 
@@ -36,8 +37,9 @@ namespace EAR
         public int id;
         public string name;
         public string moduleType;
+        public int order;
         public ARModuleData arModule;
-        public DateTime createdAt;
+        public string createdAt;
 
         [NonSerialized]
         public Action<int> moduleClickEvent;

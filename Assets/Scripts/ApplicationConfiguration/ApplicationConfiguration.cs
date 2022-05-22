@@ -47,7 +47,8 @@ namespace EAR
         void Awake()
         {
             serverName = localServerName;
-            ConfigManager.FetchCompleted += ApplyRemoteSettings;
+            //ConfigManager.FetchCompleted += ApplyRemoteSettings;
+            serverName = "http://192.168.1.8:3000/";
             ConfigManager.FetchConfigs(new UserAttributes(), new AppAttributes());
         }
 
