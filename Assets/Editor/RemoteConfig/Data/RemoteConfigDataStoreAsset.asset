@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
   m_Name: RemoteConfigDataStoreAsset
   m_EditorClassIdentifier: 
-  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"70e2832c-b595-4ec6-b518-5495cf55a27c\"\r\n   
+  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"8474a8e9-074a-4f51-9e1b-aa77ec1c6331\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"ServerName\",\r\n      \"type\": \"string\",\r\n     
     \"value\": \"https://api.bkear.com/\"\r\n    }\r\n  }\r\n]"
-  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"70e2832c-b595-4ec6-b518-5495cf55a27c\"\r\n   
+  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"8474a8e9-074a-4f51-9e1b-aa77ec1c6331\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"ServerName\",\r\n      \"type\": \"string\",\r\n     
     \"value\": \"https://api.bkear.com/\"\r\n    }\r\n  }\r\n]"
   _environments: "[\r\n  {\r\n    \"projectId\": \"20ae3c0e-45c6-492a-b23a-c165379a796d\",\r\n   
