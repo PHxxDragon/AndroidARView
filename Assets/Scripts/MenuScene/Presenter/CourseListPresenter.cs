@@ -22,10 +22,28 @@ namespace EAR.MenuScene.Presenter
         [SerializeField]
         private ModalShower modelShower;
 
-        private int currentPage;
-        private int currentLimit;
-        private CourseListView.CourseType currentType;
-        private string currentKeyword;
+        private int currentPage = -1;
+        private int currentLimit = -1;
+        private CourseListView.CourseType currentType = CourseListView.CourseType.All;
+        private string currentKeyword = "";
+
+        void Awake()
+        {
+            MenuSceneParam.OnLogOut += ResetState;
+        }
+
+        void OnDestroy()
+        {
+            MenuSceneParam.OnLogOut -= ResetState;
+        }
+
+        private void ResetState()
+        {
+            currentPage = -1;
+            currentLimit = -1;
+            currentType = CourseListView.CourseType.All;
+            currentKeyword = "";
+        }
 
         void Start()
         {

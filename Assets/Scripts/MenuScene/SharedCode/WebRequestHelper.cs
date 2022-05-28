@@ -275,7 +275,7 @@ namespace EAR.WebRequest
 
         public IEnumerator GetRequestCoroutine<T>(string url, Action<T> callback, Action<string, long> errorCallback, bool retried = false)
         {
-/*            Debug.Log("url: " + url);*/
+            Debug.Log("url: " + url);
             string token = LocalStorage.Load(TOKEN_KEY);
             using UnityWebRequest unityWebRequest = UnityWebRequest.Get(url);
             unityWebRequest.SetRequestHeader("Authorization", "Bearer " + token);

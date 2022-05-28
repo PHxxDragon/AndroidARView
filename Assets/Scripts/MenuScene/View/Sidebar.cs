@@ -35,6 +35,9 @@ namespace EAR.View
         [SerializeField]
         private ScreenNavigator screenNavigator;
 
+        [SerializeField]
+        private Sprite defaultAvatar;
+
         void Awake()
         {
             logoutButton.onClick.AddListener(() =>
@@ -57,6 +60,8 @@ namespace EAR.View
             {
                 if (isOn) OnSidebarToggleChange?.Invoke(SidebarToggle.Settings);
             });
+
+            userAvatar.sprite = defaultAvatar;
         }
 
         public void SetToggle(ViewInterface viewInterface)
@@ -102,9 +107,21 @@ namespace EAR.View
             usernameText.text = username;
         }
 
+        public void ResetUserAvatar()
+        {
+            userAvatar.sprite = defaultAvatar;
+        }
+
         public void PopulateUserAvatar(Sprite avatar)
         {
-            userAvatar.sprite = avatar;
+            if (avatar)
+            {
+                userAvatar.sprite = avatar;
+            } else
+            {
+                userAvatar.sprite = defaultAvatar;
+            }
+            
         }
 
         public override void Refresh(object args = null)

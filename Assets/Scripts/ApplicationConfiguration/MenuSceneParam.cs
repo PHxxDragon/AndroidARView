@@ -1,9 +1,12 @@
 using EAR.View;
+using System;
 
 namespace EAR.SceneChange
 {
     public class MenuSceneParam
     {
+        public static event Action OnLogOut;
+
         public static int courseId;
         public static int modelId;
         public static string courseName;
@@ -19,6 +22,11 @@ namespace EAR.SceneChange
 
         static MenuSceneParam() {
             ResetAll();
+        }
+
+        public static void LogOut()
+        {
+            OnLogOut?.Invoke();
         }
 
         public static void ResetAll()

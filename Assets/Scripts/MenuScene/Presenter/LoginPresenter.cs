@@ -28,6 +28,21 @@ namespace EAR.MenuScene.Presenter
         [SerializeField]
         private ScreenNavigator screenNavigator;
 
+        void Awake()
+        {
+            MenuSceneParam.OnLogOut += ResetSideBar;
+        }
+
+        void OnDestroy()
+        {
+            MenuSceneParam.OnLogOut -= ResetSideBar;
+        }
+
+        private void ResetSideBar()
+        {
+            sidebar.ResetUserAvatar();
+        }
+
         void Start()
         {
             loginView.LoginEvent += LoginEventSubscriber;

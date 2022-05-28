@@ -52,6 +52,7 @@ namespace EAR.View
 
             if (pageCount != 0)
             {
+                int oldPage = pageDropdown.value;
                 pageDropdown.ClearOptions();
                 List<TMP_Dropdown.OptionData> optionDatas = new List<TMP_Dropdown.OptionData>();
                 for (int i = 0; i < pageCount; i++)
@@ -61,6 +62,7 @@ namespace EAR.View
                     optionDatas.Add(optionData);
                 }
                 pageDropdown.AddOptions(optionDatas);
+                pageDropdown.value = oldPage;
             }
 
             foreach (Transform child in container.transform)

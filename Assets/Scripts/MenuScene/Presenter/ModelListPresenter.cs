@@ -21,13 +21,28 @@ namespace EAR.Presenter
         [SerializeField]
         private ModalShower modalShower;
 
-        private int currentPage;
-        private int currentLimit;
-        private ModelListView.ModelType currentType;
-        private string currentKeyword;
+        private int currentPage = -1;
+        private int currentLimit = -1;
+        private ModelListView.ModelType currentType = ModelListView.ModelType.All;
+        private string currentKeyword = "";
+
+        void OnDestroy()
+        {
+            MenuSceneParam.OnLogOut -= ResetState;
+        }
+
+        private void ResetState()
+        {
+            currentPage = -1;
+            currentLimit = -1;
+            currentType = ModelListView.ModelType.All;
+            currentKeyword = "";
+        }
 
         void Awake()
         {
+            MenuSceneParam.OnLogOut += ResetState;
+
             modelListView.ModelListRefreshEvent += (page, limit, modelType, keyword) =>
             {
                 if (CheckCache(page, limit, modelType, keyword))
